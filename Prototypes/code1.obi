@@ -1,0 +1,330 @@
+# This is a single line comment
+
+#- This is a block comment
+Second line of the comment
+3rd line
+4th line with closure-#
+
+#- This is a single-line block comment -#
+
+#-
+This block comment separates the comments from the open and closure marks
+-#
+
+#_______________________________________________________________________________________________________________________
+
+# String operators
+
+# Concatenation with operator
+
+String strOpd1 = "Hello";
+String strOpd2 = " World!";
+String strConcat1 = strOpd1 + strOpd2; # "Hello World!"
+
+String strConcat2 = strOpd1 + " Obi!"; # "Hello Obi!"
+
+String strConcat3 = "Ciao," + strOpd2; # "Ciao, World!"
+
+
+#-
+The next functions are extras
+-#
+
+#-
+Concatenation with function
+-#
+
+# Static way (DOUBLE EXTRA, IDK IF THIS WOULD BE IMPLEMENTED) ----
+String strConcat4 = String.concat(strOpd1, strOpd2); # "Hello World!"
+
+# Instance way ----
+String strConcat5 = strOpd1.concat(strOpd2); # "Hello World!"
+
+#-
+Substring with function
+-#
+
+# Static way (DOUBLE EXTRA, IDK IF THIS WOULD BE IMPLEMENTED) ----
+String strSubstr1 = String.substr("Food", "d"); # "Foo"
+
+# Instance way ----
+String strSubOpd = "Food";
+String strSubstr2 = strSubOpd.substr("d"); # "Foo"
+
+#_______________________________________________________________________________________________________________________
+#_______________________________________________________________________________________________________________________
+
+
+#-
+STATEMENTS
+-#
+
+# Declaration of variables
+
+Int int1;
+Float flt1;
+String str1;
+Bool bool1;
+Obi obi1;
+
+#_______________________________________________________________________________________________________________________
+
+# Assignation of variables
+
+Int int2 = 10;
+Float flt2 = 20.40;
+String str2 = "Hello World!";
+Bool bool2 = true;
+Bool bool3 = false;
+
+Obi obi2 = Obi();
+
+#_______________________________________________________________________________________________________________________
+
+# Conditions
+
+# Braces can be in the same line or after a newline
+
+if (true):
+{
+  #Do something
+}
+else
+{
+  #Do something
+}
+
+#_______________________________________________________________________________________________________________________
+
+# Cycles
+
+# Braces can be in the same line or after a newline
+
+while (true):
+{
+  #Do something
+}
+
+#_______________________________________________________________________________________________________________________
+
+# Read and Write
+
+String strInput1 = input();
+String strInput2 = input("A message of input");
+
+print("A string");
+print(strInput1);
+
+#_______________________________________________________________________________________________________________________
+#_______________________________________________________________________________________________________________________
+
+
+#-
+Math expressions
+-#
+
+#_______________________________________________________________________________________________________________________
+
+
+#-
+Arithmetic
+-#
+
+# Integers
+
+Int sumInt1 = 10 + 5; # 15
+Int sumInt2 = -10 + 5; # -5
+Int sumInt3 = -10 + -5; # -15
+Int sumInt4 = 10 + -5; # -5
+
+Int subInt1 = 5 - 10; # -5
+Int subInt2 = 10 - 5; # 5
+Int subInt3 = -5 - 10; # -15
+Int subInt4 = -5 - -10; # 5
+Int subInt5 = 5 - -10; # 15
+
+Int multInt1 = 10 * 2; # 20
+Int multInt2 = 10 * -2; # -20
+Int multInt3 = -10 * 2; # -20
+Int multInt4 = -10 * -2; # 20
+
+#-
+Power would be kept as an extra....
+–#
+
+Int powInt1 = 10 ^ 2; # 100
+Int powInt2 = -10 ^ 2; # 100
+Int powInt3 = 10 ^ -2; # 0.01
+Int powInt4 = -10 ^ -2; # 0.01
+
+#-
+Int divisions will result into a Float result
+-#
+
+Float divInt1 = 8 / 2; # 4.0
+Float divInt1 = 8 / -2; # -4.0
+Float divInt1 = -8 / 2; # -4.0
+Float divInt1 = -8 / -2; # 4.0
+
+
+# Floats
+
+
+Float sumFlt1 = 2.5 + 7.5; # 10.0
+Float sumFlt2 = 2.5 + -7.5; # -5.0
+Float sumFlt3 = -2.5 + 7.5; # -5.0
+Float sumFlt4 = -2.5 + -7.5; # -10.0
+
+Float subFlt1 = 10.0 - 2.5; # 7.5
+Float subFlt2 = 10.0 - -2.5; # 12.5
+Float subFlt3 = -10.0 - 2.5; # -12.5
+Float subFlt4 = -10.0 - -2.5; # -7.5
+
+Float multFlt1 = 2.5 * 2.0; # 5.0
+Float multFlt2 = 2.5 * -2.0; # -5.0
+Float multFlt3 = -2.5 * 2.0; # -5.0
+Float multFlt4 = -2.5 * -2.0; # 5.0
+
+Float divFlt1 = 15.0 / 2.0; # 7.5
+Float divFlt2 = 15.0 / -2.0; # -7.5
+Float divFlt3 = -15.0 / 2.0; # -7.5
+Float divFlt4 = -15.0 / -2.0; # 7.5
+
+#-
+Power would be kept as an extra....
+-#
+
+Float powFlt1 = 2.5 ^ 2.0; # 6.25
+Float powFlt2 = 2.5 ^ -2.0; # 0.16
+Float powFlt3 = -2.5 ^ 2.0; # 6.25
+Float powFlt4 = -2.5 ^ -2.0; # 0.16
+
+
+# Complex Math expressions
+
+Int mathResult1 = 5 * 2 + 5; # 15
+Int mathResult2 = (5 * 2) + 5; # 15
+Int mathResult3 = 5 * (2 + 5); # 35
+Int mathResult4 = 5 * 2 - 5; # 5
+Int mathResult5 = (5 * 2) - 5; # 5
+Int mathResult6 = 5 * (2 - 5); # -15
+Float mathResult7 = 5 * 2 + 5 / 2; # 12.5
+Float mathResult8 = 5 * (2 + 5) / 2; # 17.5
+
+Float mathResult9 = 5 / 2 + 10 * 2 / 4 - 5; # (5 / 2) + (10 * 2 / 4) - 5 = 2.5 + 5 - 5 = 2.5
+
+#_______________________________________________________________________________________________________________________
+
+
+#-
+Logical (and, or, not)
+-#
+
+#-
+Precedence:
+1. not
+2. and
+3. or
+-#
+
+Bool boolLogTrue = true;
+Bool boolLogFalse = false;
+
+# Nots
+
+Bool boolNot1 = not true; # false
+Bool boolNot2 = not false; # true
+
+Bool boolNot3 = not boolLogTrue; # false
+Bool boolNot4 = not boolLogFalse; # true
+
+# Ands
+
+Bool boolAnd1 = true and true; # true
+Bool boolAnd2 = true and false; # false
+Bool boolAnd3 = false and true; # false
+Bool boolAnd4 = false and false; # false
+
+Bool boolAnd5 = boolLogTrue and boolLogTrue; # true
+Bool boolAnd6 = boolLogTrue and boolLogFalse; # false
+Bool boolAnd7 = boolLogFalse and boolLogTrue; # false
+Bool boolAnd8 = boolLogFalse and boolLogFalse; # false
+
+# Ors
+
+Bool boolOr1 = true or true; # true
+Bool boolOr2 = true or false; # true
+Bool boolOr3 = false or true; # true
+Bool boolOr4 = false or false; # false
+
+Bool boolOr5 = boolLogTrue or boolLogTrue; # true
+Bool boolOr6 = boolLogTrue or boolLogFalse; # true
+Bool boolOr7 = boolLogFalse or boolLogTrue; # true
+Bool boolOr8 = boolLogFalse or boolLogFalse; # false
+
+# Complex Logical operations
+
+Bool boolLog1 = not boolLogTrue or boolLogTrue; # true
+Bool boolLog2 = not boolLogTrue and boolLogFalse; # false
+Bool boolLog3 = not (boolLogTrue and boolLogFalse); # true
+Bool boolLog4 = true and true or false # true
+Bool boolLog5 = true and not true or false # false
+Bool boolLog6 = true and not true or true # true
+
+#_______________________________________________________________________________________________________________________
+
+#-
+Relational and Equality (>, <, >=, <=, ==, !=)
+-#
+
+#-
+Precedence:
+1. Relational (<, <=, >, >=)
+2. Equality (==, !=)
+-#
+
+# Ints
+
+Bool boolRelInt1 = 5 < 10; # true
+Bool boolRelInt2 = 5 <= 5; # true
+Bool boolRelInt3 = 5 < 3; # false
+Bool boolRelInt4 = 5 <= 4; # false
+
+Bool boolRelInt5 = 5 > 10; # false
+Bool boolRelInt6 = 5 >= 5; # true
+Bool boolRelInt7 = 5 > 3; # true
+Bool boolRelInt8 = 5 >= 6; # false
+
+Bool boolRelInt9 = 5 == 10; # false
+Bool boolRelInt10 = 5 == 5; # true
+Bool boolRelInt11 = 5 != 3; # true
+Bool boolRelInt12 = 5 != 5; # false
+
+# Floats
+
+Bool boolRelFlt1 = 5 < 5.5; # true
+Bool boolRelFlt2 = 5.5 <= 5.5; # true
+Bool boolRelFlt3 = 5 < 4.99; # false
+Bool boolRelFlt4 = 5 <= 4.99; # false
+
+Bool boolRelFlt5 = 5 > 5.01; # false
+Bool boolRelFlt6 = 5.5 >= 5.5; # true
+Bool boolRelFlt7 = 5 > 4.99; # true
+Bool boolRelFlt8 = 5 >= 5.1; # false
+
+Bool boolRelFlt9 = 2.5 == 3.5; # false
+Bool boolRelFlt10 = 2.5 == 2.5; # true
+Bool boolRelFlt11 = 2.5 != 3.5; # true
+Bool boolRelFlt12 = 3.5 != 3.5; # false
+
+#_______________________________________________________________________________________________________________________
+
+#-
+Complex relational logical operations
+-#
+
+Bool boolRelLog1 = 5 < 10 and 3 < 2; # false
+Bool boolRelLog2 = 5 < 10 or 3 < 2; # true
+Bool boolRelLog3 = not 5 < 10 or 3 <= 3; # true
+
+Bool boolRelLog4 = not 5 < 10 or 3 <= 3 == 5 < 10 or 3 < 2; # true
