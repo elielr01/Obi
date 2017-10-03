@@ -328,3 +328,169 @@ Bool boolRelLog2 = 5 < 10 or 3 < 2; # true
 Bool boolRelLog3 = not 5 < 10 or 3 <= 3; # true
 
 Bool boolRelLog4 = not 5 < 10 or 3 <= 3 == 5 < 10 or 3 < 2; # true
+
+#_______________________________________________________________________________________________________________________
+
+#-
+
+Complex arithmetic-logical-relational operations
+
+Operators Precedence:
+1. ()
+2. ^ right associativity
+3. * / left associativity
+4. + - left associativity
+5. < <= => > left associativity
+6. not right associativity
+7. and left associativity
+8. or left associativity
+9. == != left associativity
+10. = right associativity
+
+-#
+
+Bool boolComplex1 = not 3 + 2 < 8 * 4 / 2 and 5 - 2 >= 1^2 == ! 1 + 1 > 2 or 16 / 2 * 3 <= 30; # False
+
+#_______________________________________________________________________________________________________________________
+#_______________________________________________________________________________________________________________________
+
+#-
+Modules
+-#
+
+# Void function without parameters
+func voidFunction():
+{
+  Bool bool1 = true;
+  print("Hello void Function without parameters");
+}
+
+# Void function without parameters
+func voidFunctionWithParams(Int intN):
+{
+  Int intTemp = intN;
+  print("Hello void Function with parameters");
+}
+
+# Void function without parameters
+func String strFunction():
+{
+  Bool bool1 = true;
+  return "Hello Function without parameters returning a String";
+}
+
+# Void function without parameters
+func String strFunctionWithParams(Int intN):
+{
+  Int intTemp = intN;
+  return "Hello Function with parameters returning a String";
+}
+
+#_______________________________________________________________________________________________________________________
+#_______________________________________________________________________________________________________________________
+
+#-
+Structured Element: This is gonna be added later.
+-#
+
+#-
+
+# 1st Try: Arrays
+
+Int[10] arrInt1;
+Obi[10] arrObi1;
+
+Int[10][10] matInt1;
+Obi[10][10] matObi1;
+
+Int[2] arrInt = [1, 2];
+Obi[2] arrObi = [Obi(), Obi()];
+
+Int[4][4] matInt = [
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+  [13, 14, 15, 16]
+];
+
+Obi[2][2] matObi = [
+  [Obi(), Obi()],
+  [Obi(), Obi()]
+];
+
+-#
+
+#_______________________________________________________________________________________________________________________
+
+# 2nd try: Lists
+
+#-
+
+List<Int> lstInt = [1,2,3];
+List<Obi> lstObi = [Obi(), Obi()];
+
+lstInt.append(10);
+lstObi.append(Obi());
+
+lstInt.pop();
+lstObi.pop();
+
+Int intTop = lstInt.top();
+Obi obiTop = lstObi.top();
+
+-#
+
+
+#_______________________________________________________________________________________________________________________
+#_______________________________________________________________________________________________________________________
+#_______________________________________________________________________________________________________________________
+
+#-
+OBJECT ORIENTED STUFF
+-#
+
+#_______________________________________________________________________________________________________________________
+
+
+#-
+# Define Classes, this is gonna be added later
+
+
+class classA:
+{
+
+  Int intAtt1;
+  String strAtt2;
+
+
+  # Constructor without parameters
+  func init():
+  {
+    self.intAtt1 = 10;
+    self.strAtt2 = "Hello classA";
+  }
+
+  # Method of classA
+  func add(Int intX):
+  {
+    self.intAtt1 = self.intAtt1 + intX;
+  }
+}
+
+class classB inherits classA:
+{
+  Bool boolAtt = false;
+
+  # Self implementation of init (Constructor) that overrides classA's init
+  # Not overriding it results in using classA's init
+  func init():
+  {
+    self.intAtt1 = 20;
+    self.strAtt2 = "Hello classB son of classA";
+  }
+
+  # ClassA's method add is inherited here
+
+}
+
+-#
