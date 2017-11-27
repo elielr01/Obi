@@ -1,0 +1,27 @@
+#-
+    Obi code for testing use case "print"
+
+    Author: Eli Linares
+    ID: A00815654
+    Date: Nov 26, 2017
+-#
+
+play(){
+
+    # Printing an Int Constant
+    print(10);
+    print(200);
+
+    # Printing a Float Constant
+    print(5.57);
+    print(0.3562);
+
+    # Printing a Bool Constant
+    print(true);
+    print(false);
+
+    # Printing a String Constant
+    print("Hello");
+    print("Obi");
+
+}

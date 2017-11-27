@@ -10,10 +10,6 @@ reserved_words = {
     "Float" : "FLOAT",
     "String" : "STRING",
     "Bool" : "BOOL",
-
-    "true" : "BOOL_CONST",
-    "false" : "BOOL_CONST",
-
     "play" : "PLAY",
     "if" : "IF",
     "eif" : "EIF",
@@ -51,6 +47,7 @@ tokens = list(set(list(reserved_words.values()))) + [
     "INT_CONST",
     "FLOAT_CONST",
     "STRING_CONST",
+    "BOOL_CONST",
 
     "COMMENT",
     "BLOCK_COMMENT",
@@ -101,11 +98,6 @@ t_SQRB_CLOSE = r"\]"
 t_COMMA = r"\,"
 t_SEMICOLON = r";"
 
-def t_ID(t):
-    r"[a-zA-Z_][a-zA-Z0-9_]*"
-    t.type = reserved_words.get(t.value, 'ID')
-    return t
-
 def t_newline(t):
     r"\n+"
     t.lexer.lineno += len(t.value)
@@ -118,19 +110,29 @@ def t_COMMENT(t):
 	r"\#.*"
 	pass
 
-def t_INT_CONST(t):
-	r"\d+"
-	t.value = int(t.value)
-	return t
-
 def t_FLOAT_CONST(t):
     r"\d+\.\d+"
     t.value = float(t.value)
     return t
 
+def t_INT_CONST(t):
+	r"\d+"
+	t.value = int(t.value)
+	return t
+
+def t_BOOL_CONST(t):
+    r"(true|false)"
+    t.value = (t.value == 'true')
+    return t
+
 def t_STRING_CONST(t):
     r"\".*\""
     t.value = str(t.value)
+    return t
+
+def t_ID(t):
+    r"[a-zA-Z_][a-zA-Z0-9_]*"
+    t.type = reserved_words.get(t.value, 'ID')
     return t
 
 def t_error(t):
@@ -140,10 +142,16 @@ def t_error(t):
 
 scanner = lex.lex()
 
-# print(tokens)
-
-while True:
-    tok = scanner.token()
-    if not tok:
-        break
-    #print(tok)
+# with open('../Prototypes/print_const.obi', 'r') as fileObiFile:
+#     obiCode = fileObiFile.read()
+#
+#
+# scanner.input(obiCode)
+#
+# #print(tokens)
+#
+# while True:
+#     tok = scanner.token()
+#     if not tok:
+#         break
+#     print(tok)
