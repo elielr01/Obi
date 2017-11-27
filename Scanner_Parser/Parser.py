@@ -6,6 +6,7 @@ from Parser_Structures.FuncsTable import FuncsTable
 from Quads.QuadsGenerator import QuadsGenerator
 from Virtual_Memory.GlobalMemoryBlock import GlobalMemoryBlock
 from Virtual_Memory.LocalMemoryBlock import LocalMemoryBlock
+from Obi_Machine.ObiMachine import ObiMachine
 
 # ----------------------------------------------------------------------------------------------------------------------
 # INITIALIZE STRUCTURES NEEDED FOR PARSING
@@ -22,6 +23,10 @@ stkTypes = []
 stkSingleJumps = []
 stkMultipleJumps = []
 
+# We create the first GoTo quad
+intCreatedQuad = qgQuads.addQuad(["GoTo", None, None, None])
+stkSingleJumps.append(intCreatedQuad)
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Rules
@@ -31,11 +36,18 @@ def p_Obi(p):
     '''
     Obi : Play
     '''
+    qgQuads.addQuad(["End", None, None, None])
 
 def p_Play(p):
     '''
-    Play : PLAY PAR_OPEN PAR_CLOSE Statements_Block
+    Play : PLAY Update_First_GoTo PAR_OPEN PAR_CLOSE Statements_Block
     '''
+
+def p_Update_First_GoTo(p):
+    '''
+    Update_First_GoTo :
+    '''
+    qgQuads.fillQuad(stkSingleJumps.pop())
 
 def p_Statements_Block(p):
     '''
@@ -62,7 +74,7 @@ def p_Print(p):
 
     intAddress = stkOperands.pop()
     strType = stkTypes.pop()
-    qgQuads.addQuad(("print", None, None, intAddress))
+    qgQuads.addQuad(["Print", None, None, intAddress])
 
 
 def p_Expression(p):
@@ -123,21 +135,20 @@ def p_Epsilon(p):
 
 
 def p_error(p):
-    print("Syntax Error")
-    print(p.value)
-    print(p.type)
-    print(p.lineno)
+    sys.exit("Syntax Error near " + str(p.value) + " at line " + str(p.lineno))
 
 
 
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Prototypes/print_const.obi', 'r') as fileObiFile:
+with open('../Prototypes/print_arithmetics.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
-result = parser.parse(obiCode, tracking=True)
+parser.parse(obiCode, tracking=True)
 
-print(result)
+#qgQuads.printQuads()
+#print(qgQuads.getQuads())
 
-qgQuads.printQuads()
+obiMachine = ObiMachine(qgQuads.getQuads(), gmbGlobal, ftFuncsTable)
+obiMachine.execute()

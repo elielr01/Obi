@@ -57,21 +57,22 @@ Grammar
 
 Rule 0     S' -> Obi
 Rule 1     Obi -> Play
-Rule 2     Play -> PLAY PAR_OPEN PAR_CLOSE Statements_Block
-Rule 3     Statements_Block -> CURLYB_OPEN Multiple_Statements CURLYB_CLOSE
-Rule 4     Multiple_Statements -> Statement Multiple_Statements
-Rule 5     Multiple_Statements -> Epsilon
-Rule 6     Statement -> Print
-Rule 7     Print -> PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON
-Rule 8     Expression -> INT_CONST Save_Int_Const
-Rule 9     Expression -> FLOAT_CONST Save_Float_Const
-Rule 10    Expression -> BOOL_CONST Save_Bool_Const
-Rule 11    Expression -> STRING_CONST Save_String_Const
-Rule 12    Save_Int_Const -> <empty>
-Rule 13    Save_Float_Const -> <empty>
-Rule 14    Save_Bool_Const -> <empty>
-Rule 15    Save_String_Const -> <empty>
-Rule 16    Epsilon -> <empty>
+Rule 2     Play -> PLAY Update_First_GoTo PAR_OPEN PAR_CLOSE Statements_Block
+Rule 3     Update_First_GoTo -> <empty>
+Rule 4     Statements_Block -> CURLYB_OPEN Multiple_Statements CURLYB_CLOSE
+Rule 5     Multiple_Statements -> Statement Multiple_Statements
+Rule 6     Multiple_Statements -> Epsilon
+Rule 7     Statement -> Print
+Rule 8     Print -> PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON
+Rule 9     Expression -> INT_CONST Save_Int_Const
+Rule 10    Expression -> FLOAT_CONST Save_Float_Const
+Rule 11    Expression -> BOOL_CONST Save_Bool_Const
+Rule 12    Expression -> STRING_CONST Save_String_Const
+Rule 13    Save_Int_Const -> <empty>
+Rule 14    Save_Float_Const -> <empty>
+Rule 15    Save_Bool_Const -> <empty>
+Rule 16    Save_String_Const -> <empty>
+Rule 17    Epsilon -> <empty>
 
 Terminals, with rules where they appear
 
@@ -81,12 +82,12 @@ BLACK                :
 BLOCK_COMMENT        : 
 BLUE                 : 
 BOOL                 : 
-BOOL_CONST           : 10
+BOOL_CONST           : 11
 CIRCLE               : 
 COMMA                : 
 COMMENT              : 
-CURLYB_CLOSE         : 3
-CURLYB_OPEN          : 3
+CURLYB_CLOSE         : 4
+CURLYB_OPEN          : 4
 CYAN                 : 
 DIFF                 : 
 DIVIDE_SIGN          : 
@@ -95,7 +96,7 @@ EIF                  :
 ELSE                 : 
 EQUAL                : 
 FLOAT                : 
-FLOAT_CONST          : 9
+FLOAT_CONST          : 10
 FUNC                 : 
 GRAY                 : 
 GREATER              : 
@@ -105,7 +106,7 @@ ID                   :
 IF                   : 
 INPUT                : 
 INT                  : 
-INT_CONST            : 8
+INT_CONST            : 9
 LESS                 : 
 LESS_EQUAL           : 
 LINE                 : 
@@ -114,23 +115,23 @@ MINUS_SIGN           :
 NOT                  : 
 OR                   : 
 ORANGE               : 
-PAR_CLOSE            : 2 7
-PAR_OPEN             : 2 7
+PAR_CLOSE            : 2 8
+PAR_OPEN             : 2 8
 PINK                 : 
 PLAY                 : 2
 PLUS_SIGN            : 
 POINT                : 
 POLYGON              : 
-PRINT                : 7
+PRINT                : 8
 PURPLE               : 
 RECTANGLE            : 
 RED                  : 
-SEMICOLON            : 7
+SEMICOLON            : 8
 SQRB_CLOSE           : 
 SQRB_OPEN            : 
 SQUARE               : 
 STRING               : 
-STRING_CONST         : 11
+STRING_CONST         : 12
 TIMES_SIGN           : 
 TRIANGLE             : 
 WHILE                : 
@@ -140,18 +141,19 @@ error                :
 
 Nonterminals, with rules where they appear
 
-Epsilon              : 5
-Expression           : 7
-Multiple_Statements  : 3 4
+Epsilon              : 6
+Expression           : 8
+Multiple_Statements  : 4 5
 Obi                  : 0
 Play                 : 1
-Print                : 6
-Save_Bool_Const      : 10
-Save_Float_Const     : 9
-Save_Int_Const       : 8
-Save_String_Const    : 11
-Statement            : 4
+Print                : 7
+Save_Bool_Const      : 11
+Save_Float_Const     : 10
+Save_Int_Const       : 9
+Save_String_Const    : 12
+Statement            : 5
 Statements_Block     : 2
+Update_First_GoTo    : 2
 
 Parsing method: LALR
 
@@ -159,7 +161,7 @@ state 0
 
     (0) S' -> . Obi
     (1) Obi -> . Play
-    (2) Play -> . PLAY PAR_OPEN PAR_CLOSE Statements_Block
+    (2) Play -> . PLAY Update_First_GoTo PAR_OPEN PAR_CLOSE Statements_Block
 
     PLAY            shift and go to state 3
 
@@ -181,208 +183,217 @@ state 2
 
 state 3
 
-    (2) Play -> PLAY . PAR_OPEN PAR_CLOSE Statements_Block
+    (2) Play -> PLAY . Update_First_GoTo PAR_OPEN PAR_CLOSE Statements_Block
+    (3) Update_First_GoTo -> .
 
-    PAR_OPEN        shift and go to state 4
+    PAR_OPEN        reduce using rule 3 (Update_First_GoTo -> .)
 
+    Update_First_GoTo              shift and go to state 4
 
 state 4
 
-    (2) Play -> PLAY PAR_OPEN . PAR_CLOSE Statements_Block
+    (2) Play -> PLAY Update_First_GoTo . PAR_OPEN PAR_CLOSE Statements_Block
 
-    PAR_CLOSE       shift and go to state 5
+    PAR_OPEN        shift and go to state 5
 
 
 state 5
 
-    (2) Play -> PLAY PAR_OPEN PAR_CLOSE . Statements_Block
-    (3) Statements_Block -> . CURLYB_OPEN Multiple_Statements CURLYB_CLOSE
+    (2) Play -> PLAY Update_First_GoTo PAR_OPEN . PAR_CLOSE Statements_Block
 
-    CURLYB_OPEN     shift and go to state 7
+    PAR_CLOSE       shift and go to state 6
 
-    Statements_Block               shift and go to state 6
 
 state 6
 
-    (2) Play -> PLAY PAR_OPEN PAR_CLOSE Statements_Block .
+    (2) Play -> PLAY Update_First_GoTo PAR_OPEN PAR_CLOSE . Statements_Block
+    (4) Statements_Block -> . CURLYB_OPEN Multiple_Statements CURLYB_CLOSE
 
-    $end            reduce using rule 2 (Play -> PLAY PAR_OPEN PAR_CLOSE Statements_Block .)
+    CURLYB_OPEN     shift and go to state 8
 
+    Statements_Block               shift and go to state 7
 
 state 7
 
-    (3) Statements_Block -> CURLYB_OPEN . Multiple_Statements CURLYB_CLOSE
-    (4) Multiple_Statements -> . Statement Multiple_Statements
-    (5) Multiple_Statements -> . Epsilon
-    (6) Statement -> . Print
-    (16) Epsilon -> .
-    (7) Print -> . PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON
+    (2) Play -> PLAY Update_First_GoTo PAR_OPEN PAR_CLOSE Statements_Block .
 
-    CURLYB_CLOSE    reduce using rule 16 (Epsilon -> .)
-    PRINT           shift and go to state 10
+    $end            reduce using rule 2 (Play -> PLAY Update_First_GoTo PAR_OPEN PAR_CLOSE Statements_Block .)
 
-    Print                          shift and go to state 12
-    Epsilon                        shift and go to state 9
-    Multiple_Statements            shift and go to state 8
-    Statement                      shift and go to state 11
 
 state 8
 
-    (3) Statements_Block -> CURLYB_OPEN Multiple_Statements . CURLYB_CLOSE
+    (4) Statements_Block -> CURLYB_OPEN . Multiple_Statements CURLYB_CLOSE
+    (5) Multiple_Statements -> . Statement Multiple_Statements
+    (6) Multiple_Statements -> . Epsilon
+    (7) Statement -> . Print
+    (17) Epsilon -> .
+    (8) Print -> . PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON
 
-    CURLYB_CLOSE    shift and go to state 13
+    CURLYB_CLOSE    reduce using rule 17 (Epsilon -> .)
+    PRINT           shift and go to state 11
 
+    Print                          shift and go to state 13
+    Epsilon                        shift and go to state 10
+    Multiple_Statements            shift and go to state 9
+    Statement                      shift and go to state 12
 
 state 9
 
-    (5) Multiple_Statements -> Epsilon .
+    (4) Statements_Block -> CURLYB_OPEN Multiple_Statements . CURLYB_CLOSE
 
-    CURLYB_CLOSE    reduce using rule 5 (Multiple_Statements -> Epsilon .)
+    CURLYB_CLOSE    shift and go to state 14
 
 
 state 10
 
-    (7) Print -> PRINT . PAR_OPEN Expression PAR_CLOSE SEMICOLON
+    (6) Multiple_Statements -> Epsilon .
 
-    PAR_OPEN        shift and go to state 14
+    CURLYB_CLOSE    reduce using rule 6 (Multiple_Statements -> Epsilon .)
 
 
 state 11
 
-    (4) Multiple_Statements -> Statement . Multiple_Statements
-    (4) Multiple_Statements -> . Statement Multiple_Statements
-    (5) Multiple_Statements -> . Epsilon
-    (6) Statement -> . Print
-    (16) Epsilon -> .
-    (7) Print -> . PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON
+    (8) Print -> PRINT . PAR_OPEN Expression PAR_CLOSE SEMICOLON
 
-    CURLYB_CLOSE    reduce using rule 16 (Epsilon -> .)
-    PRINT           shift and go to state 10
+    PAR_OPEN        shift and go to state 15
 
-    Print                          shift and go to state 12
-    Epsilon                        shift and go to state 9
-    Multiple_Statements            shift and go to state 15
-    Statement                      shift and go to state 11
 
 state 12
 
-    (6) Statement -> Print .
+    (5) Multiple_Statements -> Statement . Multiple_Statements
+    (5) Multiple_Statements -> . Statement Multiple_Statements
+    (6) Multiple_Statements -> . Epsilon
+    (7) Statement -> . Print
+    (17) Epsilon -> .
+    (8) Print -> . PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON
 
-    PRINT           reduce using rule 6 (Statement -> Print .)
-    CURLYB_CLOSE    reduce using rule 6 (Statement -> Print .)
+    CURLYB_CLOSE    reduce using rule 17 (Epsilon -> .)
+    PRINT           shift and go to state 11
 
+    Print                          shift and go to state 13
+    Epsilon                        shift and go to state 10
+    Multiple_Statements            shift and go to state 16
+    Statement                      shift and go to state 12
 
 state 13
 
-    (3) Statements_Block -> CURLYB_OPEN Multiple_Statements CURLYB_CLOSE .
+    (7) Statement -> Print .
 
-    $end            reduce using rule 3 (Statements_Block -> CURLYB_OPEN Multiple_Statements CURLYB_CLOSE .)
+    PRINT           reduce using rule 7 (Statement -> Print .)
+    CURLYB_CLOSE    reduce using rule 7 (Statement -> Print .)
 
 
 state 14
 
-    (7) Print -> PRINT PAR_OPEN . Expression PAR_CLOSE SEMICOLON
-    (8) Expression -> . INT_CONST Save_Int_Const
-    (9) Expression -> . FLOAT_CONST Save_Float_Const
-    (10) Expression -> . BOOL_CONST Save_Bool_Const
-    (11) Expression -> . STRING_CONST Save_String_Const
+    (4) Statements_Block -> CURLYB_OPEN Multiple_Statements CURLYB_CLOSE .
 
-    INT_CONST       shift and go to state 16
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 17
-    STRING_CONST    shift and go to state 20
+    $end            reduce using rule 4 (Statements_Block -> CURLYB_OPEN Multiple_Statements CURLYB_CLOSE .)
 
-    Expression                     shift and go to state 19
 
 state 15
 
-    (4) Multiple_Statements -> Statement Multiple_Statements .
+    (8) Print -> PRINT PAR_OPEN . Expression PAR_CLOSE SEMICOLON
+    (9) Expression -> . INT_CONST Save_Int_Const
+    (10) Expression -> . FLOAT_CONST Save_Float_Const
+    (11) Expression -> . BOOL_CONST Save_Bool_Const
+    (12) Expression -> . STRING_CONST Save_String_Const
 
-    CURLYB_CLOSE    reduce using rule 4 (Multiple_Statements -> Statement Multiple_Statements .)
+    INT_CONST       shift and go to state 17
+    FLOAT_CONST     shift and go to state 19
+    BOOL_CONST      shift and go to state 18
+    STRING_CONST    shift and go to state 21
 
+    Expression                     shift and go to state 20
 
 state 16
 
-    (8) Expression -> INT_CONST . Save_Int_Const
-    (12) Save_Int_Const -> .
+    (5) Multiple_Statements -> Statement Multiple_Statements .
 
-    PAR_CLOSE       reduce using rule 12 (Save_Int_Const -> .)
+    CURLYB_CLOSE    reduce using rule 5 (Multiple_Statements -> Statement Multiple_Statements .)
 
-    Save_Int_Const                 shift and go to state 21
 
 state 17
 
-    (10) Expression -> BOOL_CONST . Save_Bool_Const
-    (14) Save_Bool_Const -> .
+    (9) Expression -> INT_CONST . Save_Int_Const
+    (13) Save_Int_Const -> .
 
-    PAR_CLOSE       reduce using rule 14 (Save_Bool_Const -> .)
+    PAR_CLOSE       reduce using rule 13 (Save_Int_Const -> .)
 
-    Save_Bool_Const                shift and go to state 22
+    Save_Int_Const                 shift and go to state 22
 
 state 18
 
-    (9) Expression -> FLOAT_CONST . Save_Float_Const
-    (13) Save_Float_Const -> .
+    (11) Expression -> BOOL_CONST . Save_Bool_Const
+    (15) Save_Bool_Const -> .
 
-    PAR_CLOSE       reduce using rule 13 (Save_Float_Const -> .)
+    PAR_CLOSE       reduce using rule 15 (Save_Bool_Const -> .)
 
-    Save_Float_Const               shift and go to state 23
+    Save_Bool_Const                shift and go to state 23
 
 state 19
 
-    (7) Print -> PRINT PAR_OPEN Expression . PAR_CLOSE SEMICOLON
+    (10) Expression -> FLOAT_CONST . Save_Float_Const
+    (14) Save_Float_Const -> .
 
-    PAR_CLOSE       shift and go to state 24
+    PAR_CLOSE       reduce using rule 14 (Save_Float_Const -> .)
 
+    Save_Float_Const               shift and go to state 24
 
 state 20
 
-    (11) Expression -> STRING_CONST . Save_String_Const
-    (15) Save_String_Const -> .
+    (8) Print -> PRINT PAR_OPEN Expression . PAR_CLOSE SEMICOLON
 
-    PAR_CLOSE       reduce using rule 15 (Save_String_Const -> .)
+    PAR_CLOSE       shift and go to state 25
 
-    Save_String_Const              shift and go to state 25
 
 state 21
 
-    (8) Expression -> INT_CONST Save_Int_Const .
+    (12) Expression -> STRING_CONST . Save_String_Const
+    (16) Save_String_Const -> .
 
-    PAR_CLOSE       reduce using rule 8 (Expression -> INT_CONST Save_Int_Const .)
+    PAR_CLOSE       reduce using rule 16 (Save_String_Const -> .)
 
+    Save_String_Const              shift and go to state 26
 
 state 22
 
-    (10) Expression -> BOOL_CONST Save_Bool_Const .
+    (9) Expression -> INT_CONST Save_Int_Const .
 
-    PAR_CLOSE       reduce using rule 10 (Expression -> BOOL_CONST Save_Bool_Const .)
+    PAR_CLOSE       reduce using rule 9 (Expression -> INT_CONST Save_Int_Const .)
 
 
 state 23
 
-    (9) Expression -> FLOAT_CONST Save_Float_Const .
+    (11) Expression -> BOOL_CONST Save_Bool_Const .
 
-    PAR_CLOSE       reduce using rule 9 (Expression -> FLOAT_CONST Save_Float_Const .)
+    PAR_CLOSE       reduce using rule 11 (Expression -> BOOL_CONST Save_Bool_Const .)
 
 
 state 24
 
-    (7) Print -> PRINT PAR_OPEN Expression PAR_CLOSE . SEMICOLON
+    (10) Expression -> FLOAT_CONST Save_Float_Const .
 
-    SEMICOLON       shift and go to state 26
+    PAR_CLOSE       reduce using rule 10 (Expression -> FLOAT_CONST Save_Float_Const .)
 
 
 state 25
 
-    (11) Expression -> STRING_CONST Save_String_Const .
+    (8) Print -> PRINT PAR_OPEN Expression PAR_CLOSE . SEMICOLON
 
-    PAR_CLOSE       reduce using rule 11 (Expression -> STRING_CONST Save_String_Const .)
+    SEMICOLON       shift and go to state 27
 
 
 state 26
 
-    (7) Print -> PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON .
+    (12) Expression -> STRING_CONST Save_String_Const .
 
-    PRINT           reduce using rule 7 (Print -> PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON .)
-    CURLYB_CLOSE    reduce using rule 7 (Print -> PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON .)
+    PAR_CLOSE       reduce using rule 12 (Expression -> STRING_CONST Save_String_Const .)
+
+
+state 27
+
+    (8) Print -> PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON .
+
+    PRINT           reduce using rule 8 (Print -> PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON .)
+    CURLYB_CLOSE    reduce using rule 8 (Print -> PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON .)
 

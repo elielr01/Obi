@@ -1,0 +1,30 @@
+#-
+    Obi code for testing use case "print arithmetics"
+
+    Author: Eli Linares
+    ID: A00815654
+    Date: Nov 26, 2017
+-#
+
+play(){
+
+    # Printing a resultant int expression
+
+    print(10 + 20); # 30
+    print(200 - 150); #50
+    print(10 * 2); # 20
+    print(10 / 2); # 5.0
+
+    print(10 * 2 - 10 / 2); # 15.0
+    print(10 * 4 / 2); # 20.0
+
+    # Printing a resultant float expression
+    print(5.57 + 1.03); # 6.6
+    print(0.3 - 0.15); # 0.15
+    print(0.5 * 2); # 1.0
+    print(1.5 / 2); #0.75
+
+    print(2.5 * 4 + 2 / 1.5); #11.3333333334
+    print(3.4 * 1.2 / 2.1); # 1.9428571428571428
+
+}

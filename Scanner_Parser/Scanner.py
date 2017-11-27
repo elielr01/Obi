@@ -103,12 +103,13 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 def t_BLOCK_COMMENT(t):
-    r"\#\-(.|\n)*\-\#"
+    r"\#\-(.|[\r\n])*?\-\#"
+    t.lexer.lineno += len(t.value.split('\n')) - 1
     pass
 
 def t_COMMENT(t):
-	r"\#.*"
-	pass
+    r"\#.*"
+    pass
 
 def t_FLOAT_CONST(t):
     r"\d+\.\d+"
@@ -142,14 +143,14 @@ def t_error(t):
 
 scanner = lex.lex()
 
-# with open('../Prototypes/print_const.obi', 'r') as fileObiFile:
-#     obiCode = fileObiFile.read()
-#
-#
-# scanner.input(obiCode)
-#
-# #print(tokens)
-#
+with open('../Prototypes/print_arithmetics.obi', 'r') as fileObiFile:
+    obiCode = fileObiFile.read()
+
+
+scanner.input(obiCode)
+
+#print(tokens)
+
 # while True:
 #     tok = scanner.token()
 #     if not tok:
