@@ -1,0 +1,98 @@
+#-
+    Obi code for testing use case "print relationals"
+
+    Author: Eli Linares
+    ID: A00815654
+    Date: Nov 28, 2017
+-#
+
+play(){
+
+    ####################################################################################################################
+
+    # Print less_than's
+    #-
+    print(1 < 10); # True
+    print(1 < 2.4); # True
+    print(2.5 < 10); # True
+    print(2.5 < 5.5); # True
+
+    print(10 < 5); # False
+    print(10 < 5.5); #False
+    print(10.5 < 5); #False
+    print(10.5 < 5.5); # False
+    -#
+
+    #-
+    print(2 + 3 < 5 *2); # 5 < 10 = True
+    print(2 + 3 < 5 * -2); # 5 < -10 = False
+    print(3 /4 < 1.5); # 0 < 1.5 = True
+    print(5/ 2 < 0 - -2); # 2 < 2 = False
+    -#
+
+    ####################################################################################################################
+
+    # Print less_equal's
+    #-
+    print(1 <= 10); # True
+    print(1 <= 2.4); # True
+    print(2.5 <= 10); # True
+    print(2.5 <= 5.5); # True
+
+    print(10 <= 5); # False
+    print(10 <= 5.5); #False
+    print(10.5 <= 5); #False
+    print(10.5 <= 5.5); # False
+    -#
+
+    #-
+    print(2 + 3 <= 5 *2); # 5 <= 10 = True
+    print(2 + 3 <= 5 * -2); # 5 <= -10 = False
+    print(3 /4 <= 1.5); # 0 <= 1.5 = True
+    print(5/ 2 <= 0 - -2); # 2 <= 2 = True
+    -#
+
+    ####################################################################################################################
+
+    # Print greater_than's
+    #-
+    print(1 > 10); # False
+    print(1 > 2.4); # False
+    print(2.5 > 10); # False
+    print(2.5 > 5.5); # False
+
+    print(10 > 5); # True
+    print(10 > 5.5); #True
+    print(10.5 > 5); #True
+    print(10.5 > 5.5); # True
+    -#
+
+    #-
+    print(2 + 3 > 5 *2); # 5 > 10 = False
+    print(2 + 3 > 5 * -2); # 5 > -10 = True
+    print(3 /4 > 1.5); # 0 > 1.5 = False
+    print(5/ 2 > 0 - -2); # 2 > 2 = False
+    -#
+
+    ####################################################################################################################
+
+    # Print greater_equal's
+    #-
+    print(1 >= 10); # False
+    print(1 >= 2.4); # False
+    print(2.5 >= 10); # False
+    print(2.5 >= 5.5); # False
+
+    print(10 >= 5); # True
+    print(10 >= 5.5); #True
+    print(10.5 >= 5); #True
+    print(10.5 >= 5.5); # True
+    -#
+
+    #-
+    print(2 + 3 >= 5 *2); # 5 >= 10 = False
+    print(2 + 3 >= 5 * -2); # 5 >= -10 = True
+    print(3 /4 >= 1.5); # 0 >= 1.5 = False
+    print(5/ 2 >= 0 - -2); # 2 >= 2 = True
+    -#
+}

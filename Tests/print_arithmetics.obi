@@ -29,9 +29,16 @@ play(){
     print(3.4 * 1.2 / 2.1); # 1.9428571428571428
     -#
 
+    #-
     # Printing negatives
     print(-5); # -5
     print(-10 - 5); # -15
     print(10 - -5); # 15
     print(10 - 5); # 5
+    -#
+
+    # Printing math with negative numbers
+    print(10 * -5); # -50
+    print(10 / -2 * -2.5); #12.5
+    print(-10);
 }

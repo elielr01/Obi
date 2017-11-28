@@ -161,7 +161,7 @@ def t_error(t):
 
 scanner = lex.lex()
 
-with open('../Prototypes/print_arithmetics.obi', 'r') as fileObiFile:
+with open('../Tests/print_arithmetics.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 

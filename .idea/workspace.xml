@@ -2,17 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4eb6b80-714c-49dd-9be3-86f0f8b5f7b7" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Tests/print_relational.obi" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Prototypes/print_arithmetics.obi" afterPath="$PROJECT_DIR$/Tests/print_arithmetics.obi" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Prototypes/print_const.obi" afterPath="$PROJECT_DIR$/Tests/print_const.obi" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Obi_Machine/ObiMachine.py" afterPath="$PROJECT_DIR$/Obi_Machine/ObiMachine.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Prototypes/print_arithmetics.obi" afterPath="$PROJECT_DIR$/Prototypes/print_arithmetics.obi" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Prototypes/print_const.obi" afterPath="$PROJECT_DIR$/Prototypes/print_const.obi" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scanner_Parser/Parser.py" afterPath="$PROJECT_DIR$/Scanner_Parser/Parser.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scanner_Parser/Parser_Structures/FuncsTable.py" afterPath="$PROJECT_DIR$/Scanner_Parser/Parser_Structures/FuncsTable.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scanner_Parser/Parser_Structures/SemanticCube.py" afterPath="$PROJECT_DIR$/Scanner_Parser/Parser_Structures/SemanticCube.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scanner_Parser/Scanner.py" afterPath="$PROJECT_DIR$/Scanner_Parser/Scanner.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scanner_Parser/parser.out" afterPath="$PROJECT_DIR$/Scanner_Parser/parser.out" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scanner_Parser/parsetab.py" afterPath="$PROJECT_DIR$/Scanner_Parser/parsetab.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Virtual_Memory/LocalMemoryBlock.py" afterPath="$PROJECT_DIR$/Virtual_Memory/LocalMemoryBlock.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Virtual_Memory/MemorySegment.py" afterPath="$PROJECT_DIR$/Virtual_Memory/MemorySegment.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,26 +23,14 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/Obi$Scanner.coverage" NAME="Scanner Coverage Results" MODIFIED="1511808118719" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Scanner_Parser" />
     <SUITE FILE_PATH="coverage/Obi$VirtualMemory.coverage" NAME="VirtualMemory Coverage Results" MODIFIED="1511566413917" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Virtual_Memory" />
-    <SUITE FILE_PATH="coverage/Obi$Parser.coverage" NAME="Parser Coverage Results" MODIFIED="1511890580409" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Scanner_Parser" />
+    <SUITE FILE_PATH="coverage/Obi$Parser.coverage" NAME="Parser Coverage Results" MODIFIED="1511902332787" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Scanner_Parser" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="LocalMemoryBlock.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Virtual_Memory/LocalMemoryBlock.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1380">
-              <caret line="93" column="44" lean-forward="false" selection-start-line="93" selection-start-column="44" selection-end-line="93" selection-end-column="44" />
-              <folding>
-                <element signature="e#289#299#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="MemorySegment.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Virtual_Memory/MemorySegment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1605">
+            <state relative-caret-position="297">
               <caret line="107" column="95" lean-forward="false" selection-start-line="107" selection-start-column="95" selection-end-line="107" selection-end-column="95" />
               <folding>
                 <element signature="e#4649#6278#0" expanded="false" />
@@ -52,11 +39,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Scanner.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Scanner_Parser/Scanner.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="421">
+              <caret line="163" column="19" lean-forward="false" selection-start-line="163" selection-start-column="19" selection-end-line="163" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Parser.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scanner_Parser/Parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="462" column="0" lean-forward="false" selection-start-line="462" selection-start-column="0" selection-end-line="462" selection-end-column="0" />
+            <state relative-caret-position="353">
+              <caret line="557" column="0" lean-forward="true" selection-start-line="557" selection-start-column="0" selection-end-line="557" selection-end-column="0" />
               <folding>
                 <element signature="e#245#266#0" expanded="true" />
               </folding>
@@ -64,11 +61,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="print_relational.obi" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Tests/print_relational.obi">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="349">
+              <caret line="30" column="120" lean-forward="true" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="120" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ObiMachine.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Obi_Machine/ObiMachine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3435">
-              <caret line="230" column="33" lean-forward="false" selection-start-line="230" selection-start-column="33" selection-end-line="230" selection-end-column="33" />
+            <state relative-caret-position="200">
+              <caret line="403" column="37" lean-forward="false" selection-start-line="403" selection-start-column="37" selection-end-line="403" selection-end-column="37" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -79,7 +86,7 @@
       <file leaf-file-name="MemoryManager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Virtual_Memory/MemoryManager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
+            <state relative-caret-position="339">
               <caret line="35" column="57" lean-forward="false" selection-start-line="35" selection-start-column="57" selection-end-line="35" selection-end-column="57" />
               <folding />
             </state>
@@ -89,18 +96,8 @@
       <file leaf-file-name="SemanticCube.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scanner_Parser/Parser_Structures/SemanticCube.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="30" column="37" lean-forward="false" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VarsTable.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Scanner_Parser/Parser_Structures/VarsTable.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="49" column="8" lean-forward="false" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="34" />
+            <state relative-caret-position="361">
+              <caret line="96" column="19" lean-forward="false" selection-start-line="96" selection-start-column="19" selection-end-line="96" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -118,21 +115,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="print_arithmetics.obi" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Prototypes/print_arithmetics.obi">
+      <file leaf-file-name="code1.obi" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Prototypes/code1.obi">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="35" column="10" lean-forward="false" selection-start-line="35" selection-start-column="10" selection-end-line="35" selection-end-column="10" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Scanner.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Scanner_Parser/Scanner.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1995">
-              <caret line="137" column="6" lean-forward="false" selection-start-line="137" selection-start-column="6" selection-end-line="137" selection-end-column="6" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -176,11 +163,12 @@
         <option value="$PROJECT_DIR$/Virtual_Memory/MemorySegment.py" />
         <option value="$PROJECT_DIR$/Virtual_Memory/LocalMemoryBlock.py" />
         <option value="$PROJECT_DIR$/Scanner_Parser/Parser_Structures/FuncsTable.py" />
-        <option value="$PROJECT_DIR$/Obi_Machine/ObiMachine.py" />
-        <option value="$PROJECT_DIR$/Scanner_Parser/Parser_Structures/SemanticCube.py" />
-        <option value="$PROJECT_DIR$/Scanner_Parser/Scanner.py" />
         <option value="$PROJECT_DIR$/Prototypes/print_arithmetics.obi" />
+        <option value="$PROJECT_DIR$/Scanner_Parser/Scanner.py" />
+        <option value="$PROJECT_DIR$/Scanner_Parser/Parser_Structures/SemanticCube.py" />
+        <option value="$PROJECT_DIR$/Obi_Machine/ObiMachine.py" />
         <option value="$PROJECT_DIR$/Scanner_Parser/Parser.py" />
+        <option value="$PROJECT_DIR$/Tests/print_relational.obi" />
       </list>
     </option>
   </component>
@@ -221,28 +209,7 @@
             <path>
               <item name="Obi" type="b2602c69:ProjectViewProjectNode" />
               <item name="Obi" type="462c0819:PsiDirectoryNode" />
-              <item name="Obi_Machine" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Obi" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Obi" type="462c0819:PsiDirectoryNode" />
-              <item name="Prototypes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Obi" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Obi" type="462c0819:PsiDirectoryNode" />
-              <item name="Scanner_Parser" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Obi" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Obi" type="462c0819:PsiDirectoryNode" />
-              <item name="Scanner_Parser" type="462c0819:PsiDirectoryNode" />
-              <item name="Parser_Structures" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Obi" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Obi" type="462c0819:PsiDirectoryNode" />
-              <item name="Virtual_Memory" type="462c0819:PsiDirectoryNode" />
+              <item name="Tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -254,6 +221,11 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Tests" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -350,15 +322,15 @@
     <frame x="0" y="22" width="1280" height="778" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31328124" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21484375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36402267" sideWeight="0.503125" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32577905" sideWeight="0.496875" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32577905" sideWeight="0.496875" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3286119" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286119" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39943343" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -387,7 +359,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#289#299#0" expanded="true" />
+            <element signature="e#289#299#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -446,7 +418,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Prototypes/print_arithmetics.obi">
+    <entry file="file://$PROJECT_DIR$/Tests/print_arithmetics.obi">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
           <caret line="33" column="4" lean-forward="false" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
@@ -467,7 +439,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#330#340#0" expanded="true" />
+            <element signature="e#330#340#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -525,15 +497,16 @@
         <state relative-caret-position="1483">
           <caret line="111" column="0" lean-forward="false" selection-start-line="111" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
           <folding>
-            <element signature="e#330#340#0" expanded="true" />
+            <element signature="e#330#340#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Prototypes/print_const.obi">
+    <entry file="file://$PROJECT_DIR$/Tests/print_const.obi">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="349">
           <caret line="30" column="19" lean-forward="false" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -542,33 +515,7 @@
         <state relative-caret-position="1380">
           <caret line="93" column="44" lean-forward="false" selection-start-line="93" selection-start-column="44" selection-end-line="93" selection-end-column="44" />
           <folding>
-            <element signature="e#289#299#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Scanner_Parser/Scanner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1995">
-          <caret line="137" column="6" lean-forward="false" selection-start-line="137" selection-start-column="6" selection-end-line="137" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Virtual_Memory/MemoryManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="35" column="57" lean-forward="false" selection-start-line="35" selection-start-column="57" selection-end-line="35" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Obi_Machine/ObiMachine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3435">
-          <caret line="230" column="33" lean-forward="false" selection-start-line="230" selection-start-column="33" selection-end-line="230" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#289#299#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -578,24 +525,6 @@
         <state relative-caret-position="735">
           <caret line="49" column="8" lean-forward="false" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="34" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Scanner_Parser/Parser_Structures/SemanticCube.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="37" lean-forward="false" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Virtual_Memory/MemorySegment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1605">
-          <caret line="107" column="95" lean-forward="false" selection-start-line="107" selection-start-column="95" selection-end-line="107" selection-end-column="95" />
-          <folding>
-            <element signature="e#4649#6278#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -609,20 +538,80 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Scanner_Parser/Parser_Structures/SemanticCube.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="96" column="19" lean-forward="false" selection-start-line="96" selection-start-column="19" selection-end-line="96" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Virtual_Memory/MemorySegment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="107" column="95" lean-forward="false" selection-start-line="107" selection-start-column="95" selection-end-line="107" selection-end-column="95" />
+          <folding>
+            <element signature="e#4649#6278#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Prototypes/code1.obi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Virtual_Memory/MemoryManager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="35" column="57" lean-forward="false" selection-start-line="35" selection-start-column="57" selection-end-line="35" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/print_arithmetics.obi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="376">
+          <caret line="42" column="15" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="43" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Obi_Machine/ObiMachine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="403" column="37" lean-forward="false" selection-start-line="403" selection-start-column="37" selection-end-line="403" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scanner_Parser/Scanner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="421">
+          <caret line="163" column="19" lean-forward="false" selection-start-line="163" selection-start-column="19" selection-end-line="163" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Scanner_Parser/Parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="462" column="0" lean-forward="false" selection-start-line="462" selection-start-column="0" selection-end-line="462" selection-end-column="0" />
+        <state relative-caret-position="353">
+          <caret line="557" column="0" lean-forward="true" selection-start-line="557" selection-start-column="0" selection-end-line="557" selection-end-column="0" />
           <folding>
             <element signature="e#245#266#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Prototypes/print_arithmetics.obi">
+    <entry file="file://$PROJECT_DIR$/Tests/print_relational.obi">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="10" lean-forward="false" selection-start-line="35" selection-start-column="10" selection-end-line="35" selection-end-column="10" />
+        <state relative-caret-position="349">
+          <caret line="30" column="120" lean-forward="true" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="120" />
           <folding />
         </state>
       </provider>
