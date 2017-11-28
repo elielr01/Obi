@@ -8,6 +8,8 @@
 # ID: A00815654
 # Date: Nov 27, 2017
 
+import sys
+
 class VarsTable:
 
     # Constructor
@@ -30,4 +32,23 @@ class VarsTable:
         # 3. Value = List of DimNodes (if it's an array) or None (if it's atomic
         self.table = {}
 
-    #def addVar(self, strName, strType):
+    # This function should be used only for constants and only at Global Function
+    def addConstant(self, constKey, strType, address):
+
+        # In this case, the constant is our key, and we save the other attributes for this constant
+        self.table[constKey] = {
+            "type" : strType,
+            "address" : address,
+            "dimension" : None
+        }
+
+    # Returns true if the variable exists in the table
+    def boolExistsVar(self, key):
+        return key in self.table
+
+    # Returns a dictionary with all variable's info
+    def dictGetVarsInfo(self, key):
+        if self.boolExistsVar(key):
+            return self.table[key]
+        else:
+            sys.exit("Exit with error: Trying to access a nonexistent var at VarsTable. Key: " + str(key))

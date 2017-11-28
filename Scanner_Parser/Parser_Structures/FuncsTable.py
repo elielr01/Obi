@@ -34,10 +34,12 @@ class FuncsTable:
         # 3. Key = varsTable
         # 3. Value = Instance of VarsTable class
         self.table = {
+            # The global function is the only one that will have a Constants Table
             "global" : {
                 "size" : 0,
                 "params" : [],
-                "varsTable" : VarsTable()
+                "varsTable" : VarsTable(),
+                "constTable" : VarsTable() # This is unique for this record
             },
 
             "play" : {

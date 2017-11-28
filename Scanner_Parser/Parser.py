@@ -1,8 +1,20 @@
+# -*- coding: utf-8 -*-
+#
+# Obi - Parser
+#
+# All the rules for Obi are defined in here, as well as the neuralgic points involved. Syntactic and Semantic
+# analysis occurs in here.
+#
+# Author: Elí E. Linares
+# ID: A00815654
+# Date: Nov 27, 2017
+
 from Scanner import *
 import sys
 import re
 import ply.yacc as yacc
 from Parser_Structures.FuncsTable import FuncsTable
+from Parser_Structures.SemanticCube import SemanticCube
 from Quads.QuadsGenerator import QuadsGenerator
 from Virtual_Memory.GlobalMemoryBlock import GlobalMemoryBlock
 from Virtual_Memory.LocalMemoryBlock import LocalMemoryBlock
@@ -16,7 +28,9 @@ ftFuncsTable = FuncsTable()
 qgQuads = QuadsGenerator()
 gmbGlobal = GlobalMemoryBlock(10000)
 lmbLocal = LocalMemoryBlock(gmbGlobal.intDirBase + gmbGlobal.intMAX_BLOCK_SIZE)
+scSemanticCube = SemanticCube()
 
+# Stacks needed to manage the neuralgic points
 stkOperators = []
 stkOperands = []
 stkTypes = []
@@ -71,7 +85,6 @@ def p_Print(p):
     '''
     Print : PRINT PAR_OPEN Expression PAR_CLOSE SEMICOLON
     '''
-
     intAddress = stkOperands.pop()
     strType = stkTypes.pop()
     qgQuads.addQuad(["Print", None, None, intAddress])
@@ -79,19 +92,59 @@ def p_Print(p):
 
 def p_Expression(p):
     '''
-    Expression : INT_CONST Save_Int_Const
+    Expression : Term Multiple_Terms
+    '''
+
+def p_Multiple_Terms(p):
+    '''
+    Multiple_Terms : PLUS_SIGN Term Multiple_Terms
+    | MINUS_SIGN Term Multiple_Terms
+    | Epsilon
+    '''
+
+def p_Term(p):
+    '''
+    Term : Factor Multiple_Factors
+    '''
+
+def p_Multiple_Factors(p):
+    '''
+    Multiple_Factors : TIMES_SIGN Factor Multiple_Factors
+    | DIVIDE_SIGN Factor Multiple_Factors
+    | MOD_SIGN Factor Multiple_Factors
+    | Epsilon
+    '''
+
+def p_Factor(p):
+    '''
+    Factor : PAR_OPEN Expression PAR_CLOSE
+    | Var_Cte
+    '''
+
+
+def p_Var_Cte(p):
+    '''
+    Var_Cte : INT_CONST Save_Int_Const
     | FLOAT_CONST Save_Float_Const
     | BOOL_CONST Save_Bool_Const
     | STRING_CONST Save_String_Const
     '''
 
-
 def p_Save_Int_Const(p):
     '''
     Save_Int_Const :
     '''
-    intAddress = gmbGlobal.intNextConstantGlobalAddress("Int")
-    gmbGlobal.setValue(intAddress, p[-1])
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1]):
+        # This constant already has an address
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1])["address"]
+
+    else:
+        # We save constant at Global Memory
+        intAddress = gmbGlobal.intNextConstantGlobalAddress("Int")
+        gmbGlobal.setValue(intAddress, p[-1])
+
+        # Then we save that constant at the Funcs Directory
+        ftFuncsTable.table["global"]["constTable"].addConstant(p[-1], "Int", intAddress)
 
     stkOperands.append(intAddress)
     stkTypes.append("Int")
@@ -100,8 +153,17 @@ def p_Save_Float_Const(p):
     '''
     Save_Float_Const :
     '''
-    intAddress = gmbGlobal.intNextConstantGlobalAddress("Float")
-    gmbGlobal.setValue(intAddress, p[-1])
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1]):
+        # This constant already has an address
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1])["address"]
+
+    else:
+        # We save constant at Global Memory
+        intAddress = gmbGlobal.intNextConstantGlobalAddress("Float")
+        gmbGlobal.setValue(intAddress, p[-1])
+
+        # Then we save that constant at the Funcs Directory
+        ftFuncsTable.table["global"]["constTable"].addConstant(p[-1], "Float", intAddress)
 
     stkOperands.append(intAddress)
     stkTypes.append("Float")
@@ -110,8 +172,17 @@ def p_Save_Bool_Const(p):
     '''
     Save_Bool_Const :
     '''
-    intAddress = gmbGlobal.intNextConstantGlobalAddress("Bool")
-    gmbGlobal.setValue(intAddress, p[-1])
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1]):
+        # This constant already has an address
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1])["address"]
+
+    else:
+        # We save constant at Global Memory
+        intAddress = gmbGlobal.intNextConstantGlobalAddress("Bool")
+        gmbGlobal.setValue(intAddress, p[-1])
+
+        # Then we save that constant at the Funcs Directory
+        ftFuncsTable.table["global"]["constTable"].addConstant(p[-1], "Bool", intAddress)
 
     stkOperands.append(intAddress)
     stkTypes.append("Bool")
@@ -120,8 +191,17 @@ def p_Save_String_Const(p):
     '''
     Save_String_Const :
     '''
-    intAddress = gmbGlobal.intNextConstantGlobalAddress("String")
-    gmbGlobal.setValue(intAddress, p[-1])
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1]):
+        # This constant already has an address
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1])["address"]
+
+    else:
+        # We save constant at Global Memory
+        intAddress = gmbGlobal.intNextConstantGlobalAddress("String")
+        gmbGlobal.setValue(intAddress, p[-1])
+
+        # Then we save that constant at the Funcs Directory
+        ftFuncsTable.table["global"]["constTable"].addConstant(p[-1], "String", intAddress)
 
     stkOperands.append(intAddress)
     stkTypes.append("String")
@@ -142,7 +222,7 @@ def p_error(p):
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Prototypes/print_arithmetics.obi', 'r') as fileObiFile:
+with open('../Prototypes/print_const.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 parser.parse(obiCode, tracking=True)

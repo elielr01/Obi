@@ -10,15 +10,22 @@ reserved_words = {
     "Float" : "FLOAT",
     "String" : "STRING",
     "Bool" : "BOOL",
+
     "play" : "PLAY",
+
     "if" : "IF",
     "eif" : "EIF",
     "else" : "ELSE",
+
     "while" : "WHILE",
+
     "print" : "PRINT",
     "input" : "INPUT",
+
     "func" : "FUNC",
+
     "draw" : "DRAW",
+
     "point" : "POINT",
     "line" : "LINE",
     "triangle" : "TRIANGLE",
@@ -26,6 +33,7 @@ reserved_words = {
     "rectangle" : "RECTANGLE",
     "circle" : "CIRCLE",
     "polygon" : "POLYGON",
+
     "black" : "BLACK",
     "red" : "RED",
     "green" : "GREEN",
@@ -38,6 +46,7 @@ reserved_words = {
     "purple" : "PURPLE",
     "pink" : "PINK",
     "gray" : "GRAY",
+
     "and" : "AND",
     "or" : "OR",
     "not" : "NOT"
@@ -53,22 +62,30 @@ tokens = list(set(list(reserved_words.values()))) + [
     "BLOCK_COMMENT",
 
     "ASSIGN",
+
     "PLUS_SIGN",
     "MINUS_SIGN",
     "TIMES_SIGN",
     "DIVIDE_SIGN",
+    "MOD_SIGN",
+
     "LESS",
     "LESS_EQUAL",
     "GREATER",
     "GREATER_EQUAL",
+
     "EQUAL",
     "DIFF",
+
     "PAR_OPEN",
     "PAR_CLOSE",
+
     "CURLYB_OPEN",
     "CURLYB_CLOSE",
+
     "SQRB_OPEN",
     "SQRB_CLOSE",
+
     "COMMA",
     "SEMICOLON",
     "ID"
@@ -83,6 +100,7 @@ t_PLUS_SIGN = r"\+"
 t_MINUS_SIGN = r"\-"
 t_TIMES_SIGN = r"\*"
 t_DIVIDE_SIGN = r"/"
+t_MOD_SIGN = r"%"
 t_LESS = r"<"
 t_LESS_EQUAL = r"<="
 t_GREATER = r">"

@@ -16,94 +16,63 @@ class SemanticCube:
         # The semantic cub is represented as a dictionary
         #
         # DictSemanticCube:
-        # Key = A tuple with
-        # key: (operator, type) value: type
+        # Key = A tuple with the operands types and operators needed to identify an operation
+        # Value = String with return type
         self.dictSemanticCube = {
-            # Integers
-            (0, '+', 0): 0,
-            (0, '-', 0): 0,
-            (0, '*', 0): 0,
-            (0, '/', 0): 0,
-            (0, '%', 0): 0,
-            (0, 'mod', 0): 1,
-            (0, 'is', 0): 4,
-            (0, '==', 0): 4,
-            (0, '<=', 0): 4,
-            (0, '>=', 0): 4,
-            (0, '<', 0): 4,
-            (0, '>', 0): 4,
+
+            # ----------------------------------------------------------------------------------------------------------
+            # Ints
+            # ----------------------------------------------------------------------------------------------------------
+
+            # Int vs Int
+            ("Int", "+", "Int") : "Int",
+            ("Int", "-", "Int"): "Int",
+            ("Int", "*", "Int"): "Int",
+            ("Int", "/", "Int"): "Float",
+            ("Int", "%", "Int"): "Int",
+
+            # Int vs Float
+            ("Int", "+", "Float"): "Float",
+            ("Int", "-", "Float"): "Float",
+            ("Int", "*", "Float"): "Float",
+            ("Int", "/", "Float"): "Float",
+            ("Int", "%", "Float"): "Float",
+
+            # ----------------------------------------------------------------------------------------------------------
             # Floats
-            (1, '+', 1): 1,
-            (1, '-', 1): 1,
-            (1, '*', 1): 1,
-            (1, '/', 1): 1,
-            (1, '%', 1): 1,
-            (1, 'mod', 1): 1,
-            (1, 'is', 1): 4,
-            (1, '==', 1): 4,
-            (1, '<=', 1): 4,
-            (1, '>=', 1): 4,
-            (1, '<', 1): 4,
-            (1, '>', 1): 4,
-            # Strings
-            (2, '+', 2): 2,
-            (2, 'is', 2): 4,
-            (2, '==', 2): 4,
-            (2, '<=', 2): 4,
-            (2, '>=', 2): 4,
-            (2, '<', 2): 4,
-            (2, '>', 2): 4,
-            # Characters
-            (3, 'is', 3): 4,
-            (3, '==', 3): 4,
-            (3, '<=', 3): 4,
-            (3, '>=', 3): 4,
-            (3, '<', 3): 4,
-            (3, '>', 3): 4,
-            # Booleans
-            (4, 'and', 4): 4,
-            (4, '&&', 4): 4,
-            (4, 'or', 4): 4,
-            (4, '||', 4): 4,
-            ('not', 4): 4,
-            ('!', 4): 4,
-            (4, 'is', 4): 4,
-            (4, '==', 4): 4,
-            # Lists
-            (5, '+', 5): 5,
-            (5, 'is', 5): 4,
-            (5, '==', 5): 4,
-            # Mixtures
-            # (0, '+', 1): 1,
-            # (0, '-', 1): 1,
-            # (1, '+', 0): 1,
-            # (1, '-', 0): 1,
-            # (0, '*', 1): 1,
-            # (0, '/', 1): 1,
-            # (1, '*', 0): 1,
-            # (1, '/', 0): 1,
-            # (0, '%', 1): 1,
-            # (0, 'mod', 1): 1,
-            # (0, '<=', 1): 4,
-            # (0, '>=', 1): 4,
-            # (0, '<', 1): 4,
-            # (0, '>', 1): 4,
-            # (0, 'is', 1): 4,
-            # (0, '==', 1): 4,
-            # (1, '%', 0): 1,
-            # (1, 'mod', 0): 1,
-            # (1, '<=', 0): 4,
-            # (1, '>=', 0): 4,
-            # (1, '<', 0): 4,
-            # (1, '>', 0): 4,
-            # (1, 'is', 0): 4,
-            # (1, '==', 0): 4,
-            (0, '=', 0): 0,
-            # (0, '=', 1): 0,
-            (1, '=', 1): 1,
-            # (1, '=', 0): 1,
-            (2, '=', 2): 2,
-            (3, '=', 3): 3,
-            (4, '=', 4): 4,
-            (5, '=', 5): 5,
+            # ----------------------------------------------------------------------------------------------------------
+
+            # Float vs Int
+            ("Float", "+", "Int"): "Float",
+            ("Float", "-", "Int"): "Float",
+            ("Float", "*", "Int"): "Float",
+            ("Float", "/", "Int"): "Float",
+            ("Float", "%", "Int"): "Float",
+
+            # Float vs Float
+            ("Float", "+", "Float"): "Float",
+            ("Float", "-", "Float"): "Float",
+            ("Float", "*", "Float"): "Float",
+            ("Float", "/", "Float"): "Float",
+            ("Float", "%", "Float"): "Float"
         }
+
+    # Returns true if the operation exists in the Semantic Cube
+    def boolExists(self, strLeftType, strOperator, strRightType):
+        tplKey = (strLeftType, strOperator, strRightType)
+        return tplKey in self.dictSemanticCube
+
+    # Returns the resultant type of an operation
+    def getType(self, strLeftType, strOperator, strRightType):
+
+        if self.boolExists(strLeftType, strOperator, strRightType):
+            tplKey = (strLeftType, strOperator, strRightType)
+            return self.dictSemanticCube[tplKey]
+        else:
+            return None
+
+    # Prints the semantic cube (for debugging)
+    def printSemanticCube(self):
+
+        for key, value in self.dictSemanticCube:
+            print(str(key) + " : " + str(value))
