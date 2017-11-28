@@ -24,7 +24,10 @@ play(){
     print("Hello");
     print("Obi");
 
-    # Printing a repeated constant
+    # Printing repeated constants
     print(10);
+    print(5.57);
+    print(true);
+    print("Hello");
 
 }

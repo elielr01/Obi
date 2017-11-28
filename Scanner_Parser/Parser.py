@@ -41,6 +41,9 @@ stkMultipleJumps = []
 intCreatedQuad = qgQuads.addQuad(["GoTo", None, None, None])
 stkSingleJumps.append(intCreatedQuad)
 
+# We initialize our pointer for the functions (to know in which context we are)
+strCurrentFunc = "global"
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Rules
@@ -54,13 +57,17 @@ def p_Obi(p):
 
 def p_Play(p):
     '''
-    Play : PLAY Update_First_GoTo PAR_OPEN PAR_CLOSE Statements_Block
+    Play : PLAY Play_Init PAR_OPEN PAR_CLOSE Statements_Block
     '''
 
-def p_Update_First_GoTo(p):
+def p_Play_Init(p):
     '''
-    Update_First_GoTo :
+    Play_Init :
     '''
+    global strCurrentFunc
+
+    lmbLocal.reset()
+    strCurrentFunc = "play"
     qgQuads.fillQuad(stkSingleJumps.pop())
 
 def p_Statements_Block(p):
@@ -89,46 +96,225 @@ def p_Print(p):
     strType = stkTypes.pop()
     qgQuads.addQuad(["Print", None, None, intAddress])
 
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Expression rule
 
 def p_Expression(p):
     '''
-    Expression : Term Multiple_Terms
+    Expression : Term Sum_Sub_Quad Multiple_Terms
     '''
+
+# Multiple terms auxiliar rule to handle recursivity
 
 def p_Multiple_Terms(p):
     '''
-    Multiple_Terms : PLUS_SIGN Term Multiple_Terms
-    | MINUS_SIGN Term Multiple_Terms
+    Multiple_Terms : PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
+    | MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
     | Epsilon
     '''
+
+# Neuralgic points
+
+def p_Sum_Sub_Quad(p):
+    '''
+    Sum_Sub_Quad :
+    '''
+    if len(stkOperators) > 0:
+        strOperator = stkOperators[-1]
+        # If there are pending operations of multiplication, division or mod
+        if strOperator == "+" or strOperator == "-":
+            # We start generating the quad
+
+            # First, we take out the right operand
+            intRightOperandAddress = stkOperands.pop()
+            strRightType = stkTypes.pop()
+
+            # Then, we take out the left operand
+            intLeftOperandAddress = stkOperands.pop()
+            strLeftType = stkTypes.pop()
+
+            # And we pop the operator from the stack
+            strOperator = stkOperators.pop()
+
+            # We validate that this operation is possible
+            boolValidOperation = scSemanticCube.boolExists(strLeftType, strOperator, strRightType)
+
+            if boolValidOperation:
+                # It's a valid operation, so we ask for the resultant type
+                strResultType = scSemanticCube.getType(strLeftType, strOperator, strRightType)
+
+                global strCurrentFunc
+
+                # We ask for the next available temporal address
+                if strCurrentFunc == "global":
+                    # We are in a global context
+                    intResultAddress = gmbGlobal.intNextTemporalGlobalAddress(strResultType)
+                else:
+                    # We are in a local context
+                    intResultAddress = lmbLocal.intNextTemporalLocalAddress(strResultType)
+
+                # We make the quad
+                qgQuads.addQuad([strOperator, intLeftOperandAddress, intRightOperandAddress, intResultAddress])
+
+                # We add the temporal result to the stacks
+                stkOperands.append(intResultAddress)
+                stkTypes.append(strResultType)
+
+                # We increment the temporals needed in our funcs table
+                ftFuncsTable.addTemp(strCurrentFunc)
+            else:
+                # This is not a valid operation
+                sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + strLeftType + " " + strOperator +
+                         " " + strRightType + "\nAt line " + str(p.lineno))
+
+
+def p_Push_Plus_Sign(p):
+    '''
+    Push_Plus_Sign :
+    '''
+    stkOperators.append("+")
+
+def p_Push_Minus_Sign(p):
+    '''
+    Push_Minus_Sign :
+    '''
+    stkOperators.append("-")
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Term Rule
 
 def p_Term(p):
     '''
-    Term : Factor Multiple_Factors
+    Term : Factor Mult_Div_Mod_Quad Multiple_Factors
     '''
 
+# Multiple Factors Auxiliar Rule for recursion
 def p_Multiple_Factors(p):
     '''
-    Multiple_Factors : TIMES_SIGN Factor Multiple_Factors
-    | DIVIDE_SIGN Factor Multiple_Factors
-    | MOD_SIGN Factor Multiple_Factors
+    Multiple_Factors : TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    | DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    | MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
     | Epsilon
     '''
 
+# Neuralgic Points
+
+def p_Mult_Div_Mod_Quad(p):
+    '''
+    Mult_Div_Mod_Quad :
+    '''
+    if len(stkOperators) > 0:
+        strOperator = stkOperators[-1]
+        # If there are pending operations of multiplication, division or mod
+        if strOperator == "*" or strOperator == "/" or strOperator == "%":
+            # We start generating the quad
+
+            # First, we take out the right operand
+            intRightOperandAddress = stkOperands.pop()
+            strRightType = stkTypes.pop()
+
+            # Then, we take out the left operand
+            intLeftOperandAddress = stkOperands.pop()
+            strLeftType = stkTypes.pop()
+
+            # And we pop the operator from the stack
+            strOperator = stkOperators.pop()
+
+            # We validate that this operation is possible
+            boolValidOperation = scSemanticCube.boolExists(strLeftType, strOperator, strRightType)
+
+            if boolValidOperation:
+                # It's a valid operation, so we ask for the resultant type
+                strResultType = scSemanticCube.getType(strLeftType, strOperator, strRightType)
+
+                global strCurrentFunc
+
+                # We ask for the next available temporal address
+                if strCurrentFunc == "global":
+                    # We are in a global context
+                    intResultAddress = gmbGlobal.intNextTemporalGlobalAddress(strResultType)
+                else:
+                    # We are in a local context
+                    intResultAddress = lmbLocal.intNextTemporalLocalAddress(strResultType)
+
+                # We make the quad
+                qgQuads.addQuad([strOperator, intLeftOperandAddress, intRightOperandAddress, intResultAddress])
+
+                # We add the temporal result to the stacks
+                stkOperands.append(intResultAddress)
+                stkTypes.append(strResultType)
+
+                # We increment the temporals needed in our funcs table
+                ftFuncsTable.addTemp(strCurrentFunc)
+            else:
+                # This is not a valid operation
+                sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + strLeftType + " " + strOperator +
+                         " " + strRightType + "\nAt line " + str(p.lineno))
+
+
+
+def p_Push_Times_Sign(p):
+    '''
+    Push_Times_Sign :
+    '''
+    stkOperators.append("*")
+
+def p_Push_Divide_Sign(p):
+    '''
+    Push_Divide_Sign :
+    '''
+    stkOperators.append("/")
+
+def p_Push_Mod_Sign(p):
+    '''
+    Push_Mod_Sign :
+    '''
+    stkOperators.append("%")
+
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Factor Rule
+
 def p_Factor(p):
     '''
-    Factor : PAR_OPEN Expression PAR_CLOSE
+    Factor : PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
     | Var_Cte
     '''
 
+# Neuralgic Points
+
+def p_Push_False_Bottom(p):
+    '''
+    Push_False_Bottom :
+    '''
+    stkOperators.append("(")
+
+def p_Pop_False_Bottom(p):
+    '''
+    Pop_False_Bottom :
+    '''
+    stkOperators.pop()
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Vars and Constants Rule
 
 def p_Var_Cte(p):
     '''
     Var_Cte : INT_CONST Save_Int_Const
+    | MINUS_SIGN INT_CONST Save_Neg_Int_Const
     | FLOAT_CONST Save_Float_Const
+    | MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
     | BOOL_CONST Save_Bool_Const
     | STRING_CONST Save_String_Const
     '''
+
+# Neuralgic Points
 
 def p_Save_Int_Const(p):
     '''
@@ -144,7 +330,26 @@ def p_Save_Int_Const(p):
         gmbGlobal.setValue(intAddress, p[-1])
 
         # Then we save that constant at the Funcs Directory
-        ftFuncsTable.table["global"]["constTable"].addConstant(p[-1], "Int", intAddress)
+        ftFuncsTable.addConstant(p[-1], "Int", intAddress)
+
+    stkOperands.append(intAddress)
+    stkTypes.append("Int")
+
+def p_Save_Neg_Int_Const(p):
+    '''
+    Save_Neg_Int_Const :
+    '''
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(-p[-1]):
+        # This constant already has an address
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(-p[-1])["address"]
+
+    else:
+        # We save constant at Global Memory
+        intAddress = gmbGlobal.intNextConstantGlobalAddress("Int")
+        gmbGlobal.setValue(intAddress, -p[-1])
+
+        # Then we save that constant at the Funcs Directory
+        ftFuncsTable.addConstant(-p[-1], "Int", intAddress)
 
     stkOperands.append(intAddress)
     stkTypes.append("Int")
@@ -163,7 +368,26 @@ def p_Save_Float_Const(p):
         gmbGlobal.setValue(intAddress, p[-1])
 
         # Then we save that constant at the Funcs Directory
-        ftFuncsTable.table["global"]["constTable"].addConstant(p[-1], "Float", intAddress)
+        ftFuncsTable.addConstant(p[-1], "Float", intAddress)
+
+    stkOperands.append(intAddress)
+    stkTypes.append("Float")
+
+def p_Save_Neg_Float_Const(p):
+    '''
+    Save_Neg_Float_Const :
+    '''
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(-p[-1]):
+        # This constant already has an address
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(-p[-1])["address"]
+
+    else:
+        # We save constant at Global Memory
+        intAddress = gmbGlobal.intNextConstantGlobalAddress("Float")
+        gmbGlobal.setValue(intAddress, -p[-1])
+
+        # Then we save that constant at the Funcs Directory
+        ftFuncsTable.addConstant(-p[-1], "Float", intAddress)
 
     stkOperands.append(intAddress)
     stkTypes.append("Float")
@@ -182,7 +406,7 @@ def p_Save_Bool_Const(p):
         gmbGlobal.setValue(intAddress, p[-1])
 
         # Then we save that constant at the Funcs Directory
-        ftFuncsTable.table["global"]["constTable"].addConstant(p[-1], "Bool", intAddress)
+        ftFuncsTable.addConstant(p[-1], "Bool", intAddress)
 
     stkOperands.append(intAddress)
     stkTypes.append("Bool")
@@ -201,10 +425,12 @@ def p_Save_String_Const(p):
         gmbGlobal.setValue(intAddress, p[-1])
 
         # Then we save that constant at the Funcs Directory
-        ftFuncsTable.table["global"]["constTable"].addConstant(p[-1], "String", intAddress)
+        ftFuncsTable.addConstant(p[-1], "String", intAddress)
 
     stkOperands.append(intAddress)
     stkTypes.append("String")
+
+# ----------------------------------------------------------------------------------------------------------------------
 
 # Represents an empty rule
 def p_Epsilon(p):
@@ -213,22 +439,30 @@ def p_Epsilon(p):
     '''
     pass
 
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Errors
 
 def p_error(p):
     sys.exit("Syntax Error near " + str(p.value) + " at line " + str(p.lineno))
 
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
+# MAIN PROGRAM
 
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Prototypes/print_const.obi', 'r') as fileObiFile:
+with open('../Prototypes/print_arithmetics.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 parser.parse(obiCode, tracking=True)
 
-#qgQuads.printQuads()
+# We can print the Quads generated by the code.
+qgQuads.printQuads()
 #print(qgQuads.getQuads())
 
-obiMachine = ObiMachine(qgQuads.getQuads(), gmbGlobal, ftFuncsTable)
-obiMachine.execute()
+# We start the machine and execute it
+#obiMachine = ObiMachine(qgQuads.getQuads(), gmbGlobal, ftFuncsTable)
+#obiMachine.execute()

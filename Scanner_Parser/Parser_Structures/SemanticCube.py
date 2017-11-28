@@ -28,7 +28,7 @@ class SemanticCube:
             ("Int", "+", "Int") : "Int",
             ("Int", "-", "Int"): "Int",
             ("Int", "*", "Int"): "Int",
-            ("Int", "/", "Int"): "Float",
+            ("Int", "/", "Int"): "Int",
             ("Int", "%", "Int"): "Int",
 
             # Int vs Float

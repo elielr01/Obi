@@ -105,7 +105,14 @@ class MemorySegment:
     def intGetRealSize(self):
         return len(self.dictintInts) + len(self.dictftsFloats) + len(self.dictboolBools) + len(self.dictstrStrings)
 
+    # Resets all the pointers of the segment (This is used when a new local context is created)
+    def resetPointers(self):
+        self.intIntsPointer = self.intIntsDirBase
+        self.intFloatsPointer = self.intFloatsDirBase
+        self.intBoolsPointer = self.intBoolsDirBase
+        self.intStrsPointer = self.intStrsDirBase
 
+    # Prints all the memory of a segment
     def printSegment(self):
 
         print("-----------------------------")

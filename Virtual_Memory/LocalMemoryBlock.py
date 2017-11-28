@@ -87,3 +87,8 @@ class LocalMemoryBlock:
             self.msTemporalLocal.setValue(intAddress, obiValue)
         else:
             sys.exit("Exit with error: Trying to accessing an address out of context while setting value at Local Memory Block")
+
+    # Resets the pointers when a new local context is created
+    def reset(self):
+        self.msLocal.resetPointers()
+        self.msTemporalLocal.resetPointers()

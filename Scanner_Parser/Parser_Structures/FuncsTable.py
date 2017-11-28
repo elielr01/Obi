@@ -39,21 +39,40 @@ class FuncsTable:
                 "size" : 0,
                 "params" : [],
                 "varsTable" : VarsTable(),
-                "constTable" : VarsTable() # This is unique for this record
+                "constTable" : VarsTable(), # This is unique for this record
+                "numTemps" : 0
             },
 
             "play" : {
                 "size" : 0,
                 "params" : [],
-                "varsTable" : VarsTable()
+                "varsTable" : VarsTable(),
+                "numTemps" : 0
             }
         }
 
     # Adds a new empty function to the table
     def newFunc(self, strName):
 
+        if strName in self.table:
+            sys.exit("Exit with error: Syntax Error. There's a function already named '" + strName + "'")
+
         self.table[strName] = {
             "size" : 0,
             "params" : [],
-            "varsTable" : VarsTable()
+            "varsTable" : VarsTable(),
+            "numTemps" : 0
         }
+
+    # Adds a new constant to the ConstTable
+    def addConstant(self, constKey, strType, intAddress):
+        self.table["global"]["constTable"].addConstant(constKey, strType, intAddress)
+        self.table["global"]["size"] += 1
+
+    # Increments the number of temporals needed at a function. It doesn't save the temporals, because it's not needed
+    def addTemp(self, funcName):
+        if funcName in self.table:
+            self.table[funcName]["numTemps"] +=1
+            self.table[funcName]["size"] += 1
+        else:
+            sys.exit("Exit with error: Trying to sum a temporal var to a nonexistent function")
