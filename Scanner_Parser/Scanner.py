@@ -146,7 +146,8 @@ def t_BOOL_CONST(t):
 
 def t_STRING_CONST(t):
     r"\".*\""
-    t.value = str(t.value)
+
+    t.value = str(t.value)[1:-1]
     return t
 
 def t_ID(t):
@@ -161,7 +162,7 @@ def t_error(t):
 
 scanner = lex.lex()
 
-with open('../Tests/print_arithmetics.obi', 'r') as fileObiFile:
+with open('../Tests/print_logicals.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 

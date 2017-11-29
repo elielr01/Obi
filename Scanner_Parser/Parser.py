@@ -90,11 +90,236 @@ def p_Statement(p):
 
 def p_Print(p):
     '''
-    Print : PRINT PAR_OPEN Relational PAR_CLOSE SEMICOLON
+    Print : PRINT PAR_OPEN Logical_Or PAR_CLOSE SEMICOLON
     '''
     intAddress = stkOperands.pop()
     strType = stkTypes.pop()
     qgQuads.addQuad(["Print", None, None, intAddress])
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Logical Or rule
+
+def p_Logical_Or(p):
+    '''
+    Logical_Or : Logical_And Or_Quad Multiple_Ands
+    '''
+
+# Multiple Or axiliary rule for chaining Or's
+
+def p_Multiple_Ands(p):
+    '''
+    Multiple_Ands : OR Push_Or Logical_And Or_Quad Multiple_Ands
+    | Epsilon
+    '''
+
+# Neuralgic Points
+
+def p_Or_Quad(p):
+    '''
+    Or_Quad :
+    '''
+    if len(stkOperators) > 0:
+        strOperator = stkOperators[-1]
+        # If there are pending operations of multiplication, division or mod
+        if strOperator == "or":
+            # We start generating the quad
+
+            # First, we take out the right operand
+            intRightOperandAddress = stkOperands.pop()
+            strRightType = stkTypes.pop()
+
+            # Then, we take out the left operand
+            intLeftOperandAddress = stkOperands.pop()
+            strLeftType = stkTypes.pop()
+
+            # And we pop the operator from the stack
+            strOperator = stkOperators.pop()
+
+            # We validate that this operation is possible
+            boolValidOperation = scSemanticCube.boolExists(strLeftType, strOperator, strRightType)
+
+            if boolValidOperation:
+                # It's a valid operation, so we ask for the resultant type
+                strResultType = scSemanticCube.getType(strLeftType, strOperator, strRightType)
+
+                global strCurrentFunc
+
+                # We ask for the next available temporal address
+                if strCurrentFunc == "global":
+                    # We are in a global context
+                    intResultAddress = gmbGlobal.intNextTemporalGlobalAddress(strResultType)
+                else:
+                    # We are in a local context
+                    intResultAddress = lmbLocal.intNextTemporalLocalAddress(strResultType)
+
+                # We make the quad
+                qgQuads.addQuad([strOperator, intLeftOperandAddress, intRightOperandAddress, intResultAddress])
+
+                # We add the temporal result to the stacks
+                stkOperands.append(intResultAddress)
+                stkTypes.append(strResultType)
+
+                # We increment the temporals needed in our funcs table
+                ftFuncsTable.addTemp(strCurrentFunc)
+            else:
+                # This is not a valid operation
+                sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + strLeftType + " " + strOperator +
+                         " " + strRightType + "\nAt line " + str(p.lineno))
+
+def p_Push_Or(p):
+    '''
+    Push_Or :
+    '''
+    stkOperators.append("or")
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Logical And rule
+
+def p_Logical_And(p):
+    '''
+    Logical_And : Logical_Not And_Quad Multiple_Nots
+    '''
+
+# Multiple And auxiliary rule for chaining And's
+
+def p_Multiple_Nots(p):
+    '''
+    Multiple_Nots : AND Push_And Logical_Not And_Quad Multiple_Nots
+    | Epsilon
+    '''
+
+# Neuralgic Points
+
+def p_And_Quad(p):
+    '''
+    And_Quad :
+    '''
+    if len(stkOperators) > 0:
+        strOperator = stkOperators[-1]
+        # If there are pending operations of multiplication, division or mod
+        if strOperator == "and":
+            # We start generating the quad
+
+            # First, we take out the right operand
+            intRightOperandAddress = stkOperands.pop()
+            strRightType = stkTypes.pop()
+
+            # Then, we take out the left operand
+            intLeftOperandAddress = stkOperands.pop()
+            strLeftType = stkTypes.pop()
+
+            # And we pop the operator from the stack
+            strOperator = stkOperators.pop()
+
+            # We validate that this operation is possible
+            boolValidOperation = scSemanticCube.boolExists(strLeftType, strOperator, strRightType)
+
+            if boolValidOperation:
+                # It's a valid operation, so we ask for the resultant type
+                strResultType = scSemanticCube.getType(strLeftType, strOperator, strRightType)
+
+                global strCurrentFunc
+
+                # We ask for the next available temporal address
+                if strCurrentFunc == "global":
+                    # We are in a global context
+                    intResultAddress = gmbGlobal.intNextTemporalGlobalAddress(strResultType)
+                else:
+                    # We are in a local context
+                    intResultAddress = lmbLocal.intNextTemporalLocalAddress(strResultType)
+
+                # We make the quad
+                qgQuads.addQuad([strOperator, intLeftOperandAddress, intRightOperandAddress, intResultAddress])
+
+                # We add the temporal result to the stacks
+                stkOperands.append(intResultAddress)
+                stkTypes.append(strResultType)
+
+                # We increment the temporals needed in our funcs table
+                ftFuncsTable.addTemp(strCurrentFunc)
+            else:
+                # This is not a valid operation
+                sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + strLeftType + " " + strOperator +
+                         " " + strRightType + "\nAt line " + str(p.lineno))
+
+
+def p_Push_And(p):
+    '''
+    Push_And :
+    '''
+    stkOperators.append("and")
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Logical Not rule
+
+def p_Logical_Not(p):
+    '''
+    Logical_Not : Relational
+    | NOT Push_Not Relational Not_Quad
+    '''
+
+# Neuralgic points
+
+def p_Not_Quad(p):
+    '''
+    Not_Quad :
+    '''
+    if len(stkOperators) > 0:
+        strOperator = stkOperators[-1]
+        # If there are pending operations of multiplication, division or mod
+        if strOperator == "not":
+            # We start generating the quad
+
+            # First, we take out the right operand
+            intRightOperandAddress = stkOperands.pop()
+            strRightType = stkTypes.pop()
+
+            # There is no left opperand
+            intLeftOperandAddress = None
+            strLeftType = None
+
+            # And we pop the operator from the stack
+            strOperator = stkOperators.pop()
+
+            # We validate that this operation is possible
+            boolValidOperation = scSemanticCube.boolExists(strLeftType, strOperator, strRightType)
+
+            if boolValidOperation:
+                # It's a valid operation, so we ask for the resultant type
+                strResultType = scSemanticCube.getType(strLeftType, strOperator, strRightType)
+
+                global strCurrentFunc
+
+                # We ask for the next available temporal address
+                if strCurrentFunc == "global":
+                    # We are in a global context
+                    intResultAddress = gmbGlobal.intNextTemporalGlobalAddress(strResultType)
+                else:
+                    # We are in a local context
+                    intResultAddress = lmbLocal.intNextTemporalLocalAddress(strResultType)
+
+                # We make the quad
+                qgQuads.addQuad([strOperator, intLeftOperandAddress, intRightOperandAddress, intResultAddress])
+
+                # We add the temporal result to the stacks
+                stkOperands.append(intResultAddress)
+                stkTypes.append(strResultType)
+
+                # We increment the temporals needed in our funcs table
+                ftFuncsTable.addTemp(strCurrentFunc)
+            else:
+                # This is not a valid operation
+                sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + str(strLeftType) + " " + strOperator +
+                         " " + strRightType + "\nAt line " + str(p.lineno))
+
+def p_Push_Not(p):
+    '''
+    Push_Not :
+    '''
+    stkOperators.append("not")
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -373,7 +598,7 @@ def p_Push_Mod_Sign(p):
 
 def p_Factor(p):
     '''
-    Factor : PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
+    Factor : PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
     | Var_Cte
     '''
 
@@ -412,9 +637,9 @@ def p_Save_Int_Const(p):
     '''
     Save_Int_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1]):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1], "Int"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1])["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1], "Int")["address"]
 
     else:
         # We save constant at Global Memory
@@ -431,9 +656,9 @@ def p_Save_Neg_Int_Const(p):
     '''
     Save_Neg_Int_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(-p[-1]):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(-p[-1], "Int"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(-p[-1])["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(-p[-1], "Int")["address"]
 
     else:
         # We save constant at Global Memory
@@ -450,9 +675,9 @@ def p_Save_Float_Const(p):
     '''
     Save_Float_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1]):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1], "Float"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1])["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1], "Float")["address"]
 
     else:
         # We save constant at Global Memory
@@ -469,9 +694,9 @@ def p_Save_Neg_Float_Const(p):
     '''
     Save_Neg_Float_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(-p[-1]):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(-p[-1], "Float"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(-p[-1])["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(-p[-1], "Float")["address"]
 
     else:
         # We save constant at Global Memory
@@ -488,9 +713,9 @@ def p_Save_Bool_Const(p):
     '''
     Save_Bool_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1]):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1], "Bool"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1])["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1], "Bool")["address"]
 
     else:
         # We save constant at Global Memory
@@ -507,9 +732,9 @@ def p_Save_String_Const(p):
     '''
     Save_String_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1]):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1], "String"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1])["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1], "String")["address"]
 
     else:
         # We save constant at Global Memory
@@ -546,13 +771,13 @@ def p_error(p):
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Tests/print_relational.obi', 'r') as fileObiFile:
+with open('../Tests/print_logicals.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 parser.parse(obiCode, tracking=True)
 
 # We can print the Quads generated by the code.
-#qgQuads.printQuads()
+qgQuads.printQuads()
 
 # We start the machine and execute it
 obiMachine = ObiMachine(qgQuads.getQuads(), gmbGlobal, ftFuncsTable).execute()

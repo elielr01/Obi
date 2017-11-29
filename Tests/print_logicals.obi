@@ -1,0 +1,62 @@
+#-
+    Obi code for testing use case "print logicals"
+
+    Author: Eli Linares
+    ID: A00815654
+    Date: Nov 28, 2017
+-#
+
+play(){
+
+    #-
+    # Printing bool constants
+    print(true);
+    print(false);
+
+    # Printing logical nots
+    print(not true);
+    print(not false);
+
+    print(not(true));
+    print(not(false));
+
+    print(not 5 < 10);
+    -#
+
+    #-
+    # Printing logical ands
+    print( true and true );
+    print( true and false);
+    print( false and true);
+    print( false and false);
+
+    print("");
+
+    print(true and true and false);
+    print(false and true and false);
+    print(false and false and true);
+
+    print(5 < 10 and 50 >= 10 and not (not (2 + 3 <= 1 * 5)));
+    -#
+
+    #-
+    # Printing logical ors
+    print(true or true);
+    print(true or false);
+    print(false or true);
+    print(false or false);
+
+
+    print(true or true or false);
+    print(false or false or false);
+    print(false or false or true);
+    -#
+
+    print((5 + 3 <= 10) or (3 * 3 < 0) and true);
+    #print(true and false or true);
+
+
+
+
+
+}

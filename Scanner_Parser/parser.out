@@ -38,12 +38,9 @@ Unused terminals:
     BLUE
     INT
     FLOAT
-    AND
     BOOL
-    NOT
     BLACK
     CIRCLE
-    OR
 
 Grammar
 
@@ -55,60 +52,74 @@ Rule 4     Statements_Block -> CURLYB_OPEN Multiple_Statements CURLYB_CLOSE
 Rule 5     Multiple_Statements -> Statement Multiple_Statements
 Rule 6     Multiple_Statements -> Epsilon
 Rule 7     Statement -> Print
-Rule 8     Print -> PRINT PAR_OPEN Relational PAR_CLOSE SEMICOLON
-Rule 9     Relational -> Expression
-Rule 10    Relational -> Expression LESS Push_Less Expression Relational_Quad
-Rule 11    Relational -> Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad
-Rule 12    Relational -> Expression GREATER Push_Greater Expression Relational_Quad
-Rule 13    Relational -> Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad
-Rule 14    Relational_Quad -> <empty>
-Rule 15    Push_Less -> <empty>
-Rule 16    Push_Less_Equal -> <empty>
-Rule 17    Push_Greater -> <empty>
-Rule 18    Push_Greater_Equal -> <empty>
-Rule 19    Expression -> Term Sum_Sub_Quad Multiple_Terms
-Rule 20    Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
-Rule 21    Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
-Rule 22    Multiple_Terms -> Epsilon
-Rule 23    Sum_Sub_Quad -> <empty>
-Rule 24    Push_Plus_Sign -> <empty>
-Rule 25    Push_Minus_Sign -> <empty>
-Rule 26    Term -> Factor Mult_Div_Mod_Quad Multiple_Factors
-Rule 27    Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-Rule 28    Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-Rule 29    Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-Rule 30    Multiple_Factors -> Epsilon
-Rule 31    Mult_Div_Mod_Quad -> <empty>
-Rule 32    Push_Times_Sign -> <empty>
-Rule 33    Push_Divide_Sign -> <empty>
-Rule 34    Push_Mod_Sign -> <empty>
-Rule 35    Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-Rule 36    Factor -> Var_Cte
-Rule 37    Push_False_Bottom -> <empty>
-Rule 38    Pop_False_Bottom -> <empty>
-Rule 39    Var_Cte -> INT_CONST Save_Int_Const
-Rule 40    Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const
-Rule 41    Var_Cte -> FLOAT_CONST Save_Float_Const
-Rule 42    Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-Rule 43    Var_Cte -> BOOL_CONST Save_Bool_Const
-Rule 44    Var_Cte -> STRING_CONST Save_String_Const
-Rule 45    Save_Int_Const -> <empty>
-Rule 46    Save_Neg_Int_Const -> <empty>
-Rule 47    Save_Float_Const -> <empty>
-Rule 48    Save_Neg_Float_Const -> <empty>
-Rule 49    Save_Bool_Const -> <empty>
-Rule 50    Save_String_Const -> <empty>
-Rule 51    Epsilon -> <empty>
+Rule 8     Print -> PRINT PAR_OPEN Logical_Or PAR_CLOSE SEMICOLON
+Rule 9     Logical_Or -> Logical_And Or_Quad Multiple_Ands
+Rule 10    Multiple_Ands -> OR Push_Or Logical_And Or_Quad Multiple_Ands
+Rule 11    Multiple_Ands -> Epsilon
+Rule 12    Or_Quad -> <empty>
+Rule 13    Push_Or -> <empty>
+Rule 14    Logical_And -> Logical_Not And_Quad Multiple_Nots
+Rule 15    Multiple_Nots -> AND Push_And Logical_Not And_Quad Multiple_Nots
+Rule 16    Multiple_Nots -> Epsilon
+Rule 17    And_Quad -> <empty>
+Rule 18    Push_And -> <empty>
+Rule 19    Logical_Not -> Relational
+Rule 20    Logical_Not -> NOT Push_Not Relational Not_Quad
+Rule 21    Not_Quad -> <empty>
+Rule 22    Push_Not -> <empty>
+Rule 23    Relational -> Expression
+Rule 24    Relational -> Expression LESS Push_Less Expression Relational_Quad
+Rule 25    Relational -> Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad
+Rule 26    Relational -> Expression GREATER Push_Greater Expression Relational_Quad
+Rule 27    Relational -> Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad
+Rule 28    Relational_Quad -> <empty>
+Rule 29    Push_Less -> <empty>
+Rule 30    Push_Less_Equal -> <empty>
+Rule 31    Push_Greater -> <empty>
+Rule 32    Push_Greater_Equal -> <empty>
+Rule 33    Expression -> Term Sum_Sub_Quad Multiple_Terms
+Rule 34    Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
+Rule 35    Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
+Rule 36    Multiple_Terms -> Epsilon
+Rule 37    Sum_Sub_Quad -> <empty>
+Rule 38    Push_Plus_Sign -> <empty>
+Rule 39    Push_Minus_Sign -> <empty>
+Rule 40    Term -> Factor Mult_Div_Mod_Quad Multiple_Factors
+Rule 41    Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+Rule 42    Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+Rule 43    Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+Rule 44    Multiple_Factors -> Epsilon
+Rule 45    Mult_Div_Mod_Quad -> <empty>
+Rule 46    Push_Times_Sign -> <empty>
+Rule 47    Push_Divide_Sign -> <empty>
+Rule 48    Push_Mod_Sign -> <empty>
+Rule 49    Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+Rule 50    Factor -> Var_Cte
+Rule 51    Push_False_Bottom -> <empty>
+Rule 52    Pop_False_Bottom -> <empty>
+Rule 53    Var_Cte -> INT_CONST Save_Int_Const
+Rule 54    Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const
+Rule 55    Var_Cte -> FLOAT_CONST Save_Float_Const
+Rule 56    Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+Rule 57    Var_Cte -> BOOL_CONST Save_Bool_Const
+Rule 58    Var_Cte -> STRING_CONST Save_String_Const
+Rule 59    Save_Int_Const -> <empty>
+Rule 60    Save_Neg_Int_Const -> <empty>
+Rule 61    Save_Float_Const -> <empty>
+Rule 62    Save_Neg_Float_Const -> <empty>
+Rule 63    Save_Bool_Const -> <empty>
+Rule 64    Save_String_Const -> <empty>
+Rule 65    Epsilon -> <empty>
 
 Terminals, with rules where they appear
 
-AND                  : 
+AND                  : 15
 ASSIGN               : 
 BLACK                : 
 BLOCK_COMMENT        : 
 BLUE                 : 
 BOOL                 : 
-BOOL_CONST           : 43
+BOOL_CONST           : 57
 CIRCLE               : 
 COMMA                : 
 COMMENT              : 
@@ -116,37 +127,37 @@ CURLYB_CLOSE         : 4
 CURLYB_OPEN          : 4
 CYAN                 : 
 DIFF                 : 
-DIVIDE_SIGN          : 28
+DIVIDE_SIGN          : 42
 DRAW                 : 
 EIF                  : 
 ELSE                 : 
 EQUAL                : 
 FLOAT                : 
-FLOAT_CONST          : 41 42
+FLOAT_CONST          : 55 56
 FUNC                 : 
 GRAY                 : 
-GREATER              : 12
-GREATER_EQUAL        : 13
+GREATER              : 26
+GREATER_EQUAL        : 27
 GREEN                : 
 ID                   : 
 IF                   : 
 INPUT                : 
 INT                  : 
-INT_CONST            : 39 40
-LESS                 : 10
-LESS_EQUAL           : 11
+INT_CONST            : 53 54
+LESS                 : 24
+LESS_EQUAL           : 25
 LINE                 : 
 MAGENTA              : 
-MINUS_SIGN           : 21 40 42
-MOD_SIGN             : 29
-NOT                  : 
-OR                   : 
+MINUS_SIGN           : 35 54 56
+MOD_SIGN             : 43
+NOT                  : 20
+OR                   : 10
 ORANGE               : 
-PAR_CLOSE            : 2 8 35
-PAR_OPEN             : 2 8 35
+PAR_CLOSE            : 2 8 49
+PAR_OPEN             : 2 8 49
 PINK                 : 
 PLAY                 : 2
-PLUS_SIGN            : 20
+PLUS_SIGN            : 34
 POINT                : 
 POLYGON              : 
 PRINT                : 8
@@ -158,8 +169,8 @@ SQRB_CLOSE           :
 SQRB_OPEN            : 
 SQUARE               : 
 STRING               : 
-STRING_CONST         : 44
-TIMES_SIGN           : 27
+STRING_CONST         : 58
+TIMES_SIGN           : 41
 TRIANGLE             : 
 WHILE                : 
 WHITE                : 
@@ -168,41 +179,52 @@ error                :
 
 Nonterminals, with rules where they appear
 
-Epsilon              : 6 22 30
-Expression           : 9 10 10 11 11 12 12 13 13 35
-Factor               : 26 27 28 29
-Mult_Div_Mod_Quad    : 26 27 28 29
-Multiple_Factors     : 26 27 28 29
+And_Quad             : 14 15
+Epsilon              : 6 11 16 36 44
+Expression           : 23 24 24 25 25 26 26 27 27
+Factor               : 40 41 42 43
+Logical_And          : 9 10
+Logical_Not          : 14 15
+Logical_Or           : 8 49
+Mult_Div_Mod_Quad    : 40 41 42 43
+Multiple_Ands        : 9 10
+Multiple_Factors     : 40 41 42 43
+Multiple_Nots        : 14 15
 Multiple_Statements  : 4 5
-Multiple_Terms       : 19 20 21
+Multiple_Terms       : 33 34 35
+Not_Quad             : 20
 Obi                  : 0
+Or_Quad              : 9 10
 Play                 : 1
 Play_Init            : 2
-Pop_False_Bottom     : 35
+Pop_False_Bottom     : 49
 Print                : 7
-Push_Divide_Sign     : 28
-Push_False_Bottom    : 35
-Push_Greater         : 12
-Push_Greater_Equal   : 13
-Push_Less            : 10
-Push_Less_Equal      : 11
-Push_Minus_Sign      : 21
-Push_Mod_Sign        : 29
-Push_Plus_Sign       : 20
-Push_Times_Sign      : 27
-Relational           : 8
-Relational_Quad      : 10 11 12 13
-Save_Bool_Const      : 43
-Save_Float_Const     : 41
-Save_Int_Const       : 39
-Save_Neg_Float_Const : 42
-Save_Neg_Int_Const   : 40
-Save_String_Const    : 44
+Push_And             : 15
+Push_Divide_Sign     : 42
+Push_False_Bottom    : 49
+Push_Greater         : 26
+Push_Greater_Equal   : 27
+Push_Less            : 24
+Push_Less_Equal      : 25
+Push_Minus_Sign      : 35
+Push_Mod_Sign        : 43
+Push_Not             : 20
+Push_Or              : 10
+Push_Plus_Sign       : 34
+Push_Times_Sign      : 41
+Relational           : 19 20
+Relational_Quad      : 24 25 26 27
+Save_Bool_Const      : 57
+Save_Float_Const     : 55
+Save_Int_Const       : 53
+Save_Neg_Float_Const : 56
+Save_Neg_Int_Const   : 54
+Save_String_Const    : 58
 Statement            : 5
 Statements_Block     : 2
-Sum_Sub_Quad         : 19 20 21
-Term                 : 19 20 21
-Var_Cte              : 36
+Sum_Sub_Quad         : 33 34 35
+Term                 : 33 34 35
+Var_Cte              : 50
 
 Parsing method: LALR
 
@@ -275,10 +297,10 @@ state 8
     (5) Multiple_Statements -> . Statement Multiple_Statements
     (6) Multiple_Statements -> . Epsilon
     (7) Statement -> . Print
-    (51) Epsilon -> .
-    (8) Print -> . PRINT PAR_OPEN Relational PAR_CLOSE SEMICOLON
+    (65) Epsilon -> .
+    (8) Print -> . PRINT PAR_OPEN Logical_Or PAR_CLOSE SEMICOLON
 
-    CURLYB_CLOSE    reduce using rule 51 (Epsilon -> .)
+    CURLYB_CLOSE    reduce using rule 65 (Epsilon -> .)
     PRINT           shift and go to state 11
 
     Print                          shift and go to state 13
@@ -302,7 +324,7 @@ state 10
 
 state 11
 
-    (8) Print -> PRINT . PAR_OPEN Relational PAR_CLOSE SEMICOLON
+    (8) Print -> PRINT . PAR_OPEN Logical_Or PAR_CLOSE SEMICOLON
 
     PAR_OPEN        shift and go to state 15
 
@@ -313,10 +335,10 @@ state 12
     (5) Multiple_Statements -> . Statement Multiple_Statements
     (6) Multiple_Statements -> . Epsilon
     (7) Statement -> . Print
-    (51) Epsilon -> .
-    (8) Print -> . PRINT PAR_OPEN Relational PAR_CLOSE SEMICOLON
+    (65) Epsilon -> .
+    (8) Print -> . PRINT PAR_OPEN Logical_Or PAR_CLOSE SEMICOLON
 
-    CURLYB_CLOSE    reduce using rule 51 (Epsilon -> .)
+    CURLYB_CLOSE    reduce using rule 65 (Epsilon -> .)
     PRINT           shift and go to state 11
 
     Print                          shift and go to state 13
@@ -341,35 +363,43 @@ state 14
 
 state 15
 
-    (8) Print -> PRINT PAR_OPEN . Relational PAR_CLOSE SEMICOLON
-    (9) Relational -> . Expression
-    (10) Relational -> . Expression LESS Push_Less Expression Relational_Quad
-    (11) Relational -> . Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad
-    (12) Relational -> . Expression GREATER Push_Greater Expression Relational_Quad
-    (13) Relational -> . Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad
-    (19) Expression -> . Term Sum_Sub_Quad Multiple_Terms
-    (26) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (8) Print -> PRINT PAR_OPEN . Logical_Or PAR_CLOSE SEMICOLON
+    (9) Logical_Or -> . Logical_And Or_Quad Multiple_Ands
+    (14) Logical_And -> . Logical_Not And_Quad Multiple_Nots
+    (19) Logical_Not -> . Relational
+    (20) Logical_Not -> . NOT Push_Not Relational Not_Quad
+    (23) Relational -> . Expression
+    (24) Relational -> . Expression LESS Push_Less Expression Relational_Quad
+    (25) Relational -> . Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad
+    (26) Relational -> . Expression GREATER Push_Greater Expression Relational_Quad
+    (27) Relational -> . Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad
+    (33) Expression -> . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
+    NOT             shift and go to state 31
     PAR_OPEN        shift and go to state 17
     INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
+    MINUS_SIGN      shift and go to state 30
     FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
+    BOOL_CONST      shift and go to state 24
     STRING_CONST    shift and go to state 21
 
     Factor                         shift and go to state 19
     Relational                     shift and go to state 20
-    Term                           shift and go to state 24
-    Var_Cte                        shift and go to state 25
-    Expression                     shift and go to state 26
+    Logical_Not                    shift and go to state 23
+    Term                           shift and go to state 25
+    Var_Cte                        shift and go to state 26
+    Logical_Or                     shift and go to state 27
+    Logical_And                    shift and go to state 28
+    Expression                     shift and go to state 29
 
 state 16
 
@@ -380,1130 +410,1559 @@ state 16
 
 state 17
 
-    (35) Factor -> PAR_OPEN . Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (37) Push_False_Bottom -> .
+    (49) Factor -> PAR_OPEN . Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (51) Push_False_Bottom -> .
 
-    PAR_OPEN        reduce using rule 37 (Push_False_Bottom -> .)
-    INT_CONST       reduce using rule 37 (Push_False_Bottom -> .)
-    MINUS_SIGN      reduce using rule 37 (Push_False_Bottom -> .)
-    FLOAT_CONST     reduce using rule 37 (Push_False_Bottom -> .)
-    BOOL_CONST      reduce using rule 37 (Push_False_Bottom -> .)
-    STRING_CONST    reduce using rule 37 (Push_False_Bottom -> .)
+    NOT             reduce using rule 51 (Push_False_Bottom -> .)
+    PAR_OPEN        reduce using rule 51 (Push_False_Bottom -> .)
+    INT_CONST       reduce using rule 51 (Push_False_Bottom -> .)
+    MINUS_SIGN      reduce using rule 51 (Push_False_Bottom -> .)
+    FLOAT_CONST     reduce using rule 51 (Push_False_Bottom -> .)
+    BOOL_CONST      reduce using rule 51 (Push_False_Bottom -> .)
+    STRING_CONST    reduce using rule 51 (Push_False_Bottom -> .)
 
-    Push_False_Bottom              shift and go to state 28
+    Push_False_Bottom              shift and go to state 32
 
 state 18
 
-    (41) Var_Cte -> FLOAT_CONST . Save_Float_Const
-    (47) Save_Float_Const -> .
+    (55) Var_Cte -> FLOAT_CONST . Save_Float_Const
+    (61) Save_Float_Const -> .
 
-    TIMES_SIGN      reduce using rule 47 (Save_Float_Const -> .)
-    DIVIDE_SIGN     reduce using rule 47 (Save_Float_Const -> .)
-    MOD_SIGN        reduce using rule 47 (Save_Float_Const -> .)
-    PLUS_SIGN       reduce using rule 47 (Save_Float_Const -> .)
-    MINUS_SIGN      reduce using rule 47 (Save_Float_Const -> .)
-    LESS            reduce using rule 47 (Save_Float_Const -> .)
-    LESS_EQUAL      reduce using rule 47 (Save_Float_Const -> .)
-    GREATER         reduce using rule 47 (Save_Float_Const -> .)
-    GREATER_EQUAL   reduce using rule 47 (Save_Float_Const -> .)
-    PAR_CLOSE       reduce using rule 47 (Save_Float_Const -> .)
+    TIMES_SIGN      reduce using rule 61 (Save_Float_Const -> .)
+    DIVIDE_SIGN     reduce using rule 61 (Save_Float_Const -> .)
+    MOD_SIGN        reduce using rule 61 (Save_Float_Const -> .)
+    PLUS_SIGN       reduce using rule 61 (Save_Float_Const -> .)
+    MINUS_SIGN      reduce using rule 61 (Save_Float_Const -> .)
+    LESS            reduce using rule 61 (Save_Float_Const -> .)
+    LESS_EQUAL      reduce using rule 61 (Save_Float_Const -> .)
+    GREATER         reduce using rule 61 (Save_Float_Const -> .)
+    GREATER_EQUAL   reduce using rule 61 (Save_Float_Const -> .)
+    AND             reduce using rule 61 (Save_Float_Const -> .)
+    OR              reduce using rule 61 (Save_Float_Const -> .)
+    PAR_CLOSE       reduce using rule 61 (Save_Float_Const -> .)
 
-    Save_Float_Const               shift and go to state 29
+    Save_Float_Const               shift and go to state 33
 
 state 19
 
-    (26) Term -> Factor . Mult_Div_Mod_Quad Multiple_Factors
-    (31) Mult_Div_Mod_Quad -> .
+    (40) Term -> Factor . Mult_Div_Mod_Quad Multiple_Factors
+    (45) Mult_Div_Mod_Quad -> .
 
-    TIMES_SIGN      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    DIVIDE_SIGN     reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    MOD_SIGN        reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    PLUS_SIGN       reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    MINUS_SIGN      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    LESS            reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    LESS_EQUAL      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    GREATER         reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    GREATER_EQUAL   reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    PAR_CLOSE       reduce using rule 31 (Mult_Div_Mod_Quad -> .)
+    TIMES_SIGN      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    DIVIDE_SIGN     reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    MOD_SIGN        reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    PLUS_SIGN       reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    MINUS_SIGN      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    LESS            reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    LESS_EQUAL      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    GREATER         reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    GREATER_EQUAL   reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    AND             reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    OR              reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    PAR_CLOSE       reduce using rule 45 (Mult_Div_Mod_Quad -> .)
 
-    Mult_Div_Mod_Quad              shift and go to state 30
+    Mult_Div_Mod_Quad              shift and go to state 34
 
 state 20
 
-    (8) Print -> PRINT PAR_OPEN Relational . PAR_CLOSE SEMICOLON
+    (19) Logical_Not -> Relational .
 
-    PAR_CLOSE       shift and go to state 31
+    AND             reduce using rule 19 (Logical_Not -> Relational .)
+    OR              reduce using rule 19 (Logical_Not -> Relational .)
+    PAR_CLOSE       reduce using rule 19 (Logical_Not -> Relational .)
 
 
 state 21
 
-    (44) Var_Cte -> STRING_CONST . Save_String_Const
-    (50) Save_String_Const -> .
+    (58) Var_Cte -> STRING_CONST . Save_String_Const
+    (64) Save_String_Const -> .
 
-    TIMES_SIGN      reduce using rule 50 (Save_String_Const -> .)
-    DIVIDE_SIGN     reduce using rule 50 (Save_String_Const -> .)
-    MOD_SIGN        reduce using rule 50 (Save_String_Const -> .)
-    PLUS_SIGN       reduce using rule 50 (Save_String_Const -> .)
-    MINUS_SIGN      reduce using rule 50 (Save_String_Const -> .)
-    LESS            reduce using rule 50 (Save_String_Const -> .)
-    LESS_EQUAL      reduce using rule 50 (Save_String_Const -> .)
-    GREATER         reduce using rule 50 (Save_String_Const -> .)
-    GREATER_EQUAL   reduce using rule 50 (Save_String_Const -> .)
-    PAR_CLOSE       reduce using rule 50 (Save_String_Const -> .)
+    TIMES_SIGN      reduce using rule 64 (Save_String_Const -> .)
+    DIVIDE_SIGN     reduce using rule 64 (Save_String_Const -> .)
+    MOD_SIGN        reduce using rule 64 (Save_String_Const -> .)
+    PLUS_SIGN       reduce using rule 64 (Save_String_Const -> .)
+    MINUS_SIGN      reduce using rule 64 (Save_String_Const -> .)
+    LESS            reduce using rule 64 (Save_String_Const -> .)
+    LESS_EQUAL      reduce using rule 64 (Save_String_Const -> .)
+    GREATER         reduce using rule 64 (Save_String_Const -> .)
+    GREATER_EQUAL   reduce using rule 64 (Save_String_Const -> .)
+    AND             reduce using rule 64 (Save_String_Const -> .)
+    OR              reduce using rule 64 (Save_String_Const -> .)
+    PAR_CLOSE       reduce using rule 64 (Save_String_Const -> .)
 
-    Save_String_Const              shift and go to state 32
+    Save_String_Const              shift and go to state 35
 
 state 22
 
-    (39) Var_Cte -> INT_CONST . Save_Int_Const
-    (45) Save_Int_Const -> .
+    (53) Var_Cte -> INT_CONST . Save_Int_Const
+    (59) Save_Int_Const -> .
 
-    TIMES_SIGN      reduce using rule 45 (Save_Int_Const -> .)
-    DIVIDE_SIGN     reduce using rule 45 (Save_Int_Const -> .)
-    MOD_SIGN        reduce using rule 45 (Save_Int_Const -> .)
-    PLUS_SIGN       reduce using rule 45 (Save_Int_Const -> .)
-    MINUS_SIGN      reduce using rule 45 (Save_Int_Const -> .)
-    LESS            reduce using rule 45 (Save_Int_Const -> .)
-    LESS_EQUAL      reduce using rule 45 (Save_Int_Const -> .)
-    GREATER         reduce using rule 45 (Save_Int_Const -> .)
-    GREATER_EQUAL   reduce using rule 45 (Save_Int_Const -> .)
-    PAR_CLOSE       reduce using rule 45 (Save_Int_Const -> .)
+    TIMES_SIGN      reduce using rule 59 (Save_Int_Const -> .)
+    DIVIDE_SIGN     reduce using rule 59 (Save_Int_Const -> .)
+    MOD_SIGN        reduce using rule 59 (Save_Int_Const -> .)
+    PLUS_SIGN       reduce using rule 59 (Save_Int_Const -> .)
+    MINUS_SIGN      reduce using rule 59 (Save_Int_Const -> .)
+    LESS            reduce using rule 59 (Save_Int_Const -> .)
+    LESS_EQUAL      reduce using rule 59 (Save_Int_Const -> .)
+    GREATER         reduce using rule 59 (Save_Int_Const -> .)
+    GREATER_EQUAL   reduce using rule 59 (Save_Int_Const -> .)
+    AND             reduce using rule 59 (Save_Int_Const -> .)
+    OR              reduce using rule 59 (Save_Int_Const -> .)
+    PAR_CLOSE       reduce using rule 59 (Save_Int_Const -> .)
 
-    Save_Int_Const                 shift and go to state 33
+    Save_Int_Const                 shift and go to state 36
 
 state 23
 
-    (43) Var_Cte -> BOOL_CONST . Save_Bool_Const
-    (49) Save_Bool_Const -> .
+    (14) Logical_And -> Logical_Not . And_Quad Multiple_Nots
+    (17) And_Quad -> .
 
-    TIMES_SIGN      reduce using rule 49 (Save_Bool_Const -> .)
-    DIVIDE_SIGN     reduce using rule 49 (Save_Bool_Const -> .)
-    MOD_SIGN        reduce using rule 49 (Save_Bool_Const -> .)
-    PLUS_SIGN       reduce using rule 49 (Save_Bool_Const -> .)
-    MINUS_SIGN      reduce using rule 49 (Save_Bool_Const -> .)
-    LESS            reduce using rule 49 (Save_Bool_Const -> .)
-    LESS_EQUAL      reduce using rule 49 (Save_Bool_Const -> .)
-    GREATER         reduce using rule 49 (Save_Bool_Const -> .)
-    GREATER_EQUAL   reduce using rule 49 (Save_Bool_Const -> .)
-    PAR_CLOSE       reduce using rule 49 (Save_Bool_Const -> .)
+    AND             reduce using rule 17 (And_Quad -> .)
+    OR              reduce using rule 17 (And_Quad -> .)
+    PAR_CLOSE       reduce using rule 17 (And_Quad -> .)
 
-    Save_Bool_Const                shift and go to state 34
+    And_Quad                       shift and go to state 37
 
 state 24
 
-    (19) Expression -> Term . Sum_Sub_Quad Multiple_Terms
-    (23) Sum_Sub_Quad -> .
+    (57) Var_Cte -> BOOL_CONST . Save_Bool_Const
+    (63) Save_Bool_Const -> .
 
-    PLUS_SIGN       reduce using rule 23 (Sum_Sub_Quad -> .)
-    MINUS_SIGN      reduce using rule 23 (Sum_Sub_Quad -> .)
-    LESS            reduce using rule 23 (Sum_Sub_Quad -> .)
-    LESS_EQUAL      reduce using rule 23 (Sum_Sub_Quad -> .)
-    GREATER         reduce using rule 23 (Sum_Sub_Quad -> .)
-    GREATER_EQUAL   reduce using rule 23 (Sum_Sub_Quad -> .)
-    PAR_CLOSE       reduce using rule 23 (Sum_Sub_Quad -> .)
+    TIMES_SIGN      reduce using rule 63 (Save_Bool_Const -> .)
+    DIVIDE_SIGN     reduce using rule 63 (Save_Bool_Const -> .)
+    MOD_SIGN        reduce using rule 63 (Save_Bool_Const -> .)
+    PLUS_SIGN       reduce using rule 63 (Save_Bool_Const -> .)
+    MINUS_SIGN      reduce using rule 63 (Save_Bool_Const -> .)
+    LESS            reduce using rule 63 (Save_Bool_Const -> .)
+    LESS_EQUAL      reduce using rule 63 (Save_Bool_Const -> .)
+    GREATER         reduce using rule 63 (Save_Bool_Const -> .)
+    GREATER_EQUAL   reduce using rule 63 (Save_Bool_Const -> .)
+    AND             reduce using rule 63 (Save_Bool_Const -> .)
+    OR              reduce using rule 63 (Save_Bool_Const -> .)
+    PAR_CLOSE       reduce using rule 63 (Save_Bool_Const -> .)
 
-    Sum_Sub_Quad                   shift and go to state 35
+    Save_Bool_Const                shift and go to state 38
 
 state 25
 
-    (36) Factor -> Var_Cte .
+    (33) Expression -> Term . Sum_Sub_Quad Multiple_Terms
+    (37) Sum_Sub_Quad -> .
 
-    TIMES_SIGN      reduce using rule 36 (Factor -> Var_Cte .)
-    DIVIDE_SIGN     reduce using rule 36 (Factor -> Var_Cte .)
-    MOD_SIGN        reduce using rule 36 (Factor -> Var_Cte .)
-    PLUS_SIGN       reduce using rule 36 (Factor -> Var_Cte .)
-    MINUS_SIGN      reduce using rule 36 (Factor -> Var_Cte .)
-    PAR_CLOSE       reduce using rule 36 (Factor -> Var_Cte .)
-    LESS            reduce using rule 36 (Factor -> Var_Cte .)
-    LESS_EQUAL      reduce using rule 36 (Factor -> Var_Cte .)
-    GREATER         reduce using rule 36 (Factor -> Var_Cte .)
-    GREATER_EQUAL   reduce using rule 36 (Factor -> Var_Cte .)
+    PLUS_SIGN       reduce using rule 37 (Sum_Sub_Quad -> .)
+    MINUS_SIGN      reduce using rule 37 (Sum_Sub_Quad -> .)
+    LESS            reduce using rule 37 (Sum_Sub_Quad -> .)
+    LESS_EQUAL      reduce using rule 37 (Sum_Sub_Quad -> .)
+    GREATER         reduce using rule 37 (Sum_Sub_Quad -> .)
+    GREATER_EQUAL   reduce using rule 37 (Sum_Sub_Quad -> .)
+    AND             reduce using rule 37 (Sum_Sub_Quad -> .)
+    OR              reduce using rule 37 (Sum_Sub_Quad -> .)
+    PAR_CLOSE       reduce using rule 37 (Sum_Sub_Quad -> .)
 
+    Sum_Sub_Quad                   shift and go to state 39
 
 state 26
 
-    (9) Relational -> Expression .
-    (10) Relational -> Expression . LESS Push_Less Expression Relational_Quad
-    (11) Relational -> Expression . LESS_EQUAL Push_Less_Equal Expression Relational_Quad
-    (12) Relational -> Expression . GREATER Push_Greater Expression Relational_Quad
-    (13) Relational -> Expression . GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad
+    (50) Factor -> Var_Cte .
 
-    PAR_CLOSE       reduce using rule 9 (Relational -> Expression .)
-    LESS            shift and go to state 36
-    LESS_EQUAL      shift and go to state 37
-    GREATER         shift and go to state 39
-    GREATER_EQUAL   shift and go to state 38
+    TIMES_SIGN      reduce using rule 50 (Factor -> Var_Cte .)
+    DIVIDE_SIGN     reduce using rule 50 (Factor -> Var_Cte .)
+    MOD_SIGN        reduce using rule 50 (Factor -> Var_Cte .)
+    PLUS_SIGN       reduce using rule 50 (Factor -> Var_Cte .)
+    MINUS_SIGN      reduce using rule 50 (Factor -> Var_Cte .)
+    LESS            reduce using rule 50 (Factor -> Var_Cte .)
+    LESS_EQUAL      reduce using rule 50 (Factor -> Var_Cte .)
+    GREATER         reduce using rule 50 (Factor -> Var_Cte .)
+    GREATER_EQUAL   reduce using rule 50 (Factor -> Var_Cte .)
+    AND             reduce using rule 50 (Factor -> Var_Cte .)
+    OR              reduce using rule 50 (Factor -> Var_Cte .)
+    PAR_CLOSE       reduce using rule 50 (Factor -> Var_Cte .)
 
 
 state 27
 
-    (40) Var_Cte -> MINUS_SIGN . INT_CONST Save_Neg_Int_Const
-    (42) Var_Cte -> MINUS_SIGN . FLOAT_CONST Save_Neg_Float_Const
+    (8) Print -> PRINT PAR_OPEN Logical_Or . PAR_CLOSE SEMICOLON
 
-    INT_CONST       shift and go to state 40
-    FLOAT_CONST     shift and go to state 41
+    PAR_CLOSE       shift and go to state 40
 
 
 state 28
 
-    (35) Factor -> PAR_OPEN Push_False_Bottom . Expression PAR_CLOSE Pop_False_Bottom
-    (19) Expression -> . Term Sum_Sub_Quad Multiple_Terms
-    (26) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (9) Logical_Or -> Logical_And . Or_Quad Multiple_Ands
+    (12) Or_Quad -> .
 
-    PAR_OPEN        shift and go to state 17
-    INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
-    STRING_CONST    shift and go to state 21
+    OR              reduce using rule 12 (Or_Quad -> .)
+    PAR_CLOSE       reduce using rule 12 (Or_Quad -> .)
 
-    Term                           shift and go to state 24
-    Var_Cte                        shift and go to state 25
-    Factor                         shift and go to state 19
-    Expression                     shift and go to state 42
+    Or_Quad                        shift and go to state 41
 
 state 29
 
-    (41) Var_Cte -> FLOAT_CONST Save_Float_Const .
+    (23) Relational -> Expression .
+    (24) Relational -> Expression . LESS Push_Less Expression Relational_Quad
+    (25) Relational -> Expression . LESS_EQUAL Push_Less_Equal Expression Relational_Quad
+    (26) Relational -> Expression . GREATER Push_Greater Expression Relational_Quad
+    (27) Relational -> Expression . GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad
 
-    TIMES_SIGN      reduce using rule 41 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
-    DIVIDE_SIGN     reduce using rule 41 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
-    MOD_SIGN        reduce using rule 41 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
-    PLUS_SIGN       reduce using rule 41 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
-    MINUS_SIGN      reduce using rule 41 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
-    PAR_CLOSE       reduce using rule 41 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
-    LESS            reduce using rule 41 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
-    LESS_EQUAL      reduce using rule 41 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
-    GREATER         reduce using rule 41 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
-    GREATER_EQUAL   reduce using rule 41 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    AND             reduce using rule 23 (Relational -> Expression .)
+    OR              reduce using rule 23 (Relational -> Expression .)
+    PAR_CLOSE       reduce using rule 23 (Relational -> Expression .)
+    LESS            shift and go to state 42
+    LESS_EQUAL      shift and go to state 43
+    GREATER         shift and go to state 45
+    GREATER_EQUAL   shift and go to state 44
 
 
 state 30
 
-    (26) Term -> Factor Mult_Div_Mod_Quad . Multiple_Factors
-    (27) Multiple_Factors -> . TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (28) Multiple_Factors -> . DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (29) Multiple_Factors -> . MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (30) Multiple_Factors -> . Epsilon
-    (51) Epsilon -> .
+    (54) Var_Cte -> MINUS_SIGN . INT_CONST Save_Neg_Int_Const
+    (56) Var_Cte -> MINUS_SIGN . FLOAT_CONST Save_Neg_Float_Const
 
-    TIMES_SIGN      shift and go to state 43
-    DIVIDE_SIGN     shift and go to state 47
-    MOD_SIGN        shift and go to state 44
-    PLUS_SIGN       reduce using rule 51 (Epsilon -> .)
-    MINUS_SIGN      reduce using rule 51 (Epsilon -> .)
-    LESS            reduce using rule 51 (Epsilon -> .)
-    LESS_EQUAL      reduce using rule 51 (Epsilon -> .)
-    GREATER         reduce using rule 51 (Epsilon -> .)
-    GREATER_EQUAL   reduce using rule 51 (Epsilon -> .)
-    PAR_CLOSE       reduce using rule 51 (Epsilon -> .)
+    INT_CONST       shift and go to state 46
+    FLOAT_CONST     shift and go to state 47
 
-    Epsilon                        shift and go to state 45
-    Multiple_Factors               shift and go to state 46
 
 state 31
 
-    (8) Print -> PRINT PAR_OPEN Relational PAR_CLOSE . SEMICOLON
+    (20) Logical_Not -> NOT . Push_Not Relational Not_Quad
+    (22) Push_Not -> .
 
-    SEMICOLON       shift and go to state 48
+    PAR_OPEN        reduce using rule 22 (Push_Not -> .)
+    INT_CONST       reduce using rule 22 (Push_Not -> .)
+    MINUS_SIGN      reduce using rule 22 (Push_Not -> .)
+    FLOAT_CONST     reduce using rule 22 (Push_Not -> .)
+    BOOL_CONST      reduce using rule 22 (Push_Not -> .)
+    STRING_CONST    reduce using rule 22 (Push_Not -> .)
 
+    Push_Not                       shift and go to state 48
 
 state 32
 
-    (44) Var_Cte -> STRING_CONST Save_String_Const .
+    (49) Factor -> PAR_OPEN Push_False_Bottom . Logical_Or PAR_CLOSE Pop_False_Bottom
+    (9) Logical_Or -> . Logical_And Or_Quad Multiple_Ands
+    (14) Logical_And -> . Logical_Not And_Quad Multiple_Nots
+    (19) Logical_Not -> . Relational
+    (20) Logical_Not -> . NOT Push_Not Relational Not_Quad
+    (23) Relational -> . Expression
+    (24) Relational -> . Expression LESS Push_Less Expression Relational_Quad
+    (25) Relational -> . Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad
+    (26) Relational -> . Expression GREATER Push_Greater Expression Relational_Quad
+    (27) Relational -> . Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad
+    (33) Expression -> . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    TIMES_SIGN      reduce using rule 44 (Var_Cte -> STRING_CONST Save_String_Const .)
-    DIVIDE_SIGN     reduce using rule 44 (Var_Cte -> STRING_CONST Save_String_Const .)
-    MOD_SIGN        reduce using rule 44 (Var_Cte -> STRING_CONST Save_String_Const .)
-    PLUS_SIGN       reduce using rule 44 (Var_Cte -> STRING_CONST Save_String_Const .)
-    MINUS_SIGN      reduce using rule 44 (Var_Cte -> STRING_CONST Save_String_Const .)
-    PAR_CLOSE       reduce using rule 44 (Var_Cte -> STRING_CONST Save_String_Const .)
-    LESS            reduce using rule 44 (Var_Cte -> STRING_CONST Save_String_Const .)
-    LESS_EQUAL      reduce using rule 44 (Var_Cte -> STRING_CONST Save_String_Const .)
-    GREATER         reduce using rule 44 (Var_Cte -> STRING_CONST Save_String_Const .)
-    GREATER_EQUAL   reduce using rule 44 (Var_Cte -> STRING_CONST Save_String_Const .)
+    NOT             shift and go to state 31
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
+    Factor                         shift and go to state 19
+    Relational                     shift and go to state 20
+    Logical_Not                    shift and go to state 23
+    Term                           shift and go to state 25
+    Var_Cte                        shift and go to state 26
+    Logical_Or                     shift and go to state 49
+    Logical_And                    shift and go to state 28
+    Expression                     shift and go to state 29
 
 state 33
 
-    (39) Var_Cte -> INT_CONST Save_Int_Const .
+    (55) Var_Cte -> FLOAT_CONST Save_Float_Const .
 
-    TIMES_SIGN      reduce using rule 39 (Var_Cte -> INT_CONST Save_Int_Const .)
-    DIVIDE_SIGN     reduce using rule 39 (Var_Cte -> INT_CONST Save_Int_Const .)
-    MOD_SIGN        reduce using rule 39 (Var_Cte -> INT_CONST Save_Int_Const .)
-    PLUS_SIGN       reduce using rule 39 (Var_Cte -> INT_CONST Save_Int_Const .)
-    MINUS_SIGN      reduce using rule 39 (Var_Cte -> INT_CONST Save_Int_Const .)
-    PAR_CLOSE       reduce using rule 39 (Var_Cte -> INT_CONST Save_Int_Const .)
-    LESS            reduce using rule 39 (Var_Cte -> INT_CONST Save_Int_Const .)
-    LESS_EQUAL      reduce using rule 39 (Var_Cte -> INT_CONST Save_Int_Const .)
-    GREATER         reduce using rule 39 (Var_Cte -> INT_CONST Save_Int_Const .)
-    GREATER_EQUAL   reduce using rule 39 (Var_Cte -> INT_CONST Save_Int_Const .)
+    TIMES_SIGN      reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    DIVIDE_SIGN     reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    MOD_SIGN        reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    PLUS_SIGN       reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    MINUS_SIGN      reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    LESS            reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    LESS_EQUAL      reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    GREATER         reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    GREATER_EQUAL   reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    AND             reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    OR              reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
+    PAR_CLOSE       reduce using rule 55 (Var_Cte -> FLOAT_CONST Save_Float_Const .)
 
 
 state 34
 
-    (43) Var_Cte -> BOOL_CONST Save_Bool_Const .
+    (40) Term -> Factor Mult_Div_Mod_Quad . Multiple_Factors
+    (41) Multiple_Factors -> . TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (42) Multiple_Factors -> . DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (43) Multiple_Factors -> . MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (44) Multiple_Factors -> . Epsilon
+    (65) Epsilon -> .
 
-    TIMES_SIGN      reduce using rule 43 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
-    DIVIDE_SIGN     reduce using rule 43 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
-    MOD_SIGN        reduce using rule 43 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
-    PLUS_SIGN       reduce using rule 43 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
-    MINUS_SIGN      reduce using rule 43 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
-    PAR_CLOSE       reduce using rule 43 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
-    LESS            reduce using rule 43 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
-    LESS_EQUAL      reduce using rule 43 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
-    GREATER         reduce using rule 43 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
-    GREATER_EQUAL   reduce using rule 43 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    TIMES_SIGN      shift and go to state 50
+    DIVIDE_SIGN     shift and go to state 54
+    MOD_SIGN        shift and go to state 51
+    PLUS_SIGN       reduce using rule 65 (Epsilon -> .)
+    MINUS_SIGN      reduce using rule 65 (Epsilon -> .)
+    LESS            reduce using rule 65 (Epsilon -> .)
+    LESS_EQUAL      reduce using rule 65 (Epsilon -> .)
+    GREATER         reduce using rule 65 (Epsilon -> .)
+    GREATER_EQUAL   reduce using rule 65 (Epsilon -> .)
+    AND             reduce using rule 65 (Epsilon -> .)
+    OR              reduce using rule 65 (Epsilon -> .)
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
 
+    Epsilon                        shift and go to state 52
+    Multiple_Factors               shift and go to state 53
 
 state 35
 
-    (19) Expression -> Term Sum_Sub_Quad . Multiple_Terms
-    (20) Multiple_Terms -> . PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
-    (21) Multiple_Terms -> . MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
-    (22) Multiple_Terms -> . Epsilon
-    (51) Epsilon -> .
+    (58) Var_Cte -> STRING_CONST Save_String_Const .
 
-    PLUS_SIGN       shift and go to state 52
-    MINUS_SIGN      shift and go to state 51
-    LESS            reduce using rule 51 (Epsilon -> .)
-    LESS_EQUAL      reduce using rule 51 (Epsilon -> .)
-    GREATER         reduce using rule 51 (Epsilon -> .)
-    GREATER_EQUAL   reduce using rule 51 (Epsilon -> .)
-    PAR_CLOSE       reduce using rule 51 (Epsilon -> .)
+    TIMES_SIGN      reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    DIVIDE_SIGN     reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    MOD_SIGN        reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    PLUS_SIGN       reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    MINUS_SIGN      reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    LESS            reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    LESS_EQUAL      reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    GREATER         reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    GREATER_EQUAL   reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    AND             reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    OR              reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
+    PAR_CLOSE       reduce using rule 58 (Var_Cte -> STRING_CONST Save_String_Const .)
 
-    Multiple_Terms                 shift and go to state 49
-    Epsilon                        shift and go to state 50
 
 state 36
 
-    (10) Relational -> Expression LESS . Push_Less Expression Relational_Quad
-    (15) Push_Less -> .
+    (53) Var_Cte -> INT_CONST Save_Int_Const .
 
-    PAR_OPEN        reduce using rule 15 (Push_Less -> .)
-    INT_CONST       reduce using rule 15 (Push_Less -> .)
-    MINUS_SIGN      reduce using rule 15 (Push_Less -> .)
-    FLOAT_CONST     reduce using rule 15 (Push_Less -> .)
-    BOOL_CONST      reduce using rule 15 (Push_Less -> .)
-    STRING_CONST    reduce using rule 15 (Push_Less -> .)
+    TIMES_SIGN      reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    DIVIDE_SIGN     reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    MOD_SIGN        reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    PLUS_SIGN       reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    MINUS_SIGN      reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    LESS            reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    LESS_EQUAL      reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    GREATER         reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    GREATER_EQUAL   reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    AND             reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    OR              reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
+    PAR_CLOSE       reduce using rule 53 (Var_Cte -> INT_CONST Save_Int_Const .)
 
-    Push_Less                      shift and go to state 53
 
 state 37
 
-    (11) Relational -> Expression LESS_EQUAL . Push_Less_Equal Expression Relational_Quad
-    (16) Push_Less_Equal -> .
+    (14) Logical_And -> Logical_Not And_Quad . Multiple_Nots
+    (15) Multiple_Nots -> . AND Push_And Logical_Not And_Quad Multiple_Nots
+    (16) Multiple_Nots -> . Epsilon
+    (65) Epsilon -> .
 
-    PAR_OPEN        reduce using rule 16 (Push_Less_Equal -> .)
-    INT_CONST       reduce using rule 16 (Push_Less_Equal -> .)
-    MINUS_SIGN      reduce using rule 16 (Push_Less_Equal -> .)
-    FLOAT_CONST     reduce using rule 16 (Push_Less_Equal -> .)
-    BOOL_CONST      reduce using rule 16 (Push_Less_Equal -> .)
-    STRING_CONST    reduce using rule 16 (Push_Less_Equal -> .)
+    AND             shift and go to state 55
+    OR              reduce using rule 65 (Epsilon -> .)
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
 
-    Push_Less_Equal                shift and go to state 54
+    Multiple_Nots                  shift and go to state 57
+    Epsilon                        shift and go to state 56
 
 state 38
 
-    (13) Relational -> Expression GREATER_EQUAL . Push_Greater_Equal Expression Relational_Quad
-    (18) Push_Greater_Equal -> .
+    (57) Var_Cte -> BOOL_CONST Save_Bool_Const .
 
-    PAR_OPEN        reduce using rule 18 (Push_Greater_Equal -> .)
-    INT_CONST       reduce using rule 18 (Push_Greater_Equal -> .)
-    MINUS_SIGN      reduce using rule 18 (Push_Greater_Equal -> .)
-    FLOAT_CONST     reduce using rule 18 (Push_Greater_Equal -> .)
-    BOOL_CONST      reduce using rule 18 (Push_Greater_Equal -> .)
-    STRING_CONST    reduce using rule 18 (Push_Greater_Equal -> .)
+    TIMES_SIGN      reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    DIVIDE_SIGN     reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    MOD_SIGN        reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    PLUS_SIGN       reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    MINUS_SIGN      reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    LESS            reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    LESS_EQUAL      reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    GREATER         reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    GREATER_EQUAL   reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    AND             reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    OR              reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
+    PAR_CLOSE       reduce using rule 57 (Var_Cte -> BOOL_CONST Save_Bool_Const .)
 
-    Push_Greater_Equal             shift and go to state 55
 
 state 39
 
-    (12) Relational -> Expression GREATER . Push_Greater Expression Relational_Quad
-    (17) Push_Greater -> .
+    (33) Expression -> Term Sum_Sub_Quad . Multiple_Terms
+    (34) Multiple_Terms -> . PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
+    (35) Multiple_Terms -> . MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
+    (36) Multiple_Terms -> . Epsilon
+    (65) Epsilon -> .
 
-    PAR_OPEN        reduce using rule 17 (Push_Greater -> .)
-    INT_CONST       reduce using rule 17 (Push_Greater -> .)
-    MINUS_SIGN      reduce using rule 17 (Push_Greater -> .)
-    FLOAT_CONST     reduce using rule 17 (Push_Greater -> .)
-    BOOL_CONST      reduce using rule 17 (Push_Greater -> .)
-    STRING_CONST    reduce using rule 17 (Push_Greater -> .)
+    PLUS_SIGN       shift and go to state 61
+    MINUS_SIGN      shift and go to state 60
+    LESS            reduce using rule 65 (Epsilon -> .)
+    LESS_EQUAL      reduce using rule 65 (Epsilon -> .)
+    GREATER         reduce using rule 65 (Epsilon -> .)
+    GREATER_EQUAL   reduce using rule 65 (Epsilon -> .)
+    AND             reduce using rule 65 (Epsilon -> .)
+    OR              reduce using rule 65 (Epsilon -> .)
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
 
-    Push_Greater                   shift and go to state 56
+    Multiple_Terms                 shift and go to state 58
+    Epsilon                        shift and go to state 59
 
 state 40
 
-    (40) Var_Cte -> MINUS_SIGN INT_CONST . Save_Neg_Int_Const
-    (46) Save_Neg_Int_Const -> .
+    (8) Print -> PRINT PAR_OPEN Logical_Or PAR_CLOSE . SEMICOLON
 
-    TIMES_SIGN      reduce using rule 46 (Save_Neg_Int_Const -> .)
-    DIVIDE_SIGN     reduce using rule 46 (Save_Neg_Int_Const -> .)
-    MOD_SIGN        reduce using rule 46 (Save_Neg_Int_Const -> .)
-    PLUS_SIGN       reduce using rule 46 (Save_Neg_Int_Const -> .)
-    MINUS_SIGN      reduce using rule 46 (Save_Neg_Int_Const -> .)
-    LESS            reduce using rule 46 (Save_Neg_Int_Const -> .)
-    LESS_EQUAL      reduce using rule 46 (Save_Neg_Int_Const -> .)
-    GREATER         reduce using rule 46 (Save_Neg_Int_Const -> .)
-    GREATER_EQUAL   reduce using rule 46 (Save_Neg_Int_Const -> .)
-    PAR_CLOSE       reduce using rule 46 (Save_Neg_Int_Const -> .)
+    SEMICOLON       shift and go to state 62
 
-    Save_Neg_Int_Const             shift and go to state 57
 
 state 41
 
-    (42) Var_Cte -> MINUS_SIGN FLOAT_CONST . Save_Neg_Float_Const
-    (48) Save_Neg_Float_Const -> .
+    (9) Logical_Or -> Logical_And Or_Quad . Multiple_Ands
+    (10) Multiple_Ands -> . OR Push_Or Logical_And Or_Quad Multiple_Ands
+    (11) Multiple_Ands -> . Epsilon
+    (65) Epsilon -> .
 
-    TIMES_SIGN      reduce using rule 48 (Save_Neg_Float_Const -> .)
-    DIVIDE_SIGN     reduce using rule 48 (Save_Neg_Float_Const -> .)
-    MOD_SIGN        reduce using rule 48 (Save_Neg_Float_Const -> .)
-    PLUS_SIGN       reduce using rule 48 (Save_Neg_Float_Const -> .)
-    MINUS_SIGN      reduce using rule 48 (Save_Neg_Float_Const -> .)
-    LESS            reduce using rule 48 (Save_Neg_Float_Const -> .)
-    LESS_EQUAL      reduce using rule 48 (Save_Neg_Float_Const -> .)
-    GREATER         reduce using rule 48 (Save_Neg_Float_Const -> .)
-    GREATER_EQUAL   reduce using rule 48 (Save_Neg_Float_Const -> .)
-    PAR_CLOSE       reduce using rule 48 (Save_Neg_Float_Const -> .)
+    OR              shift and go to state 65
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
 
-    Save_Neg_Float_Const           shift and go to state 58
+    Multiple_Ands                  shift and go to state 63
+    Epsilon                        shift and go to state 64
 
 state 42
 
-    (35) Factor -> PAR_OPEN Push_False_Bottom Expression . PAR_CLOSE Pop_False_Bottom
+    (24) Relational -> Expression LESS . Push_Less Expression Relational_Quad
+    (29) Push_Less -> .
 
-    PAR_CLOSE       shift and go to state 59
+    PAR_OPEN        reduce using rule 29 (Push_Less -> .)
+    INT_CONST       reduce using rule 29 (Push_Less -> .)
+    MINUS_SIGN      reduce using rule 29 (Push_Less -> .)
+    FLOAT_CONST     reduce using rule 29 (Push_Less -> .)
+    BOOL_CONST      reduce using rule 29 (Push_Less -> .)
+    STRING_CONST    reduce using rule 29 (Push_Less -> .)
 
+    Push_Less                      shift and go to state 66
 
 state 43
 
-    (27) Multiple_Factors -> TIMES_SIGN . Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (32) Push_Times_Sign -> .
+    (25) Relational -> Expression LESS_EQUAL . Push_Less_Equal Expression Relational_Quad
+    (30) Push_Less_Equal -> .
 
-    PAR_OPEN        reduce using rule 32 (Push_Times_Sign -> .)
-    INT_CONST       reduce using rule 32 (Push_Times_Sign -> .)
-    MINUS_SIGN      reduce using rule 32 (Push_Times_Sign -> .)
-    FLOAT_CONST     reduce using rule 32 (Push_Times_Sign -> .)
-    BOOL_CONST      reduce using rule 32 (Push_Times_Sign -> .)
-    STRING_CONST    reduce using rule 32 (Push_Times_Sign -> .)
+    PAR_OPEN        reduce using rule 30 (Push_Less_Equal -> .)
+    INT_CONST       reduce using rule 30 (Push_Less_Equal -> .)
+    MINUS_SIGN      reduce using rule 30 (Push_Less_Equal -> .)
+    FLOAT_CONST     reduce using rule 30 (Push_Less_Equal -> .)
+    BOOL_CONST      reduce using rule 30 (Push_Less_Equal -> .)
+    STRING_CONST    reduce using rule 30 (Push_Less_Equal -> .)
 
-    Push_Times_Sign                shift and go to state 60
+    Push_Less_Equal                shift and go to state 67
 
 state 44
 
-    (29) Multiple_Factors -> MOD_SIGN . Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (34) Push_Mod_Sign -> .
+    (27) Relational -> Expression GREATER_EQUAL . Push_Greater_Equal Expression Relational_Quad
+    (32) Push_Greater_Equal -> .
 
-    PAR_OPEN        reduce using rule 34 (Push_Mod_Sign -> .)
-    INT_CONST       reduce using rule 34 (Push_Mod_Sign -> .)
-    MINUS_SIGN      reduce using rule 34 (Push_Mod_Sign -> .)
-    FLOAT_CONST     reduce using rule 34 (Push_Mod_Sign -> .)
-    BOOL_CONST      reduce using rule 34 (Push_Mod_Sign -> .)
-    STRING_CONST    reduce using rule 34 (Push_Mod_Sign -> .)
+    PAR_OPEN        reduce using rule 32 (Push_Greater_Equal -> .)
+    INT_CONST       reduce using rule 32 (Push_Greater_Equal -> .)
+    MINUS_SIGN      reduce using rule 32 (Push_Greater_Equal -> .)
+    FLOAT_CONST     reduce using rule 32 (Push_Greater_Equal -> .)
+    BOOL_CONST      reduce using rule 32 (Push_Greater_Equal -> .)
+    STRING_CONST    reduce using rule 32 (Push_Greater_Equal -> .)
 
-    Push_Mod_Sign                  shift and go to state 61
+    Push_Greater_Equal             shift and go to state 68
 
 state 45
 
-    (30) Multiple_Factors -> Epsilon .
+    (26) Relational -> Expression GREATER . Push_Greater Expression Relational_Quad
+    (31) Push_Greater -> .
 
-    PLUS_SIGN       reduce using rule 30 (Multiple_Factors -> Epsilon .)
-    MINUS_SIGN      reduce using rule 30 (Multiple_Factors -> Epsilon .)
-    LESS            reduce using rule 30 (Multiple_Factors -> Epsilon .)
-    LESS_EQUAL      reduce using rule 30 (Multiple_Factors -> Epsilon .)
-    GREATER         reduce using rule 30 (Multiple_Factors -> Epsilon .)
-    GREATER_EQUAL   reduce using rule 30 (Multiple_Factors -> Epsilon .)
-    PAR_CLOSE       reduce using rule 30 (Multiple_Factors -> Epsilon .)
+    PAR_OPEN        reduce using rule 31 (Push_Greater -> .)
+    INT_CONST       reduce using rule 31 (Push_Greater -> .)
+    MINUS_SIGN      reduce using rule 31 (Push_Greater -> .)
+    FLOAT_CONST     reduce using rule 31 (Push_Greater -> .)
+    BOOL_CONST      reduce using rule 31 (Push_Greater -> .)
+    STRING_CONST    reduce using rule 31 (Push_Greater -> .)
 
+    Push_Greater                   shift and go to state 69
 
 state 46
 
-    (26) Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .
+    (54) Var_Cte -> MINUS_SIGN INT_CONST . Save_Neg_Int_Const
+    (60) Save_Neg_Int_Const -> .
 
-    PLUS_SIGN       reduce using rule 26 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    MINUS_SIGN      reduce using rule 26 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    PAR_CLOSE       reduce using rule 26 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    LESS            reduce using rule 26 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    LESS_EQUAL      reduce using rule 26 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    GREATER         reduce using rule 26 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    GREATER_EQUAL   reduce using rule 26 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    TIMES_SIGN      reduce using rule 60 (Save_Neg_Int_Const -> .)
+    DIVIDE_SIGN     reduce using rule 60 (Save_Neg_Int_Const -> .)
+    MOD_SIGN        reduce using rule 60 (Save_Neg_Int_Const -> .)
+    PLUS_SIGN       reduce using rule 60 (Save_Neg_Int_Const -> .)
+    MINUS_SIGN      reduce using rule 60 (Save_Neg_Int_Const -> .)
+    LESS            reduce using rule 60 (Save_Neg_Int_Const -> .)
+    LESS_EQUAL      reduce using rule 60 (Save_Neg_Int_Const -> .)
+    GREATER         reduce using rule 60 (Save_Neg_Int_Const -> .)
+    GREATER_EQUAL   reduce using rule 60 (Save_Neg_Int_Const -> .)
+    AND             reduce using rule 60 (Save_Neg_Int_Const -> .)
+    OR              reduce using rule 60 (Save_Neg_Int_Const -> .)
+    PAR_CLOSE       reduce using rule 60 (Save_Neg_Int_Const -> .)
 
+    Save_Neg_Int_Const             shift and go to state 70
 
 state 47
 
-    (28) Multiple_Factors -> DIVIDE_SIGN . Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (33) Push_Divide_Sign -> .
+    (56) Var_Cte -> MINUS_SIGN FLOAT_CONST . Save_Neg_Float_Const
+    (62) Save_Neg_Float_Const -> .
 
-    PAR_OPEN        reduce using rule 33 (Push_Divide_Sign -> .)
-    INT_CONST       reduce using rule 33 (Push_Divide_Sign -> .)
-    MINUS_SIGN      reduce using rule 33 (Push_Divide_Sign -> .)
-    FLOAT_CONST     reduce using rule 33 (Push_Divide_Sign -> .)
-    BOOL_CONST      reduce using rule 33 (Push_Divide_Sign -> .)
-    STRING_CONST    reduce using rule 33 (Push_Divide_Sign -> .)
+    TIMES_SIGN      reduce using rule 62 (Save_Neg_Float_Const -> .)
+    DIVIDE_SIGN     reduce using rule 62 (Save_Neg_Float_Const -> .)
+    MOD_SIGN        reduce using rule 62 (Save_Neg_Float_Const -> .)
+    PLUS_SIGN       reduce using rule 62 (Save_Neg_Float_Const -> .)
+    MINUS_SIGN      reduce using rule 62 (Save_Neg_Float_Const -> .)
+    LESS            reduce using rule 62 (Save_Neg_Float_Const -> .)
+    LESS_EQUAL      reduce using rule 62 (Save_Neg_Float_Const -> .)
+    GREATER         reduce using rule 62 (Save_Neg_Float_Const -> .)
+    GREATER_EQUAL   reduce using rule 62 (Save_Neg_Float_Const -> .)
+    AND             reduce using rule 62 (Save_Neg_Float_Const -> .)
+    OR              reduce using rule 62 (Save_Neg_Float_Const -> .)
+    PAR_CLOSE       reduce using rule 62 (Save_Neg_Float_Const -> .)
 
-    Push_Divide_Sign               shift and go to state 62
+    Save_Neg_Float_Const           shift and go to state 71
 
 state 48
 
-    (8) Print -> PRINT PAR_OPEN Relational PAR_CLOSE SEMICOLON .
+    (20) Logical_Not -> NOT Push_Not . Relational Not_Quad
+    (23) Relational -> . Expression
+    (24) Relational -> . Expression LESS Push_Less Expression Relational_Quad
+    (25) Relational -> . Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad
+    (26) Relational -> . Expression GREATER Push_Greater Expression Relational_Quad
+    (27) Relational -> . Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad
+    (33) Expression -> . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    PRINT           reduce using rule 8 (Print -> PRINT PAR_OPEN Relational PAR_CLOSE SEMICOLON .)
-    CURLYB_CLOSE    reduce using rule 8 (Print -> PRINT PAR_OPEN Relational PAR_CLOSE SEMICOLON .)
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
+    Factor                         shift and go to state 19
+    Relational                     shift and go to state 72
+    Term                           shift and go to state 25
+    Var_Cte                        shift and go to state 26
+    Expression                     shift and go to state 29
 
 state 49
 
-    (19) Expression -> Term Sum_Sub_Quad Multiple_Terms .
+    (49) Factor -> PAR_OPEN Push_False_Bottom Logical_Or . PAR_CLOSE Pop_False_Bottom
 
-    PAR_CLOSE       reduce using rule 19 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
-    LESS            reduce using rule 19 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
-    LESS_EQUAL      reduce using rule 19 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
-    GREATER         reduce using rule 19 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
-    GREATER_EQUAL   reduce using rule 19 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
+    PAR_CLOSE       shift and go to state 73
 
 
 state 50
 
-    (22) Multiple_Terms -> Epsilon .
+    (41) Multiple_Factors -> TIMES_SIGN . Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (46) Push_Times_Sign -> .
 
-    LESS            reduce using rule 22 (Multiple_Terms -> Epsilon .)
-    LESS_EQUAL      reduce using rule 22 (Multiple_Terms -> Epsilon .)
-    GREATER         reduce using rule 22 (Multiple_Terms -> Epsilon .)
-    GREATER_EQUAL   reduce using rule 22 (Multiple_Terms -> Epsilon .)
-    PAR_CLOSE       reduce using rule 22 (Multiple_Terms -> Epsilon .)
+    PAR_OPEN        reduce using rule 46 (Push_Times_Sign -> .)
+    INT_CONST       reduce using rule 46 (Push_Times_Sign -> .)
+    MINUS_SIGN      reduce using rule 46 (Push_Times_Sign -> .)
+    FLOAT_CONST     reduce using rule 46 (Push_Times_Sign -> .)
+    BOOL_CONST      reduce using rule 46 (Push_Times_Sign -> .)
+    STRING_CONST    reduce using rule 46 (Push_Times_Sign -> .)
 
+    Push_Times_Sign                shift and go to state 74
 
 state 51
 
-    (21) Multiple_Terms -> MINUS_SIGN . Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
-    (25) Push_Minus_Sign -> .
+    (43) Multiple_Factors -> MOD_SIGN . Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (48) Push_Mod_Sign -> .
 
-    PAR_OPEN        reduce using rule 25 (Push_Minus_Sign -> .)
-    INT_CONST       reduce using rule 25 (Push_Minus_Sign -> .)
-    MINUS_SIGN      reduce using rule 25 (Push_Minus_Sign -> .)
-    FLOAT_CONST     reduce using rule 25 (Push_Minus_Sign -> .)
-    BOOL_CONST      reduce using rule 25 (Push_Minus_Sign -> .)
-    STRING_CONST    reduce using rule 25 (Push_Minus_Sign -> .)
+    PAR_OPEN        reduce using rule 48 (Push_Mod_Sign -> .)
+    INT_CONST       reduce using rule 48 (Push_Mod_Sign -> .)
+    MINUS_SIGN      reduce using rule 48 (Push_Mod_Sign -> .)
+    FLOAT_CONST     reduce using rule 48 (Push_Mod_Sign -> .)
+    BOOL_CONST      reduce using rule 48 (Push_Mod_Sign -> .)
+    STRING_CONST    reduce using rule 48 (Push_Mod_Sign -> .)
 
-    Push_Minus_Sign                shift and go to state 63
+    Push_Mod_Sign                  shift and go to state 75
 
 state 52
 
-    (20) Multiple_Terms -> PLUS_SIGN . Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
-    (24) Push_Plus_Sign -> .
+    (44) Multiple_Factors -> Epsilon .
 
-    PAR_OPEN        reduce using rule 24 (Push_Plus_Sign -> .)
-    INT_CONST       reduce using rule 24 (Push_Plus_Sign -> .)
-    MINUS_SIGN      reduce using rule 24 (Push_Plus_Sign -> .)
-    FLOAT_CONST     reduce using rule 24 (Push_Plus_Sign -> .)
-    BOOL_CONST      reduce using rule 24 (Push_Plus_Sign -> .)
-    STRING_CONST    reduce using rule 24 (Push_Plus_Sign -> .)
+    PLUS_SIGN       reduce using rule 44 (Multiple_Factors -> Epsilon .)
+    MINUS_SIGN      reduce using rule 44 (Multiple_Factors -> Epsilon .)
+    LESS            reduce using rule 44 (Multiple_Factors -> Epsilon .)
+    LESS_EQUAL      reduce using rule 44 (Multiple_Factors -> Epsilon .)
+    GREATER         reduce using rule 44 (Multiple_Factors -> Epsilon .)
+    GREATER_EQUAL   reduce using rule 44 (Multiple_Factors -> Epsilon .)
+    AND             reduce using rule 44 (Multiple_Factors -> Epsilon .)
+    OR              reduce using rule 44 (Multiple_Factors -> Epsilon .)
+    PAR_CLOSE       reduce using rule 44 (Multiple_Factors -> Epsilon .)
 
-    Push_Plus_Sign                 shift and go to state 64
 
 state 53
 
-    (10) Relational -> Expression LESS Push_Less . Expression Relational_Quad
-    (19) Expression -> . Term Sum_Sub_Quad Multiple_Terms
-    (26) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (40) Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .
 
-    PAR_OPEN        shift and go to state 17
-    INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
-    STRING_CONST    shift and go to state 21
+    PLUS_SIGN       reduce using rule 40 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    MINUS_SIGN      reduce using rule 40 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    AND             reduce using rule 40 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    OR              reduce using rule 40 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    PAR_CLOSE       reduce using rule 40 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    LESS            reduce using rule 40 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    LESS_EQUAL      reduce using rule 40 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    GREATER         reduce using rule 40 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    GREATER_EQUAL   reduce using rule 40 (Term -> Factor Mult_Div_Mod_Quad Multiple_Factors .)
 
-    Term                           shift and go to state 24
-    Var_Cte                        shift and go to state 25
-    Factor                         shift and go to state 19
-    Expression                     shift and go to state 65
 
 state 54
 
-    (11) Relational -> Expression LESS_EQUAL Push_Less_Equal . Expression Relational_Quad
-    (19) Expression -> . Term Sum_Sub_Quad Multiple_Terms
-    (26) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (42) Multiple_Factors -> DIVIDE_SIGN . Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (47) Push_Divide_Sign -> .
 
-    PAR_OPEN        shift and go to state 17
-    INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
-    STRING_CONST    shift and go to state 21
+    PAR_OPEN        reduce using rule 47 (Push_Divide_Sign -> .)
+    INT_CONST       reduce using rule 47 (Push_Divide_Sign -> .)
+    MINUS_SIGN      reduce using rule 47 (Push_Divide_Sign -> .)
+    FLOAT_CONST     reduce using rule 47 (Push_Divide_Sign -> .)
+    BOOL_CONST      reduce using rule 47 (Push_Divide_Sign -> .)
+    STRING_CONST    reduce using rule 47 (Push_Divide_Sign -> .)
 
-    Term                           shift and go to state 24
-    Var_Cte                        shift and go to state 25
-    Factor                         shift and go to state 19
-    Expression                     shift and go to state 66
+    Push_Divide_Sign               shift and go to state 76
 
 state 55
 
-    (13) Relational -> Expression GREATER_EQUAL Push_Greater_Equal . Expression Relational_Quad
-    (19) Expression -> . Term Sum_Sub_Quad Multiple_Terms
-    (26) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (15) Multiple_Nots -> AND . Push_And Logical_Not And_Quad Multiple_Nots
+    (18) Push_And -> .
 
-    PAR_OPEN        shift and go to state 17
-    INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
-    STRING_CONST    shift and go to state 21
+    NOT             reduce using rule 18 (Push_And -> .)
+    PAR_OPEN        reduce using rule 18 (Push_And -> .)
+    INT_CONST       reduce using rule 18 (Push_And -> .)
+    MINUS_SIGN      reduce using rule 18 (Push_And -> .)
+    FLOAT_CONST     reduce using rule 18 (Push_And -> .)
+    BOOL_CONST      reduce using rule 18 (Push_And -> .)
+    STRING_CONST    reduce using rule 18 (Push_And -> .)
 
-    Term                           shift and go to state 24
-    Var_Cte                        shift and go to state 25
-    Factor                         shift and go to state 19
-    Expression                     shift and go to state 67
+    Push_And                       shift and go to state 77
 
 state 56
 
-    (12) Relational -> Expression GREATER Push_Greater . Expression Relational_Quad
-    (19) Expression -> . Term Sum_Sub_Quad Multiple_Terms
-    (26) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (16) Multiple_Nots -> Epsilon .
 
-    PAR_OPEN        shift and go to state 17
-    INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
-    STRING_CONST    shift and go to state 21
+    OR              reduce using rule 16 (Multiple_Nots -> Epsilon .)
+    PAR_CLOSE       reduce using rule 16 (Multiple_Nots -> Epsilon .)
 
-    Term                           shift and go to state 24
-    Var_Cte                        shift and go to state 25
-    Factor                         shift and go to state 19
-    Expression                     shift and go to state 68
 
 state 57
 
-    (40) Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .
+    (14) Logical_And -> Logical_Not And_Quad Multiple_Nots .
 
-    TIMES_SIGN      reduce using rule 40 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
-    DIVIDE_SIGN     reduce using rule 40 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
-    MOD_SIGN        reduce using rule 40 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
-    PLUS_SIGN       reduce using rule 40 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
-    MINUS_SIGN      reduce using rule 40 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
-    PAR_CLOSE       reduce using rule 40 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
-    LESS            reduce using rule 40 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
-    LESS_EQUAL      reduce using rule 40 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
-    GREATER         reduce using rule 40 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
-    GREATER_EQUAL   reduce using rule 40 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    OR              reduce using rule 14 (Logical_And -> Logical_Not And_Quad Multiple_Nots .)
+    PAR_CLOSE       reduce using rule 14 (Logical_And -> Logical_Not And_Quad Multiple_Nots .)
 
 
 state 58
 
-    (42) Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .
+    (33) Expression -> Term Sum_Sub_Quad Multiple_Terms .
 
-    TIMES_SIGN      reduce using rule 42 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
-    DIVIDE_SIGN     reduce using rule 42 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
-    MOD_SIGN        reduce using rule 42 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
-    PLUS_SIGN       reduce using rule 42 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
-    MINUS_SIGN      reduce using rule 42 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
-    PAR_CLOSE       reduce using rule 42 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
-    LESS            reduce using rule 42 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
-    LESS_EQUAL      reduce using rule 42 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
-    GREATER         reduce using rule 42 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
-    GREATER_EQUAL   reduce using rule 42 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    LESS            reduce using rule 33 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
+    LESS_EQUAL      reduce using rule 33 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
+    GREATER         reduce using rule 33 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
+    GREATER_EQUAL   reduce using rule 33 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
+    AND             reduce using rule 33 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
+    OR              reduce using rule 33 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
+    PAR_CLOSE       reduce using rule 33 (Expression -> Term Sum_Sub_Quad Multiple_Terms .)
 
 
 state 59
 
-    (35) Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE . Pop_False_Bottom
-    (38) Pop_False_Bottom -> .
+    (36) Multiple_Terms -> Epsilon .
 
-    TIMES_SIGN      reduce using rule 38 (Pop_False_Bottom -> .)
-    DIVIDE_SIGN     reduce using rule 38 (Pop_False_Bottom -> .)
-    MOD_SIGN        reduce using rule 38 (Pop_False_Bottom -> .)
-    PLUS_SIGN       reduce using rule 38 (Pop_False_Bottom -> .)
-    MINUS_SIGN      reduce using rule 38 (Pop_False_Bottom -> .)
-    LESS            reduce using rule 38 (Pop_False_Bottom -> .)
-    LESS_EQUAL      reduce using rule 38 (Pop_False_Bottom -> .)
-    GREATER         reduce using rule 38 (Pop_False_Bottom -> .)
-    GREATER_EQUAL   reduce using rule 38 (Pop_False_Bottom -> .)
-    PAR_CLOSE       reduce using rule 38 (Pop_False_Bottom -> .)
+    LESS            reduce using rule 36 (Multiple_Terms -> Epsilon .)
+    LESS_EQUAL      reduce using rule 36 (Multiple_Terms -> Epsilon .)
+    GREATER         reduce using rule 36 (Multiple_Terms -> Epsilon .)
+    GREATER_EQUAL   reduce using rule 36 (Multiple_Terms -> Epsilon .)
+    AND             reduce using rule 36 (Multiple_Terms -> Epsilon .)
+    OR              reduce using rule 36 (Multiple_Terms -> Epsilon .)
+    PAR_CLOSE       reduce using rule 36 (Multiple_Terms -> Epsilon .)
 
-    Pop_False_Bottom               shift and go to state 69
 
 state 60
 
-    (27) Multiple_Factors -> TIMES_SIGN Push_Times_Sign . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (35) Multiple_Terms -> MINUS_SIGN . Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
+    (39) Push_Minus_Sign -> .
 
-    PAR_OPEN        shift and go to state 17
-    INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
-    STRING_CONST    shift and go to state 21
+    PAR_OPEN        reduce using rule 39 (Push_Minus_Sign -> .)
+    INT_CONST       reduce using rule 39 (Push_Minus_Sign -> .)
+    MINUS_SIGN      reduce using rule 39 (Push_Minus_Sign -> .)
+    FLOAT_CONST     reduce using rule 39 (Push_Minus_Sign -> .)
+    BOOL_CONST      reduce using rule 39 (Push_Minus_Sign -> .)
+    STRING_CONST    reduce using rule 39 (Push_Minus_Sign -> .)
 
-    Var_Cte                        shift and go to state 25
-    Factor                         shift and go to state 70
+    Push_Minus_Sign                shift and go to state 78
 
 state 61
 
-    (29) Multiple_Factors -> MOD_SIGN Push_Mod_Sign . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (34) Multiple_Terms -> PLUS_SIGN . Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
+    (38) Push_Plus_Sign -> .
 
-    PAR_OPEN        shift and go to state 17
-    INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
-    STRING_CONST    shift and go to state 21
+    PAR_OPEN        reduce using rule 38 (Push_Plus_Sign -> .)
+    INT_CONST       reduce using rule 38 (Push_Plus_Sign -> .)
+    MINUS_SIGN      reduce using rule 38 (Push_Plus_Sign -> .)
+    FLOAT_CONST     reduce using rule 38 (Push_Plus_Sign -> .)
+    BOOL_CONST      reduce using rule 38 (Push_Plus_Sign -> .)
+    STRING_CONST    reduce using rule 38 (Push_Plus_Sign -> .)
 
-    Var_Cte                        shift and go to state 25
-    Factor                         shift and go to state 71
+    Push_Plus_Sign                 shift and go to state 79
 
 state 62
 
-    (28) Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (8) Print -> PRINT PAR_OPEN Logical_Or PAR_CLOSE SEMICOLON .
 
-    PAR_OPEN        shift and go to state 17
-    INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
-    STRING_CONST    shift and go to state 21
+    PRINT           reduce using rule 8 (Print -> PRINT PAR_OPEN Logical_Or PAR_CLOSE SEMICOLON .)
+    CURLYB_CLOSE    reduce using rule 8 (Print -> PRINT PAR_OPEN Logical_Or PAR_CLOSE SEMICOLON .)
 
-    Var_Cte                        shift and go to state 25
-    Factor                         shift and go to state 72
 
 state 63
 
-    (21) Multiple_Terms -> MINUS_SIGN Push_Minus_Sign . Term Sum_Sub_Quad Multiple_Terms
-    (26) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (9) Logical_Or -> Logical_And Or_Quad Multiple_Ands .
 
-    PAR_OPEN        shift and go to state 17
-    INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
-    STRING_CONST    shift and go to state 21
+    PAR_CLOSE       reduce using rule 9 (Logical_Or -> Logical_And Or_Quad Multiple_Ands .)
 
-    Term                           shift and go to state 73
-    Var_Cte                        shift and go to state 25
-    Factor                         shift and go to state 19
 
 state 64
 
-    (20) Multiple_Terms -> PLUS_SIGN Push_Plus_Sign . Term Sum_Sub_Quad Multiple_Terms
-    (26) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
-    (35) Factor -> . PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom
-    (36) Factor -> . Var_Cte
-    (39) Var_Cte -> . INT_CONST Save_Int_Const
-    (40) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
-    (41) Var_Cte -> . FLOAT_CONST Save_Float_Const
-    (42) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
-    (43) Var_Cte -> . BOOL_CONST Save_Bool_Const
-    (44) Var_Cte -> . STRING_CONST Save_String_Const
+    (11) Multiple_Ands -> Epsilon .
 
-    PAR_OPEN        shift and go to state 17
-    INT_CONST       shift and go to state 22
-    MINUS_SIGN      shift and go to state 27
-    FLOAT_CONST     shift and go to state 18
-    BOOL_CONST      shift and go to state 23
-    STRING_CONST    shift and go to state 21
+    PAR_CLOSE       reduce using rule 11 (Multiple_Ands -> Epsilon .)
 
-    Term                           shift and go to state 74
-    Var_Cte                        shift and go to state 25
-    Factor                         shift and go to state 19
 
 state 65
 
-    (10) Relational -> Expression LESS Push_Less Expression . Relational_Quad
-    (14) Relational_Quad -> .
+    (10) Multiple_Ands -> OR . Push_Or Logical_And Or_Quad Multiple_Ands
+    (13) Push_Or -> .
 
-    PAR_CLOSE       reduce using rule 14 (Relational_Quad -> .)
+    NOT             reduce using rule 13 (Push_Or -> .)
+    PAR_OPEN        reduce using rule 13 (Push_Or -> .)
+    INT_CONST       reduce using rule 13 (Push_Or -> .)
+    MINUS_SIGN      reduce using rule 13 (Push_Or -> .)
+    FLOAT_CONST     reduce using rule 13 (Push_Or -> .)
+    BOOL_CONST      reduce using rule 13 (Push_Or -> .)
+    STRING_CONST    reduce using rule 13 (Push_Or -> .)
 
-    Relational_Quad                shift and go to state 75
+    Push_Or                        shift and go to state 80
 
 state 66
 
-    (11) Relational -> Expression LESS_EQUAL Push_Less_Equal Expression . Relational_Quad
-    (14) Relational_Quad -> .
+    (24) Relational -> Expression LESS Push_Less . Expression Relational_Quad
+    (33) Expression -> . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    PAR_CLOSE       reduce using rule 14 (Relational_Quad -> .)
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
-    Relational_Quad                shift and go to state 76
+    Term                           shift and go to state 25
+    Var_Cte                        shift and go to state 26
+    Factor                         shift and go to state 19
+    Expression                     shift and go to state 81
 
 state 67
 
-    (13) Relational -> Expression GREATER_EQUAL Push_Greater_Equal Expression . Relational_Quad
-    (14) Relational_Quad -> .
+    (25) Relational -> Expression LESS_EQUAL Push_Less_Equal . Expression Relational_Quad
+    (33) Expression -> . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    PAR_CLOSE       reduce using rule 14 (Relational_Quad -> .)
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
-    Relational_Quad                shift and go to state 77
+    Term                           shift and go to state 25
+    Var_Cte                        shift and go to state 26
+    Factor                         shift and go to state 19
+    Expression                     shift and go to state 82
 
 state 68
 
-    (12) Relational -> Expression GREATER Push_Greater Expression . Relational_Quad
-    (14) Relational_Quad -> .
+    (27) Relational -> Expression GREATER_EQUAL Push_Greater_Equal . Expression Relational_Quad
+    (33) Expression -> . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    PAR_CLOSE       reduce using rule 14 (Relational_Quad -> .)
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
-    Relational_Quad                shift and go to state 78
+    Term                           shift and go to state 25
+    Var_Cte                        shift and go to state 26
+    Factor                         shift and go to state 19
+    Expression                     shift and go to state 83
 
 state 69
 
-    (35) Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .
+    (26) Relational -> Expression GREATER Push_Greater . Expression Relational_Quad
+    (33) Expression -> . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    TIMES_SIGN      reduce using rule 35 (Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .)
-    DIVIDE_SIGN     reduce using rule 35 (Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .)
-    MOD_SIGN        reduce using rule 35 (Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .)
-    PLUS_SIGN       reduce using rule 35 (Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .)
-    MINUS_SIGN      reduce using rule 35 (Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .)
-    PAR_CLOSE       reduce using rule 35 (Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .)
-    LESS            reduce using rule 35 (Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .)
-    LESS_EQUAL      reduce using rule 35 (Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .)
-    GREATER         reduce using rule 35 (Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .)
-    GREATER_EQUAL   reduce using rule 35 (Factor -> PAR_OPEN Push_False_Bottom Expression PAR_CLOSE Pop_False_Bottom .)
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
+    Term                           shift and go to state 25
+    Var_Cte                        shift and go to state 26
+    Factor                         shift and go to state 19
+    Expression                     shift and go to state 84
 
 state 70
 
-    (27) Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor . Mult_Div_Mod_Quad Multiple_Factors
-    (31) Mult_Div_Mod_Quad -> .
+    (54) Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .
 
-    TIMES_SIGN      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    DIVIDE_SIGN     reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    MOD_SIGN        reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    PLUS_SIGN       reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    MINUS_SIGN      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    LESS            reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    LESS_EQUAL      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    GREATER         reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    GREATER_EQUAL   reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    PAR_CLOSE       reduce using rule 31 (Mult_Div_Mod_Quad -> .)
+    TIMES_SIGN      reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    DIVIDE_SIGN     reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    MOD_SIGN        reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    PLUS_SIGN       reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    MINUS_SIGN      reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    LESS            reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    LESS_EQUAL      reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    GREATER         reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    GREATER_EQUAL   reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    AND             reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    OR              reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
+    PAR_CLOSE       reduce using rule 54 (Var_Cte -> MINUS_SIGN INT_CONST Save_Neg_Int_Const .)
 
-    Mult_Div_Mod_Quad              shift and go to state 79
 
 state 71
 
-    (29) Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor . Mult_Div_Mod_Quad Multiple_Factors
-    (31) Mult_Div_Mod_Quad -> .
+    (56) Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .
 
-    TIMES_SIGN      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    DIVIDE_SIGN     reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    MOD_SIGN        reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    PLUS_SIGN       reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    MINUS_SIGN      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    LESS            reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    LESS_EQUAL      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    GREATER         reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    GREATER_EQUAL   reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    PAR_CLOSE       reduce using rule 31 (Mult_Div_Mod_Quad -> .)
+    TIMES_SIGN      reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    DIVIDE_SIGN     reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    MOD_SIGN        reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    PLUS_SIGN       reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    MINUS_SIGN      reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    LESS            reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    LESS_EQUAL      reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    GREATER         reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    GREATER_EQUAL   reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    AND             reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    OR              reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
+    PAR_CLOSE       reduce using rule 56 (Var_Cte -> MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const .)
 
-    Mult_Div_Mod_Quad              shift and go to state 80
 
 state 72
 
-    (28) Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor . Mult_Div_Mod_Quad Multiple_Factors
-    (31) Mult_Div_Mod_Quad -> .
+    (20) Logical_Not -> NOT Push_Not Relational . Not_Quad
+    (21) Not_Quad -> .
 
-    TIMES_SIGN      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    DIVIDE_SIGN     reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    MOD_SIGN        reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    PLUS_SIGN       reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    MINUS_SIGN      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    LESS            reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    LESS_EQUAL      reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    GREATER         reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    GREATER_EQUAL   reduce using rule 31 (Mult_Div_Mod_Quad -> .)
-    PAR_CLOSE       reduce using rule 31 (Mult_Div_Mod_Quad -> .)
+    AND             reduce using rule 21 (Not_Quad -> .)
+    OR              reduce using rule 21 (Not_Quad -> .)
+    PAR_CLOSE       reduce using rule 21 (Not_Quad -> .)
 
-    Mult_Div_Mod_Quad              shift and go to state 81
+    Not_Quad                       shift and go to state 85
 
 state 73
 
-    (21) Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term . Sum_Sub_Quad Multiple_Terms
-    (23) Sum_Sub_Quad -> .
+    (49) Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE . Pop_False_Bottom
+    (52) Pop_False_Bottom -> .
 
-    PLUS_SIGN       reduce using rule 23 (Sum_Sub_Quad -> .)
-    MINUS_SIGN      reduce using rule 23 (Sum_Sub_Quad -> .)
-    LESS            reduce using rule 23 (Sum_Sub_Quad -> .)
-    LESS_EQUAL      reduce using rule 23 (Sum_Sub_Quad -> .)
-    GREATER         reduce using rule 23 (Sum_Sub_Quad -> .)
-    GREATER_EQUAL   reduce using rule 23 (Sum_Sub_Quad -> .)
-    PAR_CLOSE       reduce using rule 23 (Sum_Sub_Quad -> .)
+    TIMES_SIGN      reduce using rule 52 (Pop_False_Bottom -> .)
+    DIVIDE_SIGN     reduce using rule 52 (Pop_False_Bottom -> .)
+    MOD_SIGN        reduce using rule 52 (Pop_False_Bottom -> .)
+    PLUS_SIGN       reduce using rule 52 (Pop_False_Bottom -> .)
+    MINUS_SIGN      reduce using rule 52 (Pop_False_Bottom -> .)
+    LESS            reduce using rule 52 (Pop_False_Bottom -> .)
+    LESS_EQUAL      reduce using rule 52 (Pop_False_Bottom -> .)
+    GREATER         reduce using rule 52 (Pop_False_Bottom -> .)
+    GREATER_EQUAL   reduce using rule 52 (Pop_False_Bottom -> .)
+    AND             reduce using rule 52 (Pop_False_Bottom -> .)
+    OR              reduce using rule 52 (Pop_False_Bottom -> .)
+    PAR_CLOSE       reduce using rule 52 (Pop_False_Bottom -> .)
 
-    Sum_Sub_Quad                   shift and go to state 82
+    Pop_False_Bottom               shift and go to state 86
 
 state 74
 
-    (20) Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term . Sum_Sub_Quad Multiple_Terms
-    (23) Sum_Sub_Quad -> .
+    (41) Multiple_Factors -> TIMES_SIGN Push_Times_Sign . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    PLUS_SIGN       reduce using rule 23 (Sum_Sub_Quad -> .)
-    MINUS_SIGN      reduce using rule 23 (Sum_Sub_Quad -> .)
-    LESS            reduce using rule 23 (Sum_Sub_Quad -> .)
-    LESS_EQUAL      reduce using rule 23 (Sum_Sub_Quad -> .)
-    GREATER         reduce using rule 23 (Sum_Sub_Quad -> .)
-    GREATER_EQUAL   reduce using rule 23 (Sum_Sub_Quad -> .)
-    PAR_CLOSE       reduce using rule 23 (Sum_Sub_Quad -> .)
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
-    Sum_Sub_Quad                   shift and go to state 83
+    Var_Cte                        shift and go to state 26
+    Factor                         shift and go to state 87
 
 state 75
 
-    (10) Relational -> Expression LESS Push_Less Expression Relational_Quad .
+    (43) Multiple_Factors -> MOD_SIGN Push_Mod_Sign . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    PAR_CLOSE       reduce using rule 10 (Relational -> Expression LESS Push_Less Expression Relational_Quad .)
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
+    Var_Cte                        shift and go to state 26
+    Factor                         shift and go to state 88
 
 state 76
 
-    (11) Relational -> Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad .
+    (42) Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    PAR_CLOSE       reduce using rule 11 (Relational -> Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad .)
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
+    Var_Cte                        shift and go to state 26
+    Factor                         shift and go to state 89
 
 state 77
 
-    (13) Relational -> Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad .
+    (15) Multiple_Nots -> AND Push_And . Logical_Not And_Quad Multiple_Nots
+    (19) Logical_Not -> . Relational
+    (20) Logical_Not -> . NOT Push_Not Relational Not_Quad
+    (23) Relational -> . Expression
+    (24) Relational -> . Expression LESS Push_Less Expression Relational_Quad
+    (25) Relational -> . Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad
+    (26) Relational -> . Expression GREATER Push_Greater Expression Relational_Quad
+    (27) Relational -> . Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad
+    (33) Expression -> . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    PAR_CLOSE       reduce using rule 13 (Relational -> Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad .)
+    NOT             shift and go to state 31
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
+    Factor                         shift and go to state 19
+    Relational                     shift and go to state 20
+    Logical_Not                    shift and go to state 90
+    Term                           shift and go to state 25
+    Var_Cte                        shift and go to state 26
+    Expression                     shift and go to state 29
 
 state 78
 
-    (12) Relational -> Expression GREATER Push_Greater Expression Relational_Quad .
+    (35) Multiple_Terms -> MINUS_SIGN Push_Minus_Sign . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    PAR_CLOSE       reduce using rule 12 (Relational -> Expression GREATER Push_Greater Expression Relational_Quad .)
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
+    Term                           shift and go to state 91
+    Var_Cte                        shift and go to state 26
+    Factor                         shift and go to state 19
 
 state 79
 
-    (27) Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad . Multiple_Factors
-    (27) Multiple_Factors -> . TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (28) Multiple_Factors -> . DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (29) Multiple_Factors -> . MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (30) Multiple_Factors -> . Epsilon
-    (51) Epsilon -> .
+    (34) Multiple_Terms -> PLUS_SIGN Push_Plus_Sign . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    TIMES_SIGN      shift and go to state 43
-    DIVIDE_SIGN     shift and go to state 47
-    MOD_SIGN        shift and go to state 44
-    PLUS_SIGN       reduce using rule 51 (Epsilon -> .)
-    MINUS_SIGN      reduce using rule 51 (Epsilon -> .)
-    LESS            reduce using rule 51 (Epsilon -> .)
-    LESS_EQUAL      reduce using rule 51 (Epsilon -> .)
-    GREATER         reduce using rule 51 (Epsilon -> .)
-    GREATER_EQUAL   reduce using rule 51 (Epsilon -> .)
-    PAR_CLOSE       reduce using rule 51 (Epsilon -> .)
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
-    Epsilon                        shift and go to state 45
-    Multiple_Factors               shift and go to state 84
+    Term                           shift and go to state 92
+    Var_Cte                        shift and go to state 26
+    Factor                         shift and go to state 19
 
 state 80
 
-    (29) Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad . Multiple_Factors
-    (27) Multiple_Factors -> . TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (28) Multiple_Factors -> . DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (29) Multiple_Factors -> . MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (30) Multiple_Factors -> . Epsilon
-    (51) Epsilon -> .
+    (10) Multiple_Ands -> OR Push_Or . Logical_And Or_Quad Multiple_Ands
+    (14) Logical_And -> . Logical_Not And_Quad Multiple_Nots
+    (19) Logical_Not -> . Relational
+    (20) Logical_Not -> . NOT Push_Not Relational Not_Quad
+    (23) Relational -> . Expression
+    (24) Relational -> . Expression LESS Push_Less Expression Relational_Quad
+    (25) Relational -> . Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad
+    (26) Relational -> . Expression GREATER Push_Greater Expression Relational_Quad
+    (27) Relational -> . Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad
+    (33) Expression -> . Term Sum_Sub_Quad Multiple_Terms
+    (40) Term -> . Factor Mult_Div_Mod_Quad Multiple_Factors
+    (49) Factor -> . PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    (50) Factor -> . Var_Cte
+    (53) Var_Cte -> . INT_CONST Save_Int_Const
+    (54) Var_Cte -> . MINUS_SIGN INT_CONST Save_Neg_Int_Const
+    (55) Var_Cte -> . FLOAT_CONST Save_Float_Const
+    (56) Var_Cte -> . MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
+    (57) Var_Cte -> . BOOL_CONST Save_Bool_Const
+    (58) Var_Cte -> . STRING_CONST Save_String_Const
 
-    TIMES_SIGN      shift and go to state 43
-    DIVIDE_SIGN     shift and go to state 47
-    MOD_SIGN        shift and go to state 44
-    PLUS_SIGN       reduce using rule 51 (Epsilon -> .)
-    MINUS_SIGN      reduce using rule 51 (Epsilon -> .)
-    LESS            reduce using rule 51 (Epsilon -> .)
-    LESS_EQUAL      reduce using rule 51 (Epsilon -> .)
-    GREATER         reduce using rule 51 (Epsilon -> .)
-    GREATER_EQUAL   reduce using rule 51 (Epsilon -> .)
-    PAR_CLOSE       reduce using rule 51 (Epsilon -> .)
+    NOT             shift and go to state 31
+    PAR_OPEN        shift and go to state 17
+    INT_CONST       shift and go to state 22
+    MINUS_SIGN      shift and go to state 30
+    FLOAT_CONST     shift and go to state 18
+    BOOL_CONST      shift and go to state 24
+    STRING_CONST    shift and go to state 21
 
-    Epsilon                        shift and go to state 45
-    Multiple_Factors               shift and go to state 85
+    Factor                         shift and go to state 19
+    Relational                     shift and go to state 20
+    Logical_Not                    shift and go to state 23
+    Term                           shift and go to state 25
+    Var_Cte                        shift and go to state 26
+    Logical_And                    shift and go to state 93
+    Expression                     shift and go to state 29
 
 state 81
 
-    (28) Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad . Multiple_Factors
-    (27) Multiple_Factors -> . TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (28) Multiple_Factors -> . DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (29) Multiple_Factors -> . MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
-    (30) Multiple_Factors -> . Epsilon
-    (51) Epsilon -> .
+    (24) Relational -> Expression LESS Push_Less Expression . Relational_Quad
+    (28) Relational_Quad -> .
 
-    TIMES_SIGN      shift and go to state 43
-    DIVIDE_SIGN     shift and go to state 47
-    MOD_SIGN        shift and go to state 44
-    PLUS_SIGN       reduce using rule 51 (Epsilon -> .)
-    MINUS_SIGN      reduce using rule 51 (Epsilon -> .)
-    LESS            reduce using rule 51 (Epsilon -> .)
-    LESS_EQUAL      reduce using rule 51 (Epsilon -> .)
-    GREATER         reduce using rule 51 (Epsilon -> .)
-    GREATER_EQUAL   reduce using rule 51 (Epsilon -> .)
-    PAR_CLOSE       reduce using rule 51 (Epsilon -> .)
+    AND             reduce using rule 28 (Relational_Quad -> .)
+    OR              reduce using rule 28 (Relational_Quad -> .)
+    PAR_CLOSE       reduce using rule 28 (Relational_Quad -> .)
 
-    Epsilon                        shift and go to state 45
-    Multiple_Factors               shift and go to state 86
+    Relational_Quad                shift and go to state 94
 
 state 82
 
-    (21) Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad . Multiple_Terms
-    (20) Multiple_Terms -> . PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
-    (21) Multiple_Terms -> . MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
-    (22) Multiple_Terms -> . Epsilon
-    (51) Epsilon -> .
+    (25) Relational -> Expression LESS_EQUAL Push_Less_Equal Expression . Relational_Quad
+    (28) Relational_Quad -> .
 
-    PLUS_SIGN       shift and go to state 52
-    MINUS_SIGN      shift and go to state 51
-    LESS            reduce using rule 51 (Epsilon -> .)
-    LESS_EQUAL      reduce using rule 51 (Epsilon -> .)
-    GREATER         reduce using rule 51 (Epsilon -> .)
-    GREATER_EQUAL   reduce using rule 51 (Epsilon -> .)
-    PAR_CLOSE       reduce using rule 51 (Epsilon -> .)
+    AND             reduce using rule 28 (Relational_Quad -> .)
+    OR              reduce using rule 28 (Relational_Quad -> .)
+    PAR_CLOSE       reduce using rule 28 (Relational_Quad -> .)
 
-    Multiple_Terms                 shift and go to state 87
-    Epsilon                        shift and go to state 50
+    Relational_Quad                shift and go to state 95
 
 state 83
 
-    (20) Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad . Multiple_Terms
-    (20) Multiple_Terms -> . PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
-    (21) Multiple_Terms -> . MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
-    (22) Multiple_Terms -> . Epsilon
-    (51) Epsilon -> .
+    (27) Relational -> Expression GREATER_EQUAL Push_Greater_Equal Expression . Relational_Quad
+    (28) Relational_Quad -> .
 
-    PLUS_SIGN       shift and go to state 52
-    MINUS_SIGN      shift and go to state 51
-    LESS            reduce using rule 51 (Epsilon -> .)
-    LESS_EQUAL      reduce using rule 51 (Epsilon -> .)
-    GREATER         reduce using rule 51 (Epsilon -> .)
-    GREATER_EQUAL   reduce using rule 51 (Epsilon -> .)
-    PAR_CLOSE       reduce using rule 51 (Epsilon -> .)
+    AND             reduce using rule 28 (Relational_Quad -> .)
+    OR              reduce using rule 28 (Relational_Quad -> .)
+    PAR_CLOSE       reduce using rule 28 (Relational_Quad -> .)
 
-    Multiple_Terms                 shift and go to state 88
-    Epsilon                        shift and go to state 50
+    Relational_Quad                shift and go to state 96
 
 state 84
 
-    (27) Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .
+    (26) Relational -> Expression GREATER Push_Greater Expression . Relational_Quad
+    (28) Relational_Quad -> .
 
-    PLUS_SIGN       reduce using rule 27 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    MINUS_SIGN      reduce using rule 27 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    LESS            reduce using rule 27 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    LESS_EQUAL      reduce using rule 27 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    GREATER         reduce using rule 27 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    GREATER_EQUAL   reduce using rule 27 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    PAR_CLOSE       reduce using rule 27 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    AND             reduce using rule 28 (Relational_Quad -> .)
+    OR              reduce using rule 28 (Relational_Quad -> .)
+    PAR_CLOSE       reduce using rule 28 (Relational_Quad -> .)
 
+    Relational_Quad                shift and go to state 97
 
 state 85
 
-    (29) Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .
+    (20) Logical_Not -> NOT Push_Not Relational Not_Quad .
 
-    PLUS_SIGN       reduce using rule 29 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    MINUS_SIGN      reduce using rule 29 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    LESS            reduce using rule 29 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    LESS_EQUAL      reduce using rule 29 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    GREATER         reduce using rule 29 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    GREATER_EQUAL   reduce using rule 29 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    PAR_CLOSE       reduce using rule 29 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    AND             reduce using rule 20 (Logical_Not -> NOT Push_Not Relational Not_Quad .)
+    OR              reduce using rule 20 (Logical_Not -> NOT Push_Not Relational Not_Quad .)
+    PAR_CLOSE       reduce using rule 20 (Logical_Not -> NOT Push_Not Relational Not_Quad .)
 
 
 state 86
 
-    (28) Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .
+    (49) Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .
 
-    PLUS_SIGN       reduce using rule 28 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    MINUS_SIGN      reduce using rule 28 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    LESS            reduce using rule 28 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    LESS_EQUAL      reduce using rule 28 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    GREATER         reduce using rule 28 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    GREATER_EQUAL   reduce using rule 28 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
-    PAR_CLOSE       reduce using rule 28 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    TIMES_SIGN      reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    DIVIDE_SIGN     reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    MOD_SIGN        reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    PLUS_SIGN       reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    MINUS_SIGN      reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    LESS            reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    LESS_EQUAL      reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    GREATER         reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    GREATER_EQUAL   reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    AND             reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    OR              reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
+    PAR_CLOSE       reduce using rule 49 (Factor -> PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom .)
 
 
 state 87
 
-    (21) Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .
+    (41) Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor . Mult_Div_Mod_Quad Multiple_Factors
+    (45) Mult_Div_Mod_Quad -> .
 
-    LESS            reduce using rule 21 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
-    LESS_EQUAL      reduce using rule 21 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
-    GREATER         reduce using rule 21 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
-    GREATER_EQUAL   reduce using rule 21 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
-    PAR_CLOSE       reduce using rule 21 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    TIMES_SIGN      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    DIVIDE_SIGN     reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    MOD_SIGN        reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    PLUS_SIGN       reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    MINUS_SIGN      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    LESS            reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    LESS_EQUAL      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    GREATER         reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    GREATER_EQUAL   reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    AND             reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    OR              reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    PAR_CLOSE       reduce using rule 45 (Mult_Div_Mod_Quad -> .)
 
+    Mult_Div_Mod_Quad              shift and go to state 98
 
 state 88
 
-    (20) Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .
+    (43) Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor . Mult_Div_Mod_Quad Multiple_Factors
+    (45) Mult_Div_Mod_Quad -> .
 
-    LESS            reduce using rule 20 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
-    LESS_EQUAL      reduce using rule 20 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
-    GREATER         reduce using rule 20 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
-    GREATER_EQUAL   reduce using rule 20 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
-    PAR_CLOSE       reduce using rule 20 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    TIMES_SIGN      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    DIVIDE_SIGN     reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    MOD_SIGN        reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    PLUS_SIGN       reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    MINUS_SIGN      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    LESS            reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    LESS_EQUAL      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    GREATER         reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    GREATER_EQUAL   reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    AND             reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    OR              reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    PAR_CLOSE       reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+
+    Mult_Div_Mod_Quad              shift and go to state 99
+
+state 89
+
+    (42) Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor . Mult_Div_Mod_Quad Multiple_Factors
+    (45) Mult_Div_Mod_Quad -> .
+
+    TIMES_SIGN      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    DIVIDE_SIGN     reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    MOD_SIGN        reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    PLUS_SIGN       reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    MINUS_SIGN      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    LESS            reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    LESS_EQUAL      reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    GREATER         reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    GREATER_EQUAL   reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    AND             reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    OR              reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+    PAR_CLOSE       reduce using rule 45 (Mult_Div_Mod_Quad -> .)
+
+    Mult_Div_Mod_Quad              shift and go to state 100
+
+state 90
+
+    (15) Multiple_Nots -> AND Push_And Logical_Not . And_Quad Multiple_Nots
+    (17) And_Quad -> .
+
+    AND             reduce using rule 17 (And_Quad -> .)
+    OR              reduce using rule 17 (And_Quad -> .)
+    PAR_CLOSE       reduce using rule 17 (And_Quad -> .)
+
+    And_Quad                       shift and go to state 101
+
+state 91
+
+    (35) Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term . Sum_Sub_Quad Multiple_Terms
+    (37) Sum_Sub_Quad -> .
+
+    PLUS_SIGN       reduce using rule 37 (Sum_Sub_Quad -> .)
+    MINUS_SIGN      reduce using rule 37 (Sum_Sub_Quad -> .)
+    LESS            reduce using rule 37 (Sum_Sub_Quad -> .)
+    LESS_EQUAL      reduce using rule 37 (Sum_Sub_Quad -> .)
+    GREATER         reduce using rule 37 (Sum_Sub_Quad -> .)
+    GREATER_EQUAL   reduce using rule 37 (Sum_Sub_Quad -> .)
+    AND             reduce using rule 37 (Sum_Sub_Quad -> .)
+    OR              reduce using rule 37 (Sum_Sub_Quad -> .)
+    PAR_CLOSE       reduce using rule 37 (Sum_Sub_Quad -> .)
+
+    Sum_Sub_Quad                   shift and go to state 102
+
+state 92
+
+    (34) Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term . Sum_Sub_Quad Multiple_Terms
+    (37) Sum_Sub_Quad -> .
+
+    PLUS_SIGN       reduce using rule 37 (Sum_Sub_Quad -> .)
+    MINUS_SIGN      reduce using rule 37 (Sum_Sub_Quad -> .)
+    LESS            reduce using rule 37 (Sum_Sub_Quad -> .)
+    LESS_EQUAL      reduce using rule 37 (Sum_Sub_Quad -> .)
+    GREATER         reduce using rule 37 (Sum_Sub_Quad -> .)
+    GREATER_EQUAL   reduce using rule 37 (Sum_Sub_Quad -> .)
+    AND             reduce using rule 37 (Sum_Sub_Quad -> .)
+    OR              reduce using rule 37 (Sum_Sub_Quad -> .)
+    PAR_CLOSE       reduce using rule 37 (Sum_Sub_Quad -> .)
+
+    Sum_Sub_Quad                   shift and go to state 103
+
+state 93
+
+    (10) Multiple_Ands -> OR Push_Or Logical_And . Or_Quad Multiple_Ands
+    (12) Or_Quad -> .
+
+    OR              reduce using rule 12 (Or_Quad -> .)
+    PAR_CLOSE       reduce using rule 12 (Or_Quad -> .)
+
+    Or_Quad                        shift and go to state 104
+
+state 94
+
+    (24) Relational -> Expression LESS Push_Less Expression Relational_Quad .
+
+    AND             reduce using rule 24 (Relational -> Expression LESS Push_Less Expression Relational_Quad .)
+    OR              reduce using rule 24 (Relational -> Expression LESS Push_Less Expression Relational_Quad .)
+    PAR_CLOSE       reduce using rule 24 (Relational -> Expression LESS Push_Less Expression Relational_Quad .)
+
+
+state 95
+
+    (25) Relational -> Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad .
+
+    AND             reduce using rule 25 (Relational -> Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad .)
+    OR              reduce using rule 25 (Relational -> Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad .)
+    PAR_CLOSE       reduce using rule 25 (Relational -> Expression LESS_EQUAL Push_Less_Equal Expression Relational_Quad .)
+
+
+state 96
+
+    (27) Relational -> Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad .
+
+    AND             reduce using rule 27 (Relational -> Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad .)
+    OR              reduce using rule 27 (Relational -> Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad .)
+    PAR_CLOSE       reduce using rule 27 (Relational -> Expression GREATER_EQUAL Push_Greater_Equal Expression Relational_Quad .)
+
+
+state 97
+
+    (26) Relational -> Expression GREATER Push_Greater Expression Relational_Quad .
+
+    AND             reduce using rule 26 (Relational -> Expression GREATER Push_Greater Expression Relational_Quad .)
+    OR              reduce using rule 26 (Relational -> Expression GREATER Push_Greater Expression Relational_Quad .)
+    PAR_CLOSE       reduce using rule 26 (Relational -> Expression GREATER Push_Greater Expression Relational_Quad .)
+
+
+state 98
+
+    (41) Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad . Multiple_Factors
+    (41) Multiple_Factors -> . TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (42) Multiple_Factors -> . DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (43) Multiple_Factors -> . MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (44) Multiple_Factors -> . Epsilon
+    (65) Epsilon -> .
+
+    TIMES_SIGN      shift and go to state 50
+    DIVIDE_SIGN     shift and go to state 54
+    MOD_SIGN        shift and go to state 51
+    PLUS_SIGN       reduce using rule 65 (Epsilon -> .)
+    MINUS_SIGN      reduce using rule 65 (Epsilon -> .)
+    LESS            reduce using rule 65 (Epsilon -> .)
+    LESS_EQUAL      reduce using rule 65 (Epsilon -> .)
+    GREATER         reduce using rule 65 (Epsilon -> .)
+    GREATER_EQUAL   reduce using rule 65 (Epsilon -> .)
+    AND             reduce using rule 65 (Epsilon -> .)
+    OR              reduce using rule 65 (Epsilon -> .)
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
+
+    Epsilon                        shift and go to state 52
+    Multiple_Factors               shift and go to state 105
+
+state 99
+
+    (43) Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad . Multiple_Factors
+    (41) Multiple_Factors -> . TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (42) Multiple_Factors -> . DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (43) Multiple_Factors -> . MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (44) Multiple_Factors -> . Epsilon
+    (65) Epsilon -> .
+
+    TIMES_SIGN      shift and go to state 50
+    DIVIDE_SIGN     shift and go to state 54
+    MOD_SIGN        shift and go to state 51
+    PLUS_SIGN       reduce using rule 65 (Epsilon -> .)
+    MINUS_SIGN      reduce using rule 65 (Epsilon -> .)
+    LESS            reduce using rule 65 (Epsilon -> .)
+    LESS_EQUAL      reduce using rule 65 (Epsilon -> .)
+    GREATER         reduce using rule 65 (Epsilon -> .)
+    GREATER_EQUAL   reduce using rule 65 (Epsilon -> .)
+    AND             reduce using rule 65 (Epsilon -> .)
+    OR              reduce using rule 65 (Epsilon -> .)
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
+
+    Epsilon                        shift and go to state 52
+    Multiple_Factors               shift and go to state 106
+
+state 100
+
+    (42) Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad . Multiple_Factors
+    (41) Multiple_Factors -> . TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (42) Multiple_Factors -> . DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (43) Multiple_Factors -> . MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors
+    (44) Multiple_Factors -> . Epsilon
+    (65) Epsilon -> .
+
+    TIMES_SIGN      shift and go to state 50
+    DIVIDE_SIGN     shift and go to state 54
+    MOD_SIGN        shift and go to state 51
+    PLUS_SIGN       reduce using rule 65 (Epsilon -> .)
+    MINUS_SIGN      reduce using rule 65 (Epsilon -> .)
+    LESS            reduce using rule 65 (Epsilon -> .)
+    LESS_EQUAL      reduce using rule 65 (Epsilon -> .)
+    GREATER         reduce using rule 65 (Epsilon -> .)
+    GREATER_EQUAL   reduce using rule 65 (Epsilon -> .)
+    AND             reduce using rule 65 (Epsilon -> .)
+    OR              reduce using rule 65 (Epsilon -> .)
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
+
+    Epsilon                        shift and go to state 52
+    Multiple_Factors               shift and go to state 107
+
+state 101
+
+    (15) Multiple_Nots -> AND Push_And Logical_Not And_Quad . Multiple_Nots
+    (15) Multiple_Nots -> . AND Push_And Logical_Not And_Quad Multiple_Nots
+    (16) Multiple_Nots -> . Epsilon
+    (65) Epsilon -> .
+
+    AND             shift and go to state 55
+    OR              reduce using rule 65 (Epsilon -> .)
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
+
+    Multiple_Nots                  shift and go to state 108
+    Epsilon                        shift and go to state 56
+
+state 102
+
+    (35) Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad . Multiple_Terms
+    (34) Multiple_Terms -> . PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
+    (35) Multiple_Terms -> . MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
+    (36) Multiple_Terms -> . Epsilon
+    (65) Epsilon -> .
+
+    PLUS_SIGN       shift and go to state 61
+    MINUS_SIGN      shift and go to state 60
+    LESS            reduce using rule 65 (Epsilon -> .)
+    LESS_EQUAL      reduce using rule 65 (Epsilon -> .)
+    GREATER         reduce using rule 65 (Epsilon -> .)
+    GREATER_EQUAL   reduce using rule 65 (Epsilon -> .)
+    AND             reduce using rule 65 (Epsilon -> .)
+    OR              reduce using rule 65 (Epsilon -> .)
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
+
+    Multiple_Terms                 shift and go to state 109
+    Epsilon                        shift and go to state 59
+
+state 103
+
+    (34) Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad . Multiple_Terms
+    (34) Multiple_Terms -> . PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms
+    (35) Multiple_Terms -> . MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms
+    (36) Multiple_Terms -> . Epsilon
+    (65) Epsilon -> .
+
+    PLUS_SIGN       shift and go to state 61
+    MINUS_SIGN      shift and go to state 60
+    LESS            reduce using rule 65 (Epsilon -> .)
+    LESS_EQUAL      reduce using rule 65 (Epsilon -> .)
+    GREATER         reduce using rule 65 (Epsilon -> .)
+    GREATER_EQUAL   reduce using rule 65 (Epsilon -> .)
+    AND             reduce using rule 65 (Epsilon -> .)
+    OR              reduce using rule 65 (Epsilon -> .)
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
+
+    Multiple_Terms                 shift and go to state 110
+    Epsilon                        shift and go to state 59
+
+state 104
+
+    (10) Multiple_Ands -> OR Push_Or Logical_And Or_Quad . Multiple_Ands
+    (10) Multiple_Ands -> . OR Push_Or Logical_And Or_Quad Multiple_Ands
+    (11) Multiple_Ands -> . Epsilon
+    (65) Epsilon -> .
+
+    OR              shift and go to state 65
+    PAR_CLOSE       reduce using rule 65 (Epsilon -> .)
+
+    Multiple_Ands                  shift and go to state 111
+    Epsilon                        shift and go to state 64
+
+state 105
+
+    (41) Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .
+
+    PLUS_SIGN       reduce using rule 41 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    MINUS_SIGN      reduce using rule 41 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    LESS            reduce using rule 41 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    LESS_EQUAL      reduce using rule 41 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    GREATER         reduce using rule 41 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    GREATER_EQUAL   reduce using rule 41 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    AND             reduce using rule 41 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    OR              reduce using rule 41 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    PAR_CLOSE       reduce using rule 41 (Multiple_Factors -> TIMES_SIGN Push_Times_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+
+
+state 106
+
+    (43) Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .
+
+    PLUS_SIGN       reduce using rule 43 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    MINUS_SIGN      reduce using rule 43 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    LESS            reduce using rule 43 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    LESS_EQUAL      reduce using rule 43 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    GREATER         reduce using rule 43 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    GREATER_EQUAL   reduce using rule 43 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    AND             reduce using rule 43 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    OR              reduce using rule 43 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    PAR_CLOSE       reduce using rule 43 (Multiple_Factors -> MOD_SIGN Push_Mod_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+
+
+state 107
+
+    (42) Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .
+
+    PLUS_SIGN       reduce using rule 42 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    MINUS_SIGN      reduce using rule 42 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    LESS            reduce using rule 42 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    LESS_EQUAL      reduce using rule 42 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    GREATER         reduce using rule 42 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    GREATER_EQUAL   reduce using rule 42 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    AND             reduce using rule 42 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    OR              reduce using rule 42 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+    PAR_CLOSE       reduce using rule 42 (Multiple_Factors -> DIVIDE_SIGN Push_Divide_Sign Factor Mult_Div_Mod_Quad Multiple_Factors .)
+
+
+state 108
+
+    (15) Multiple_Nots -> AND Push_And Logical_Not And_Quad Multiple_Nots .
+
+    OR              reduce using rule 15 (Multiple_Nots -> AND Push_And Logical_Not And_Quad Multiple_Nots .)
+    PAR_CLOSE       reduce using rule 15 (Multiple_Nots -> AND Push_And Logical_Not And_Quad Multiple_Nots .)
+
+
+state 109
+
+    (35) Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .
+
+    LESS            reduce using rule 35 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    LESS_EQUAL      reduce using rule 35 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    GREATER         reduce using rule 35 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    GREATER_EQUAL   reduce using rule 35 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    AND             reduce using rule 35 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    OR              reduce using rule 35 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    PAR_CLOSE       reduce using rule 35 (Multiple_Terms -> MINUS_SIGN Push_Minus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+
+
+state 110
+
+    (34) Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .
+
+    LESS            reduce using rule 34 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    LESS_EQUAL      reduce using rule 34 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    GREATER         reduce using rule 34 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    GREATER_EQUAL   reduce using rule 34 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    AND             reduce using rule 34 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    OR              reduce using rule 34 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+    PAR_CLOSE       reduce using rule 34 (Multiple_Terms -> PLUS_SIGN Push_Plus_Sign Term Sum_Sub_Quad Multiple_Terms .)
+
+
+state 111
+
+    (10) Multiple_Ands -> OR Push_Or Logical_And Or_Quad Multiple_Ands .
+
+    PAR_CLOSE       reduce using rule 10 (Multiple_Ands -> OR Push_Or Logical_And Or_Quad Multiple_Ands .)
 

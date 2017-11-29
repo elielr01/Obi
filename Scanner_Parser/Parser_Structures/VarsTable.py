@@ -43,12 +43,12 @@ class VarsTable:
         }
 
     # Returns true if the variable exists in the table
-    def boolExistsVar(self, key):
-        return key in self.table
+    def boolExistsVar(self, key, strType):
+        return (key in self.table) and (self.table[key]["type"] == strType)
 
     # Returns a dictionary with all variable's info
-    def dictGetVarsInfo(self, key):
-        if self.boolExistsVar(key):
+    def dictGetVarsInfo(self, key, strType):
+        if self.boolExistsVar(key, strType):
             return self.table[key]
         else:
             sys.exit("Exit with error: Trying to access a nonexistent var at VarsTable. Key: " + str(key))
