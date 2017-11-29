@@ -1,0 +1,20 @@
+#-
+    Obi code for testing use case "print equity"
+
+    Author: Eli Linares
+    ID: A00815654
+    Date: Nov 28, 2017
+-#
+
+play(){
+
+    #-
+    print(10 == 10);
+    print(2.5 == 2.5);
+    print(true == true);
+    print("Hello" == "He" + "llo");
+    -#
+
+    # print(2 * 5 == 3 + 10 - 3);
+    print((2 < 5) and (5 < 10) == not(10 < 5));
+}

@@ -145,7 +145,7 @@ def t_BOOL_CONST(t):
     return t
 
 def t_STRING_CONST(t):
-    r"\".*\""
+    r"\".*?\""
 
     t.value = str(t.value)[1:-1]
     return t

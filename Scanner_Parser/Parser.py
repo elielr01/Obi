@@ -90,11 +90,88 @@ def p_Statement(p):
 
 def p_Print(p):
     '''
-    Print : PRINT PAR_OPEN Logical_Or PAR_CLOSE SEMICOLON
+    Print : PRINT PAR_OPEN Exp PAR_CLOSE SEMICOLON
     '''
     intAddress = stkOperands.pop()
     strType = stkTypes.pop()
     qgQuads.addQuad(["Print", None, None, intAddress])
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Logical Exp (General Expression for all statements)
+def p_Exp(p):
+    '''
+    Exp : Logical_Or
+    | Logical_Or EQUAL Push_Equal Logical_Or Equity_Quad
+    | Logical_Or DIFF Push_Diff Logical_Or Equity_Quad
+    '''
+
+# Neuralgic Points
+
+def p_Equity_Quad(p):
+    '''
+    Equity_Quad :
+    '''
+    if len(stkOperators) > 0:
+        strOperator = stkOperators[-1]
+        # If there are pending operations of multiplication, division or mod
+        if strOperator == "==" or strOperator == "!=":
+            # We start generating the quad
+
+            # First, we take out the right operand
+            intRightOperandAddress = stkOperands.pop()
+            strRightType = stkTypes.pop()
+
+            # Then, we take out the left operand
+            intLeftOperandAddress = stkOperands.pop()
+            strLeftType = stkTypes.pop()
+
+            # And we pop the operator from the stack
+            strOperator = stkOperators.pop()
+
+            # We validate that this operation is possible
+            boolValidOperation = scSemanticCube.boolExists(strLeftType, strOperator, strRightType)
+
+            if boolValidOperation:
+                # It's a valid operation, so we ask for the resultant type
+                strResultType = scSemanticCube.getType(strLeftType, strOperator, strRightType)
+
+                global strCurrentFunc
+
+                # We ask for the next available temporal address
+                if strCurrentFunc == "global":
+                    # We are in a global context
+                    intResultAddress = gmbGlobal.intNextTemporalGlobalAddress(strResultType)
+                else:
+                    # We are in a local context
+                    intResultAddress = lmbLocal.intNextTemporalLocalAddress(strResultType)
+
+                # We make the quad
+                qgQuads.addQuad([strOperator, intLeftOperandAddress, intRightOperandAddress, intResultAddress])
+
+                # We add the temporal result to the stacks
+                stkOperands.append(intResultAddress)
+                stkTypes.append(strResultType)
+
+                # We increment the temporals needed in our funcs table
+                ftFuncsTable.addTemp(strCurrentFunc)
+            else:
+                # This is not a valid operation
+                sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + strLeftType + " " + strOperator +
+                         " " + strRightType + "\nAt line " + str(p.lexer.lineno))
+
+
+def p_Push_Equal(p):
+    '''
+    Push_Equal :
+    '''
+    stkOperators.append("==")
+
+def p_Push_Diff(p):
+    '''
+    Push_Diff :
+    '''
+    stkOperators.append("!=")
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -165,7 +242,7 @@ def p_Or_Quad(p):
             else:
                 # This is not a valid operation
                 sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + strLeftType + " " + strOperator +
-                         " " + strRightType + "\nAt line " + str(p.lineno))
+                         " " + strRightType + "\nAt line " + str(p.lexer.lineno))
 
 def p_Push_Or(p):
     '''
@@ -242,7 +319,7 @@ def p_And_Quad(p):
             else:
                 # This is not a valid operation
                 sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + strLeftType + " " + strOperator +
-                         " " + strRightType + "\nAt line " + str(p.lineno))
+                         " " + strRightType + "\nAt line " + str(p.lexer.lineno))
 
 
 def p_Push_And(p):
@@ -313,7 +390,7 @@ def p_Not_Quad(p):
             else:
                 # This is not a valid operation
                 sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + str(strLeftType) + " " + strOperator +
-                         " " + strRightType + "\nAt line " + str(p.lineno))
+                         " " + strRightType + "\nAt line " + str(p.lexer.lineno))
 
 def p_Push_Not(p):
     '''
@@ -386,7 +463,7 @@ def p_Relational_Quad(p):
             else:
                 # This is not a valid operation
                 sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + strLeftType + " " + strOperator +
-                         " " + strRightType + "\nAt line " + str(p.lineno))
+                         " " + strRightType + "\nAt line " + str(p.lexer.lineno))
 
 
 def p_Push_Less(p):
@@ -483,7 +560,7 @@ def p_Sum_Sub_Quad(p):
             else:
                 # This is not a valid operation
                 sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + strLeftType + " " + strOperator +
-                         " " + strRightType + "\nAt line " + str(p.lineno))
+                         " " + strRightType + "\nAt line " + str(p.lexer.lineno))
 
 
 def p_Push_Plus_Sign(p):
@@ -568,7 +645,7 @@ def p_Mult_Div_Mod_Quad(p):
             else:
                 # This is not a valid operation
                 sys.exit("Exit with error: Type mismatch.\nNot valid operation: " + strLeftType + " " + strOperator +
-                         " " + strRightType + "\nAt line " + str(p.lineno))
+                         " " + strRightType + "\nAt line " + str(p.lexer.lineno))
 
 
 
@@ -598,7 +675,7 @@ def p_Push_Mod_Sign(p):
 
 def p_Factor(p):
     '''
-    Factor : PAR_OPEN Push_False_Bottom Logical_Or PAR_CLOSE Pop_False_Bottom
+    Factor : PAR_OPEN Push_False_Bottom Exp PAR_CLOSE Pop_False_Bottom
     | Var_Cte
     '''
 
@@ -771,7 +848,7 @@ def p_error(p):
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Tests/print_logicals.obi', 'r') as fileObiFile:
+with open('../Tests/print_equity.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 parser.parse(obiCode, tracking=True)
