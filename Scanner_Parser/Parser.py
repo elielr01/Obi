@@ -89,6 +89,7 @@ def p_Statement(p):
     | Declare_Var
     | Assignment
     | While_Loop
+    | If_Eif_Else
     '''
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -106,6 +107,77 @@ def p_Print(p):
     intAddress = stkOperands.pop()
     strType = stkTypes.pop()
     qgQuads.addQuad(["Print", None, None, intAddress])
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Conditionals
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# If_eif_else rule
+def p_If_Eif_Else(p):
+    '''
+    If_Eif_Else : IF PAR_OPEN Exp PAR_CLOSE If_GoToF_Quad Statements_Block GoTo_Fill Eif_Recursion Optional_Else
+    '''
+
+    # Fill jumps to the end
+    while len(stkMultipleJumps) > 0:
+        intQuadInedx = stkMultipleJumps.pop()
+        qgQuads.fillQuad(intQuadInedx)
+
+# Eif part of the rule
+def p_Eif_Recursion(p):
+    '''
+    Eif_Recursion : EIF PAR_OPEN Exp PAR_CLOSE If_GoToF_Quad Statements_Block GoTo_Fill Eif_Recursion
+    | Epsilon
+    '''
+
+# Else part of the rule
+def p_Optional_Else(p):
+    '''
+    Optional_Else : ELSE Statements_Block
+    | Epsilon
+    '''
+
+# Neuralgic points
+
+def p_If_GoToF_Quad(p):
+    '''
+    If_GoToF_Quad :
+    '''
+    # First, we validate the type of the resultant expression
+    strType = stkTypes.pop()
+
+    if strType != "Bool":
+        generic_error("Exit with error: Type mismatch\n Expected Bool type at while.", p)
+    else:
+        # It's a valid expression
+
+        # We take out the operand
+        intAddress = stkOperands.pop()
+
+        # We proceed to make the incomplete quad
+        intCreatedQuadIndex = qgQuads.addQuad(["GoToF", intAddress, None, None])
+
+        stkSingleJumps.append(intCreatedQuadIndex)
+
+def p_GoTo_Fill(p):
+    '''
+    GoTo_Fill :
+    '''
+    # First we create a GoTo Quad for jumping to the end
+    intJumpQuadIndex = qgQuads.addQuad(["GoTo", None, None, None])
+
+    # And we add it to the stack of collective jumps
+    stkMultipleJumps.append(intJumpQuadIndex)
+
+    # Then, we fill our previous GoToF
+    intPreviousJump = stkSingleJumps.pop()
+
+    # And we fill it
+    qgQuads.fillQuad(intPreviousJump)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -1054,9 +1126,11 @@ def executeTest(boolDebug):
         print("-------------------------------------------")
         print("Functions Table")
         ftFuncsTable.printTable()
+
         print("-------------------------------------------")
         print("Quads Generated")
         qgQuads.printQuads()
+
     print("-------------------------------------------")
     print("Obi Machine Result:")
     obiMachine = ObiMachine(qgQuads.getQuads(), gmbGlobal, ftFuncsTable)
@@ -1070,7 +1144,7 @@ def executeTest(boolDebug):
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Tests/while.obi', 'r') as fileObiFile:
+with open('../Tests/if.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 parser.parse(obiCode, tracking=True)

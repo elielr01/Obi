@@ -1,0 +1,22 @@
+#-
+    Obi code for testing use case "If Eif Else"
+
+    Author: Eli Linares
+    ID: A00815654
+    Date: Nov 30, 2017
+-#
+
+play(){
+
+    Int x = 10;
+    if (x < 10){
+        print("Entra al if");
+    }
+    eif ( x < 9){
+        print("Entra al eif");
+    }
+    else {
+        print("Entra al else");
+    }
+
+}
