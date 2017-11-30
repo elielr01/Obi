@@ -88,7 +88,16 @@ def p_Statement(p):
     Statement : Print
     | Declare_Var
     | Assignment
+    | While_Loop
     '''
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+# I/O
+
+# ----------------------------------------------------------------------------------------------------------------------
 
 def p_Print(p):
     '''
@@ -97,6 +106,58 @@ def p_Print(p):
     intAddress = stkOperands.pop()
     strType = stkTypes.pop()
     qgQuads.addQuad(["Print", None, None, intAddress])
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Loops
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# While-loop rule
+def p_While_Loop(p):
+    '''
+    While_Loop : WHILE Push_While_Jump PAR_OPEN Exp PAR_CLOSE While_Quad Statements_Block Fill_While_Quads
+    '''
+
+# Neuralgic Points
+def p_Push_While_Jump(p):
+    '''
+    Push_While_Jump :
+    '''
+    stkSingleJumps.append(qgQuads.intNextQuad())
+
+def p_While_Quad(p):
+    '''
+    While_Quad :
+    '''
+    # First, we validate the type of the resultant expression
+    strType = stkTypes.pop()
+
+    if strType != "Bool":
+        generic_error("Exit with error: Type mismatch\n Expected Bool type at while.", p)
+    else:
+        #It's a valid expression
+
+        # We take out the operand
+        intAddress = stkOperands.pop()
+
+        # We proceed to make the incomplete quad
+        intCreatedQuadIndex = qgQuads.addQuad(["GoToF", intAddress, None, None])
+
+        stkSingleJumps.append(intCreatedQuadIndex)
+
+def p_Fill_While_Quads(p):
+    '''
+    Fill_While_Quads :
+    '''
+    intEndQuadIndex = stkSingleJumps.pop()
+    intReturnQuadIndex = stkSingleJumps.pop()
+
+    qgQuads.addQuad(["GoTo", None, None, intReturnQuadIndex])
+    qgQuads.fillQuad(intEndQuadIndex)
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -208,7 +269,7 @@ def p_Push_assign(p):
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
-# Logical Exp (General Expression for all statements)
+# Exp (General Expression for all statements)
 def p_Exp(p):
     '''
     Exp : Logical_Or
@@ -1009,7 +1070,7 @@ def executeTest(boolDebug):
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Tests/declare_assign.obi', 'r') as fileObiFile:
+with open('../Tests/while.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 parser.parse(obiCode, tracking=True)

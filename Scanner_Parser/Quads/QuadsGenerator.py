@@ -4,7 +4,7 @@ class QuadsGenerator:
 
     def __init__(self):
         self.dictlstQuads = {}
-        self.intQuadsCont = 1
+        self.intQuadsCont = 0
 
     def addQuad(self, lstQuadTuple):
         self.dictlstQuads[self.intQuadsCont] = lstQuadTuple
@@ -22,3 +22,6 @@ class QuadsGenerator:
 
     def getQuads(self):
         return self.dictlstQuads.values()
+
+    def intNextQuad(self):
+        return self.intQuadsCont

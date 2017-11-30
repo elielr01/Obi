@@ -13,7 +13,7 @@ class ObiMachine:
 
     def execute(self, boolDebugMode):
 
-        intQuadIndex = 1
+        intQuadIndex = 0
         while self.lstlstQuads[intQuadIndex][0] != "End":
 
             # ----------------------------------------------------------------------------------------------------------
@@ -31,6 +31,34 @@ class ObiMachine:
             elif self.lstlstQuads[intQuadIndex][0] == "GoTo":
                 # Execute a Jump
                 intQuadIndex = self.lstlstQuads[intQuadIndex][3]
+
+            elif self.lstlstQuads[intQuadIndex][0] == "GoToF":
+                # Execute a jump on false
+                # Cases:
+                # 1. [ GoToF , 100  , None , 2 ]
+                # 2. [ GoToF , [100] , None , 2 ]
+
+                # First we get our result value
+                if isinstance(self.lstlstQuads[intQuadIndex][1], list):
+                    # If it's a list, that's an address of an address
+                    intResultAddrAddr = self.lstlstQuads[intQuadIndex][1][0]
+                    intResultAddress = self.mmMemoryManager.getValueFrom(intResultAddrAddr)
+                else:
+                    # It's directly an address
+                    intResultAddress = self.lstlstQuads[intQuadIndex][1]
+
+                # With the result address, we ask for the result value
+                resultValue = self.mmMemoryManager.getValueFrom(intResultAddress)
+                #sys.exit("Debug exit: " + str(resultValue))
+                #self.mmMemoryManager.printMemory()
+
+                if not resultValue:
+                    # Execute jump
+                    intQuadIndex = self.lstlstQuads[intQuadIndex][3]
+                else:
+                    # We just continue
+                    intQuadIndex += 1
+
 
             # ----------------------------------------------------------------------------------------------------------
             # Arithmetics Codes
