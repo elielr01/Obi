@@ -40,4 +40,14 @@ class MemoryManager:
         else:
             sys.exit("Exit with error: Trying to access a nonexistent address while getting a value at MemoryManager")
 
+    # Prints all the memory blocks within the memory manager
+    def printMemory(self):
+        print("=======================================================")
+        print("Global Memory")
+        self.gmbGlobal.printMemory()
 
+        print("=======================================================")
+        print("Local Contexts")
+
+        for lmbContext in self.stkExecutionBlocks:
+            lmbContext.printMemory()

@@ -1,0 +1,31 @@
+#-
+    Obi code for testing use case "local var declarations and assignments"
+
+    Author: Eli Linares
+    ID: A00815654
+    Date: Nov 29, 2017
+-#
+
+play(){
+    #-
+
+    # A simple declaration
+    Int intExample;
+    Bool boolExample;
+
+    intExample = 10;
+    boolExample = true;
+    intExample = intExample * 10;
+
+    print(intExample + 20);
+    print(10);
+
+    print(boolExample);
+
+    -#
+
+    Int intX = 10 * 2;
+    Int intY = intX * 2;
+    print(intX);
+    print(intY);
+}

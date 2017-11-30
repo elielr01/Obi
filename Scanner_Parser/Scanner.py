@@ -8,8 +8,9 @@ import sys
 reserved_words = {
     "Int" : "INT",
     "Float" : "FLOAT",
-    "String" : "STRING",
     "Bool" : "BOOL",
+    "String" : "STRING",
+
 
     "play" : "PLAY",
 
@@ -162,7 +163,7 @@ def t_error(t):
 
 scanner = lex.lex()
 
-with open('../Tests/print_logicals.obi', 'r') as fileObiFile:
+with open('../Tests/declare_assign.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 

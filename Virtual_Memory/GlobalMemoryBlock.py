@@ -109,3 +109,17 @@ class GlobalMemoryBlock:
             self.msConstantGlobal.setValue(intAddress, obiValue)
         else:
             sys.exit("Exit with error: Trying to accessing an address out of context while getting value at Global Memory Block")
+
+
+    def printMemory(self):
+        print("--------------------------------------------------------")
+        print("Global Context")
+        self.msGlobal.printSegment()
+
+        print("--------------------------------------------------------")
+        print("Global Temporal Memory")
+        self.msTemporalGlobal.printSegment()
+
+        print("--------------------------------------------------------")
+        print("Global Constant Memory")
+        self.msConstantGlobal.printSegment()

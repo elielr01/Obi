@@ -92,3 +92,13 @@ class LocalMemoryBlock:
     def reset(self):
         self.msLocal.resetPointers()
         self.msTemporalLocal.resetPointers()
+
+    def printMemory(self):
+        print("--------------------------------------------------------")
+        print("Local Memory")
+        self.msLocal.printSegment()
+
+        print("--------------------------------------------------------")
+        print("Local Temporal Memory")
+        self.msTemporalLocal.printSegment()
+

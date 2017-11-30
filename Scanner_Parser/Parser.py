@@ -86,6 +86,8 @@ def p_Multiple_Statements(p):
 def p_Statement(p):
     '''
     Statement : Print
+    | Declare_Var
+    | Assignment
     '''
 
 def p_Print(p):
@@ -96,6 +98,114 @@ def p_Print(p):
     strType = stkTypes.pop()
     qgQuads.addQuad(["Print", None, None, intAddress])
 
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Declarations and Assignments
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Declare a variable rule
+
+def p_Declare_Var(p):
+    '''
+    Declare_Var : Type ID SEMICOLON
+    | Type ID ASSIGN Push_Assign Exp SEMICOLON
+    '''
+    # New vars type
+    strNewVarType = p[1]
+    strNewVarName = p[2]
+
+    global strCurrentFunc
+
+    if strCurrentFunc == "global":
+        intAddress = gmbGlobal.intNextGlobalAddress(strNewVarType)
+    else:
+        intAddress = lmbLocal.intNextLocalAddress(strNewVarType)
+    ftFuncsTable.addVar(strCurrentFunc, strNewVarName, strNewVarType, intAddress)
+
+    # Optional initialization
+
+    if len(stkOperators) > 0 and stkOperators[-1] == "=":
+
+        # We get our result from the stack
+        intResultAddress = stkOperands.pop()
+        strResultType = stkTypes.pop()
+
+        # We take out our operator
+        strOperator = stkOperators.pop()
+
+        # We validate types
+        if strNewVarType == strResultType:
+            # We proceed with the quad
+            qgQuads.addQuad([strOperator, intResultAddress, None, intAddress])
+        else:
+            generic_error("Exit with error: Type mismatch.\nTrying to assign a " + strResultType + " to a " +
+                          strNewVarType, p)
+
+
+
+# Type auxiliary rule for declare var
+
+def p_Type(p):
+    '''
+    Type : INT
+    | FLOAT
+    | BOOL
+    | STRING
+    '''
+    p[0] = p[1]
+
+# Neuralgic points
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Assignment
+def p_Assignment(p):
+    '''
+    Assignment : ID ASSIGN Push_Assign Exp SEMICOLON
+    '''
+    global strCurrentFunc
+
+    strVarName = p[1]
+
+    if ftFuncsTable.boolExistsVar(strCurrentFunc, strVarName):
+        # We can proceed if it exists
+
+        # First we get our vars info
+        dictVarsInfo = ftFuncsTable.dictGetVarsInfo(strCurrentFunc, strVarName)
+        intVarAddress = dictVarsInfo["address"]
+        strVarType = dictVarsInfo["type"]
+
+        # Then we get our result from the stack
+        intResultAddress = stkOperands.pop()
+        strResultType = stkTypes.pop()
+
+        # We take out our operator
+        strOperator = stkOperators.pop()
+
+        # We validate types
+        if strVarType == strResultType:
+            # We proceed with the quad
+            qgQuads.addQuad([strOperator, intResultAddress, None, intVarAddress])
+        else:
+            generic_error("Exit with error: Type mismatch.\nTrying to assign a " + strResultType + " to a " +
+                            strVarType, p)
+
+    else:
+        generic_error("Exit with error: Semantic Error.\nVariable '" + strVarName + "' is not defined", p)
+
+# Neuralgic points
+def p_Push_assign(p):
+    '''
+    Push_Assign :
+    '''
+    stkOperators.append("=")
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
 # Logical Exp (General Expression for all statements)
@@ -706,6 +816,7 @@ def p_Var_Cte(p):
     | MINUS_SIGN FLOAT_CONST Save_Neg_Float_Const
     | BOOL_CONST Save_Bool_Const
     | STRING_CONST Save_String_Const
+    | ID Get_Id_Value
     '''
 
 # Neuralgic Points
@@ -714,9 +825,9 @@ def p_Save_Int_Const(p):
     '''
     Save_Int_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1], "Int"):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsConstant(p[-1], "Int"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1], "Int")["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetConstInfo(p[-1], "Int")["address"]
 
     else:
         # We save constant at Global Memory
@@ -733,9 +844,9 @@ def p_Save_Neg_Int_Const(p):
     '''
     Save_Neg_Int_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(-p[-1], "Int"):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsConstant(-p[-1], "Int"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(-p[-1], "Int")["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetConstInfo(-p[-1], "Int")["address"]
 
     else:
         # We save constant at Global Memory
@@ -752,9 +863,9 @@ def p_Save_Float_Const(p):
     '''
     Save_Float_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1], "Float"):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsConstant(p[-1], "Float"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1], "Float")["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetConstInfo(p[-1], "Float")["address"]
 
     else:
         # We save constant at Global Memory
@@ -771,9 +882,9 @@ def p_Save_Neg_Float_Const(p):
     '''
     Save_Neg_Float_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(-p[-1], "Float"):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsConstant(-p[-1], "Float"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(-p[-1], "Float")["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetConstInfo(-p[-1], "Float")["address"]
 
     else:
         # We save constant at Global Memory
@@ -790,9 +901,9 @@ def p_Save_Bool_Const(p):
     '''
     Save_Bool_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1], "Bool"):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsConstant(p[-1], "Bool"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1], "Bool")["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetConstInfo(p[-1], "Bool")["address"]
 
     else:
         # We save constant at Global Memory
@@ -809,9 +920,9 @@ def p_Save_String_Const(p):
     '''
     Save_String_Const :
     '''
-    if ftFuncsTable.table["global"]["constTable"].boolExistsVar(p[-1], "String"):
+    if ftFuncsTable.table["global"]["constTable"].boolExistsConstant(p[-1], "String"):
         # This constant already has an address
-        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetVarsInfo(p[-1], "String")["address"]
+        intAddress = ftFuncsTable.table["global"]["constTable"].dictGetConstInfo(p[-1], "String")["address"]
 
     else:
         # We save constant at Global Memory
@@ -824,6 +935,30 @@ def p_Save_String_Const(p):
     stkOperands.append(intAddress)
     stkTypes.append("String")
 
+def p_Get_Id_Value(p):
+    '''
+    Get_Id_Value :
+    '''
+    # First, we need to validate that this var exists
+    global strCurrentFunc
+
+    strVarName = p[-1]
+
+    if ftFuncsTable.boolExistsVar(strCurrentFunc, strVarName):
+        # We get the value's info
+        dictVarsInfo = ftFuncsTable.dictGetVarsInfo(strCurrentFunc, strVarName)
+        intAddress = dictVarsInfo["address"]
+        strType = dictVarsInfo["type"]
+
+        # And we push them to the stacks
+        stkOperands.append(intAddress)
+        stkTypes.append(strType)
+
+    else:
+        generic_error("Exit with error: Variable '" + strVarName + "' not in scope", p)
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
 # Represents an empty rule
@@ -834,11 +969,37 @@ def p_Epsilon(p):
     pass
 
 # ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
 
 # Errors
 
 def p_error(p):
     sys.exit("Syntax Error near " + str(p.value) + " at line " + str(p.lineno))
+
+def generic_error(strMessage, p):
+    sys.exit(strMessage + "\nError near line " + str(p.lexer.lineno))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# Prints execution
+
+def executeTest(boolDebug):
+    if boolDebug:
+        print("-------------------------------------------")
+        print("Functions Table")
+        ftFuncsTable.printTable()
+        print("-------------------------------------------")
+        print("Quads Generated")
+        qgQuads.printQuads()
+    print("-------------------------------------------")
+    print("Obi Machine Result:")
+    obiMachine = ObiMachine(qgQuads.getQuads(), gmbGlobal, ftFuncsTable)
+    obiMachine.execute(False)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -848,13 +1009,10 @@ def p_error(p):
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Tests/print_equity.obi', 'r') as fileObiFile:
+with open('../Tests/declare_assign.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 parser.parse(obiCode, tracking=True)
 
-# We can print the Quads generated by the code.
-qgQuads.printQuads()
-
-# We start the machine and execute it
-obiMachine = ObiMachine(qgQuads.getQuads(), gmbGlobal, ftFuncsTable).execute()
+# We execute the test
+executeTest(True)

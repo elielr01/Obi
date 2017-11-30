@@ -11,7 +11,7 @@ class ObiMachine:
 
 
 
-    def execute(self):
+    def execute(self, boolDebugMode):
 
         intQuadIndex = 1
         while self.lstlstQuads[intQuadIndex][0] != "End":
@@ -609,10 +609,53 @@ class ObiMachine:
                 intQuadIndex += 1
 
             # ----------------------------------------------------------------------------------------------------------
+            # Assignment Code
+            # ----------------------------------------------------------------------------------------------------------
+            elif self.lstlstQuads[intQuadIndex][0] == "=":
+                # Execute assignment code
+                # Cases:
+                # 1. [ = , 100  , None , 200 ]
+                # 2. [ = , [100] , None , 200 ]
+                # 3. [ = , 100 , None , [200] ]
+                # 4. [ = , [100] , None , [200] ]
+
+                # First, we get the value we want to assign
+                if isinstance(self.lstlstQuads[intQuadIndex][1], list):
+                    # If it's a list, that's an address of an address
+                    intResultAddrAddr = self.lstlstQuads[intQuadIndex][1][0]
+                    intResultAddress = self.mmMemoryManager.getValueFrom(intResultAddrAddr)
+                else:
+                    # It's directly an address
+                    intResultAddress = self.lstlstQuads[intQuadIndex][1]
+
+                # With the left address, we ask for the left value
+                resultValue = self.mmMemoryManager.getValueFrom(intResultAddress)
+
+
+                # Then, we get address of the assignee
+                if isinstance(self.lstlstQuads[intQuadIndex][3], list):
+                    # If it's a list, that's an address of an address
+                    intAssigneeAddrAddr = self.lstlstQuads[intQuadIndex][3][0]
+                    intAssigneeAddress = self.mmMemoryManager.getValueFrom(intAssigneeAddrAddr)
+                else:
+                    # It's directly an address
+                    intAssigneeAddress = self.lstlstQuads[intQuadIndex][3]
+
+                # We perform the assignment
+                self.mmMemoryManager.setValue(intAssigneeAddress, resultValue)
+
+                # Finally, we increment the quad index
+                intQuadIndex += 1
+
+            # ----------------------------------------------------------------------------------------------------------
             # No code recognized. It's an error
             else:
                 sys.exit("Exit with error: Execution Error\nUnrecognized code '" + self.lstlstQuads[intQuadIndex][0] +
                          "' at the quads.")
+
+        # If we are at debug, we want to also see the memory at the end
+        if boolDebugMode:
+            self.mmMemoryManager.printMemory()
 
     # ------------------------------------------------------------------------------------------------------------------
     # Error functions

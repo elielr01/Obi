@@ -135,23 +135,23 @@ class MemorySegment:
         print("-----------------------------")
         print("Ints within memory segment")
         print("-----------------------------")
-        for key, value in self.dictintInts:
+        for key, value in self.dictintInts.items():
             print(str(key) + ": " + str(value))
 
         print("-----------------------------")
         print("Floats within memory segment")
         print("-----------------------------")
-        for key, value in self.dictftsFloats:
+        for key, value in self.dictftsFloats.items():
             print(str(key) + ": " + str(value))
 
         print("-----------------------------")
         print("Bools within memory segment")
         print("-----------------------------")
-        for key, value in self.dictboolBools:
+        for key, value in self.dictboolBools.items():
             print(str(key) + ": " + str(value))
 
         print("-----------------------------")
         print("Strings within memory segment")
         print("-----------------------------")
-        for key, value in self.dictstrStrings:
+        for key, value in self.dictstrStrings.items():
             print(str(key) + ": " + str(value))
