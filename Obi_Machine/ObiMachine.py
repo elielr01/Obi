@@ -1,4 +1,6 @@
 import sys
+import turtle
+from turtle import Turtle
 from Virtual_Memory.MemoryManager import MemoryManager
 
 class ObiMachine:
@@ -8,6 +10,9 @@ class ObiMachine:
         self.lstlstQuads = lstlstQuads
         self.mmMemoryManager = MemoryManager(gmbGlobal)
         self.ftFuncsTable = ftFuncsTable
+        self.t = Turtle()
+        self.t.penup()
+        self.t.ht()
 
 
 
@@ -676,6 +681,144 @@ class ObiMachine:
                 intQuadIndex += 1
 
             # ----------------------------------------------------------------------------------------------------------
+            # Graphics Codes
+            # ----------------------------------------------------------------------------------------------------------
+            elif self.lstlstQuads[intQuadIndex][0] == "circle":
+                # Execute assignment code
+                # Cases:
+                # 1. [ circle , [x, y, radius, color]  , None , None ]
+
+
+                # First, we get the x coord
+                if isinstance(self.lstlstQuads[intQuadIndex][1][0], list):
+                    # If it's a list, that's an address of an address
+                    intXAddrAddr = self.lstlstQuads[intQuadIndex][1][0][0]
+                    intXAddress = self.mmMemoryManager.getValueFrom(intXAddrAddr)
+                else:
+                    # It's directly an address
+                    intXAddress = self.lstlstQuads[intQuadIndex][1][0]
+
+                # With the left address, we ask for the left value
+                xValue = self.mmMemoryManager.getValueFrom(intXAddress)
+
+                # Then, we get the y coord
+                if isinstance(self.lstlstQuads[intQuadIndex][1][1], list):
+                    # If it's a list, that's an address of an address
+                    intYAddrAddr = self.lstlstQuads[intQuadIndex][1][1][0]
+                    intYAddress = self.mmMemoryManager.getValueFrom(intYAddrAddr)
+                else:
+                    # It's directly an address
+                    intYAddress = self.lstlstQuads[intQuadIndex][1][1]
+
+                # With the left address, we ask for the left value
+                yValue = self.mmMemoryManager.getValueFrom(intYAddress)
+
+                # We get the radius coord
+                if isinstance(self.lstlstQuads[intQuadIndex][1][2], list):
+                    # If it's a list, that's an address of an address
+                    intRadiusAddrAddr = self.lstlstQuads[intQuadIndex][1][2][0]
+                    intRadiusAddress = self.mmMemoryManager.getValueFrom(intRadiusAddrAddr)
+                else:
+                    # It's directly an address
+                    intRadiusAddress = self.lstlstQuads[intQuadIndex][1][2]
+
+                # With the left address, we ask for the left value
+                radiusValue = self.mmMemoryManager.getValueFrom(intRadiusAddress)
+
+
+                # Color extracted
+                color = self.lstlstQuads[intQuadIndex][1][3]
+
+
+                # We draw the circle
+                self.t.setx(xValue)
+                self.t.sety(yValue)
+
+                self.t.color(color)
+
+                self.t.begin_fill()
+
+                self.t.pendown()
+                self.t.circle(radiusValue)
+                self.t.penup()
+
+                self.t.end_fill()
+
+                # Finally, we increment the quad index
+                intQuadIndex += 1
+
+            elif self.lstlstQuads[intQuadIndex][0] == "square":
+                # Execute assignment code
+                # Cases:
+                # 1. [ sqiare , [x, y, size, color]  , None , None ]
+
+
+                # First, we get the x coord
+                if isinstance(self.lstlstQuads[intQuadIndex][1][0], list):
+                    # If it's a list, that's an address of an address
+                    intXAddrAddr = self.lstlstQuads[intQuadIndex][1][0][0]
+                    intXAddress = self.mmMemoryManager.getValueFrom(intXAddrAddr)
+                else:
+                    # It's directly an address
+                    intXAddress = self.lstlstQuads[intQuadIndex][1][0]
+
+                # With the left address, we ask for the left value
+                xValue = self.mmMemoryManager.getValueFrom(intXAddress)
+
+                # Then, we get the y coord
+                if isinstance(self.lstlstQuads[intQuadIndex][1][1], list):
+                    # If it's a list, that's an address of an address
+                    intYAddrAddr = self.lstlstQuads[intQuadIndex][1][1][0]
+                    intYAddress = self.mmMemoryManager.getValueFrom(intYAddrAddr)
+                else:
+                    # It's directly an address
+                    intYAddress = self.lstlstQuads[intQuadIndex][1][1]
+
+                # With the left address, we ask for the left value
+                yValue = self.mmMemoryManager.getValueFrom(intYAddress)
+
+                # We get the size
+                if isinstance(self.lstlstQuads[intQuadIndex][1][2], list):
+                    # If it's a list, that's an address of an address
+                    intSizeAddrAddr = self.lstlstQuads[intQuadIndex][1][2][0]
+                    intSizeAddress = self.mmMemoryManager.getValueFrom(intSizeAddrAddr)
+                else:
+                    # It's directly an address
+                    intSizeAddress = self.lstlstQuads[intQuadIndex][1][2]
+
+                # With the left address, we ask for the left value
+                sizeValue = self.mmMemoryManager.getValueFrom(intSizeAddress)
+
+
+                # Color extracted
+                color = self.lstlstQuads[intQuadIndex][1][3]
+
+
+                # We draw the circle
+                self.t.setx(xValue)
+                self.t.sety(yValue)
+
+                self.t.color(color)
+
+                self.t.begin_fill()
+
+                self.t.pendown()
+                self.t.forward(sizeValue)
+                self.t.left(90)
+                self.t.forward(sizeValue)
+                self.t.left(90)
+                self.t.forward(sizeValue)
+                self.t.left(90)
+                self.t.forward(sizeValue)
+                self.t.left(90)
+                self.t.penup()
+
+                self.t.end_fill()
+
+                # Finally, we increment the quad index
+                intQuadIndex += 1
+
+            # ----------------------------------------------------------------------------------------------------------
             # No code recognized. It's an error
             else:
                 sys.exit("Exit with error: Execution Error\nUnrecognized code '" + self.lstlstQuads[intQuadIndex][0] +
@@ -684,6 +827,8 @@ class ObiMachine:
         # If we are at debug, we want to also see the memory at the end
         if boolDebugMode:
             self.mmMemoryManager.printMemory()
+
+        turtle.done()
 
     # ------------------------------------------------------------------------------------------------------------------
     # Error functions

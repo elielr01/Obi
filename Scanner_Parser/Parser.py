@@ -126,7 +126,134 @@ def p_Statement(p):
     | Assignment
     | While_Loop
     | If_Eif_Else
+    | Draw_Stmt
     '''
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Graphic Rules
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Draw Statement
+def p_Draw_Stmt(p):
+    '''
+    Draw_Stmt : DRAW Drawable SEMICOLON
+    '''
+
+# Drawables
+def p_Drawable(p):
+    '''
+    Drawable : Circle_Func
+    | Square_Func
+    '''
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Drawables
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Circle
+# Structure: Circle(coordX, coordY, radius)
+def p_Circle_Func(p):
+    '''
+    Circle_Func : CIRCLE PAR_OPEN Exp COMMA Exp COMMA Exp COMMA Selected_Color PAR_CLOSE
+    '''
+    # First we take out the radius
+    intRadiusAddress = stkOperands.pop()
+    strRadiusType = stkTypes.pop()
+
+    # And validate type
+    if strRadiusType == "Int" or strRadiusType == "Float":
+        # We proceed
+        intYAddress = stkOperands.pop()
+        strYType = stkTypes.pop()
+
+        if strYType == "Int" or strYType == "Float":
+            # We proceed
+
+            intXAddress = stkOperands.pop()
+            strXType = stkTypes.pop()
+
+            if strXType == "Int" or strXType == "Float":
+                # we just take out the color
+                color = p[9]
+
+                # We make a quad
+                qgQuads.addQuad(["circle", [intXAddress, intYAddress, intRadiusAddress, color], None,  None])
+            else:
+                generic_error("Exit with error: Type mismatch\nCircle function doesn't accept a " + strRadiusType +
+                              " as a X Coord. It should be an Int or a Float")
+        else:
+            generic_error("Exit with error: Type mismatch\nCircle function doesn't accept a " + strRadiusType +
+                          " as a Y Coord. It should be an Int or a Float")
+    else:
+        generic_error("Exit with error: Type mismatch\nCircle function doesn't accept a " + strRadiusType +
+                      " as a radius. It should be an Int or a Float")
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Square
+# Structure: square(coordX, coordY, size, color)
+
+def p_Square_Func(p):
+    '''
+    Square_Func : SQUARE PAR_OPEN Exp COMMA Exp COMMA Exp COMMA Selected_Color PAR_CLOSE
+    '''
+    # First we take out the size
+    intSizeAddress = stkOperands.pop()
+    strSizeType = stkTypes.pop()
+
+    # And validate type
+    if strSizeType == "Int" or strSizeType == "Float":
+        # We proceed
+        intYAddress = stkOperands.pop()
+        strYType = stkTypes.pop()
+
+        if strYType == "Int" or strYType == "Float":
+            # We proceed
+
+            intXAddress = stkOperands.pop()
+            strXType = stkTypes.pop()
+
+            if strXType == "Int" or strXType == "Float":
+                # we just take out the color
+                color = p[9]
+
+                # We make a quad
+                qgQuads.addQuad(["square", [intXAddress, intYAddress, intSizeAddress, color], None, None])
+            else:
+                generic_error("Exit with error: Type mismatch\nCircle function doesn't accept a " + strXType +
+                              " as a X Coord. It should be an Int or a Float")
+        else:
+            generic_error("Exit with error: Type mismatch\nCircle function doesn't accept a " + strYType +
+                          " as a Y Coord. It should be an Int or a Float")
+    else:
+        generic_error("Exit with error: Type mismatch\nCircle function doesn't accept a " + strSizeType +
+                      " as a radius. It should be an Int or a Float")
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Colors
+def p_Selected_Color(p):
+    '''
+    Selected_Color : RED
+    | GREEN
+    | BLUE
+    | YELLOW
+    | PURPLE
+    | WHITE
+    | BLACK
+    | ORANGE
+    | CYAN
+    | MAGENTA
+    | PINK
+    | GRAY
+    '''
+    p[0] = p[1]
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -1157,12 +1284,12 @@ def generic_error(strMessage, p):
 
 # Prints execution
 
-def executeTest(boolDebug):
-    if boolDebug:
+def executeTest(boolDebugFunc, boolDebugQuads):
+    if boolDebugFunc:
         print("-------------------------------------------")
         print("Functions Table")
         ftFuncsTable.printTable()
-
+    if boolDebugQuads:
         print("-------------------------------------------")
         print("Quads Generated")
         qgQuads.printQuads()
@@ -1180,10 +1307,10 @@ def executeTest(boolDebug):
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Tests/global_decl_assign.obi', 'r') as fileObiFile:
+with open('../Tests/draw.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 parser.parse(obiCode, tracking=True)
 
 # We execute the test
-executeTest(False)
+executeTest(False, True)

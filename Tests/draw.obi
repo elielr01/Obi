@@ -1,0 +1,14 @@
+
+play(){
+
+    draw circle(50, 0, 25, green);
+    draw circle(-50, 0, 25, red);
+    draw circle(0, 50, 25, yellow);
+    draw circle(0, -50, 25, blue);
+
+    draw square(-200, 0, 50, cyan);
+    draw square(200, 0, 50, magenta);
+    draw square(-25, 200, 50, purple);
+    draw square(-25, -200, 50, pink);
+
+}
