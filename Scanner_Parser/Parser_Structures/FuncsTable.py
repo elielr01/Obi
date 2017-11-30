@@ -67,7 +67,8 @@ class FuncsTable:
     # Validate existance of a var
     def boolExistsVar(self, strFuncName, strName):
         if strFuncName in self.table:
-            return self.table[strFuncName]["varsTable"].boolExistsVar(strName)
+            return (self.table[strFuncName]["varsTable"].boolExistsVar(strName) or
+                    self.table["global"]["varsTable"].boolExistsVar(strName))
         else:
             sys.exit("Exit with error: Validating existance of a new var within a nonexistent function")
 
@@ -81,8 +82,13 @@ class FuncsTable:
 
     # Returns a dictionary with vars info
     def dictGetVarsInfo(self, strFuncName, strName):
-        if ((strFuncName in self.table) and (self.boolExistsVar(strFuncName, strName))) :
-            return self.table[strFuncName]["varsTable"].dictGetVarsInfo(strName)
+        if strFuncName in self.table:
+            if self.table[strFuncName]["varsTable"].boolExistsVar(strName):
+                return self.table[strFuncName]["varsTable"].dictGetVarsInfo(strName)
+            elif self.table["global"]["varsTable"].boolExistsVar(strName):
+                return self.table["global"]["varsTable"].dictGetVarsInfo(strName)
+            else:
+                sys.exit("Exit with error: Var named '" + strName + "' is not declared.")
         else:
             sys.exit("Exit with error: Getting var's info within a nonexistent function")
 

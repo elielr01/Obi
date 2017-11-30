@@ -51,9 +51,37 @@ strCurrentFunc = "global"
 
 def p_Obi(p):
     '''
-    Obi : Play
+    Obi : Prev_To_Play Play
     '''
     qgQuads.addQuad(["End", None, None, None])
+
+def p_Prev_To_Play(p):
+    '''
+    Prev_To_Play : GoTo_Global_Vars Declare_Var GoTo_Play Prev_To_Play
+    | Epsilon
+    '''
+
+# Neuralgic points
+
+def p_GoTo_Global_Vars(p):
+    '''
+    GoTo_Global_Vars :
+    '''
+    qgQuads.fillQuad(stkSingleJumps.pop())
+
+def p_GoTo_Play(p):
+    '''
+    GoTo_Play :
+    '''
+    stkSingleJumps.append(qgQuads.addQuad(["GoTo", None, None, None]))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Play function
+
+# ----------------------------------------------------------------------------------------------------------------------
 
 def p_Play(p):
     '''
@@ -69,6 +97,14 @@ def p_Play_Init(p):
     lmbLocal.reset()
     strCurrentFunc = "play"
     qgQuads.fillQuad(stkSingleJumps.pop())
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Statements
+
+# ----------------------------------------------------------------------------------------------------------------------
 
 def p_Statements_Block(p):
     '''
@@ -1144,10 +1180,10 @@ def executeTest(boolDebug):
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Tests/if.obi', 'r') as fileObiFile:
+with open('../Tests/global_decl_assign.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 parser.parse(obiCode, tracking=True)
 
 # We execute the test
-executeTest(True)
+executeTest(False)

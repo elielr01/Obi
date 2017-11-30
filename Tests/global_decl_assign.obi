@@ -1,0 +1,24 @@
+#-
+    Obi code for testing use case "global with local var declarations and assignments"
+
+    Author: Eli Linares
+    ID: A00815654
+    Date: Nov 30, 2017
+-#
+
+Int x = 10 * 2 - 15;
+
+Float y = (2.5 - 1.5) * 2;
+
+Bool m;
+
+play(){
+    print(x);
+    print(y);
+
+    Int x = 100;
+    print(x);
+
+    m = true;
+    print(m);
+}

@@ -19,6 +19,7 @@ class MemoryManager:
         self.stkExecutionBlocks.pop()
 
     def getValueFrom(self, intAddress):
+
         # We check where in which Memory Block it falls
         if self.intGlobalDirBase <= intAddress < self.intLocalDirBase:
             # Global Memory Block Range

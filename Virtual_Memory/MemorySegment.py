@@ -44,6 +44,7 @@ class MemorySegment:
     # Get a value for a given address
 
     def getValue(self, intAddress):
+
         # We check in which range it falls
         if (self.intIntsDirBase <= intAddress and
             intAddress < self.intFloatsDirBase and
@@ -85,7 +86,7 @@ class MemorySegment:
             # Strings Range
             self.dictstrStrings[intAddress] = obiValue
         else:
-            sys.exit("Exit with error: Trying to access a nonexistent address while getting a value.")
+            sys.exit("Exit with error: Trying to access a nonexistent address while setting a value.")
 
     def intGetNeededInts(self):
         return self.intIntsPointer - self.intStrsDirBase
