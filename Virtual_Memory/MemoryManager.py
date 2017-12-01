@@ -15,8 +15,28 @@ class MemoryManager:
     def addNewContext(self):
         self.stkExecutionBlocks.append(LocalMemoryBlock(self.intLocalDirBase))
 
+    def getNewContext(self):
+        return LocalMemoryBlock(self.intLocalDirBase)
+
+    def getCurrentContext(self):
+        return self.stkExecutionBlocks[-1]
+
     def deleteCurrentContext(self):
         self.stkExecutionBlocks.pop()
+
+    def setContext(self, lmbContext):
+        self.stkExecutionBlocks.append(lmbContext)
+
+    def getValueFromDad(self,intAddress):
+        # We check where in which Memory Block it falls
+        if self.intGlobalDirBase <= intAddress < self.intLocalDirBase:
+            # Global Memory Block Range
+            return self.gmbGlobal.getValue(intAddress)
+        elif self.intLocalDirBase <= intAddress < self.intLocalDirBase + self.stkExecutionBlocks[-1].intMAX_BLOCK_SIZE:
+            # Local Memory Block Range
+            return self.stkExecutionBlocks[-2].getValue(intAddress)
+        else:
+            sys.exit("Exit with error: Trying to access a nonexistent address while getting a value at MemoryManager")
 
     def getValueFrom(self, intAddress):
 

@@ -24,6 +24,7 @@ reserved_words = {
     "input" : "INPUT",
 
     "func" : "FUNC",
+    "return" : "RETURN",
 
     "draw" : "DRAW",
 
@@ -163,7 +164,7 @@ def t_error(t):
 
 scanner = lex.lex()
 
-with open('../Tests/declare_assign.obi', 'r') as fileObiFile:
+with open('../Tests/funcs_void.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 

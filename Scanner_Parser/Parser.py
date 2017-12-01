@@ -44,6 +44,11 @@ stkSingleJumps.append(intCreatedQuad)
 # We initialize our pointer for the functions (to know in which context we are)
 strCurrentFunc = "global"
 
+intParamsIndex = 0;
+strFuncCallName = "";
+lmbFunction = LocalMemoryBlock(gmbGlobal.intDirBase + gmbGlobal.intMAX_BLOCK_SIZE)
+
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Rules
@@ -58,6 +63,7 @@ def p_Obi(p):
 def p_Prev_To_Play(p):
     '''
     Prev_To_Play : GoTo_Global_Vars Declare_Var GoTo_Play Prev_To_Play
+    | Func_Decl Prev_To_Play
     | Epsilon
     '''
 
@@ -74,6 +80,79 @@ def p_GoTo_Play(p):
     GoTo_Play :
     '''
     stkSingleJumps.append(qgQuads.addQuad(["GoTo", None, None, None]))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Functions
+
+# ----------------------------------------------------------------------------------------------------------------------
+def p_Func_Decl(p):
+    '''
+    Func_Decl : FUNC ID Add_Empty_Func PAR_OPEN Func_Params PAR_CLOSE Save_Initial_Quad Statements_Block
+    | FUNC Type ID PAR_OPEN Func_Params PAR_CLOSE Statements_With_Return_Block
+    '''
+    # We generate the endproc
+    qgQuads.addQuad(["EndFunc", None, None, None])
+
+    # Finally, we return to global context
+    global strCurrentFunc
+    strCurrentFunc = "global"
+
+def p_Func_Params(p):
+    '''
+    Func_Params : Type ID Save_Param
+    | Type ID Save_Param COMMA Func_Params
+    | Epsilon
+    '''
+
+def p_Statements_With_Return_Block(p):
+    '''
+    Statements_With_Return_Block : CURLYB_OPEN Multiple_Statements RETURN Exp SEMICOLON CURLYB_CLOSE
+    '''
+
+# Neuralgic Points
+def p_Add_Empty_Func(p):
+    '''
+    Add_Empty_Func :
+    '''
+    # We add the func to the funcs table
+    ftFuncsTable.newFunc(p[-1])
+
+    # We change context
+    global strCurrentFunc
+    strCurrentFunc = p[-1]
+    lmbFunction.reset()
+
+def p_Save_Initial_Quad(p):
+    '''
+    Save_Initial_Quad :
+    '''
+    global strCurrentFunc
+
+    ftFuncsTable.saveInitialQuad(strCurrentFunc, qgQuads.intNextQuad())
+
+def p_Save_Param(p):
+    '''
+    Save_Param :
+    '''
+    strParamName = p[-1]
+    strParamType = p[-2]
+
+    global strCurrentFunc
+
+    if ftFuncsTable.boolExistsParam(strCurrentFunc, strParamName):
+        generic_error("Exit with error: Param '" + strParamName + "' already declared in function '" +
+                      strCurrentFunc + "'", p)
+    else:
+        # We ask for the next available address for this type
+        intParamAddress = lmbFunction.intNextLocalAddress(strParamType)
+
+        # We save this param to it's function at Funcs Table
+        ftFuncsTable.addParam(strCurrentFunc,strParamName,strParamType, intParamAddress)
+
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -126,6 +205,7 @@ def p_Statement(p):
     | Assignment
     | While_Loop
     | If_Eif_Else
+    | Func_Call_Stmt
     | Draw_Stmt
     '''
 
@@ -1113,8 +1193,84 @@ def p_Var_Cte(p):
     | BOOL_CONST Save_Bool_Const
     | STRING_CONST Save_String_Const
     | ID Get_Id_Value
+    | Func_Call
     '''
 
+def p_Func_Call_Stmt(p):
+    '''
+    Func_Call_Stmt : Func_Call SEMICOLON
+    '''
+
+def p_Func_Call(p):
+    '''
+    Func_Call : ID Exists_Func PAR_OPEN Send_Params PAR_CLOSE GoSub_Quad
+    '''
+
+def p_Send_Params(p):
+    '''
+    Send_Params : Exp Param_Quad
+    | Exp Param_Quad COMMA Send_Params
+    | Epsilon
+    '''
+
+def p_Exists_Func(p):
+    '''
+    Exists_Func :
+    '''
+    strFuncName = p[-1]
+
+    if ftFuncsTable.boolExistFunc(strFuncName):
+        # We generate the era quad with the name of the function
+        qgQuads.addQuad(["Era", strFuncName, None, None])
+        global intParamsIndex
+        global strFuncCallName
+        intParamsIndex = 0
+        strFuncCallName = strFuncName
+        lmbFunction.reset()
+    else:
+        generic_error("Exit with error: Function '" + strFuncName + "' not declared.", p)
+    
+def p_Param_Quad(p):
+    '''
+    Param_Quad :
+    '''
+    # First, we need to check that the types are correct
+    strParamType = stkTypes.pop()
+    
+    global strFuncCallName
+    global intParamsIndex
+    if ftFuncsTable.boolValidParam(strFuncCallName, strParamType, intParamsIndex):
+        # It's a valid param, so we generate the quad param
+        intParamAddress = stkOperands.pop()
+
+        intSetAddress = lmbFunction.intNextLocalAddress(strParamType)
+        qgQuads.addQuad(["param", intParamAddress, None, intSetAddress])
+
+        intParamsIndex += 1
+    else:
+        generic_error("Exit with error: Params don't match at function call of '" + strFuncCallName + "'", p)
+
+def p_GoSub_Quad(p):
+    '''
+    GoSub_Quad :
+    '''
+    # First we check that the number of params match
+    global strFuncCallName
+    global intParamsIndex
+
+    if intParamsIndex == ftFuncsTable.intNumberOfParams(strFuncCallName):
+        # Number of params match
+
+        # We generat GoSub quad
+        qgQuads.addQuad(['GoSub', strFuncCallName, None, None])
+
+        # And we reset all the global vars (POSSIBLY HAVE TO CHANGE FOR NESTED FUNC CALLS AS PARAMS
+        strFuncCallName = ""
+        intParamsIndex = 0
+        lmbFunction.reset()
+    else:
+        generic_error("Exit with error: Number of params don't match at function call of '" + strFuncCallName + "'", p)
+    
 # Neuralgic Points
 
 def p_Save_Int_Const(p):
@@ -1253,6 +1409,14 @@ def p_Get_Id_Value(p):
     else:
         generic_error("Exit with error: Variable '" + strVarName + "' not in scope", p)
 
+
+
+
+
+
+
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -1284,7 +1448,7 @@ def generic_error(strMessage, p):
 
 # Prints execution
 
-def executeTest(boolDebugFunc, boolDebugQuads):
+def executeTest(boolDebugFunc, boolDebugQuads, boolExecute):
     if boolDebugFunc:
         print("-------------------------------------------")
         print("Functions Table")
@@ -1294,10 +1458,11 @@ def executeTest(boolDebugFunc, boolDebugQuads):
         print("Quads Generated")
         qgQuads.printQuads()
 
-    print("-------------------------------------------")
-    print("Obi Machine Result:")
-    obiMachine = ObiMachine(qgQuads.getQuads(), gmbGlobal, ftFuncsTable)
-    obiMachine.execute(False)
+    if boolExecute:
+        print("-------------------------------------------")
+        print("Obi Machine Result:")
+        obiMachine = ObiMachine(qgQuads.getQuads(), gmbGlobal, ftFuncsTable)
+        obiMachine.execute(False)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -1307,10 +1472,10 @@ def executeTest(boolDebugFunc, boolDebugQuads):
 # We build the parser
 parser = yacc.yacc()
 
-with open('../Tests/draw.obi', 'r') as fileObiFile:
+with open('../Tests/funcs_void.obi', 'r') as fileObiFile:
     obiCode = fileObiFile.read()
 
 parser.parse(obiCode, tracking=True)
 
 # We execute the test
-executeTest(False, True)
+executeTest(True, True, True)

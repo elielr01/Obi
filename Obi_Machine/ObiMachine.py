@@ -2,6 +2,7 @@ import sys
 import turtle
 from turtle import Turtle
 from Virtual_Memory.MemoryManager import MemoryManager
+from Virtual_Memory.LocalMemoryBlock import LocalMemoryBlock
 
 class ObiMachine:
 
@@ -10,11 +11,18 @@ class ObiMachine:
         self.lstlstQuads = lstlstQuads
         self.mmMemoryManager = MemoryManager(gmbGlobal)
         self.ftFuncsTable = ftFuncsTable
+
+        self.stkQuads = []
+
         self.t = Turtle()
         self.t.penup()
         self.t.ht()
 
+        self.nextContext = None
+        self.currentContext = None
 
+        self.dadMM = self.mmMemoryManager
+        self.sonMM = None
 
     def execute(self, boolDebugMode):
 
@@ -679,6 +687,61 @@ class ObiMachine:
 
                 # Finally, we increment the quad index
                 intQuadIndex += 1
+
+            # ----------------------------------------------------------------------------------------------------------
+            # Func Codes
+            # ----------------------------------------------------------------------------------------------------------
+            elif self.lstlstQuads[intQuadIndex][0] == "Era":
+                self.nextContext = self.mmMemoryManager.getNewContext()
+
+                intQuadIndex += 1
+
+            elif self.lstlstQuads[intQuadIndex][0] == "param":
+                # Execute param code
+                # Cases:
+                # 1. [ param , 100  , None , 200 ]
+                # 2. [ param , [100] , None , 200 ]
+                # First, we get the value we want to assign
+                if isinstance(self.lstlstQuads[intQuadIndex][1], list):
+                    # If it's a list, that's an address of an address
+                    intResultAddrAddr = self.lstlstQuads[intQuadIndex][1][0]
+                    intResultAddress = self.mmMemoryManager.getValueFrom(intResultAddrAddr)
+                else:
+                    # It's directly an address
+                    intResultAddress = self.lstlstQuads[intQuadIndex][1]
+
+
+                # With the left address, we ask for the left value
+                resultValue = self.mmMemoryManager.getValueFrom(intResultAddress)
+
+                # Then, we retrieve the address of the local assignee
+                intParamAddress = self.lstlstQuads[intQuadIndex][3]
+
+                # We initialize our params within that function
+                self.nextContext.setValue(intParamAddress, resultValue)
+                #self.mmMemoryManager.setValue(intParamAddress, resultValue)
+
+                # And finally, we increment the quad
+                intQuadIndex += 1
+
+            elif self.lstlstQuads[intQuadIndex][0] == "GoSub":
+
+                #change context
+                self.mmMemoryManager.setContext(self.nextContext)
+
+                # We get the name of the func
+                strFuncName = self.lstlstQuads[intQuadIndex][1]
+                intFuncInitalQuadIndex = self.ftFuncsTable.intGetInitialQuad(strFuncName)
+
+                self.stkQuads.append(intQuadIndex + 1)
+
+                intQuadIndex = intFuncInitalQuadIndex
+
+
+
+            elif self.lstlstQuads[intQuadIndex][0] == "EndFunc":
+                self.mmMemoryManager.deleteCurrentContext()
+                intQuadIndex = self.stkQuads.pop()
 
             # ----------------------------------------------------------------------------------------------------------
             # Graphics Codes

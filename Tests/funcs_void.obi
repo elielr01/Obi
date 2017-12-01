@@ -1,0 +1,61 @@
+
+
+func one(Int x, Int y) {
+    print("Entra a one");
+    print(x + y);
+}
+
+
+func dos(Int x) {
+    print("Entra a dos");
+    one(x, x * 3);
+    one(30, 70);
+
+}
+
+func printHello(Int n){
+
+    if( n > 0) {
+        print("hello world");
+        printHello(n - 1);
+    }
+}
+
+func fibonacci(Int n){
+
+    Int iter = n;
+    Int acum = 1;
+
+    print(acum);
+
+    while(iter >= 1){
+        acum = acum * iter;
+        print(acum);
+        iter = iter - 1;
+    }
+
+    print(acum);
+
+}
+
+
+play(){
+
+    #-
+    one(10 + 10, 20 * 2);
+    dos(10);
+    -#
+
+    #dos(10);
+
+
+
+    printHello(5);
+
+    #fibonacci(5);
+
+
+    print("Si");
+
+
+}

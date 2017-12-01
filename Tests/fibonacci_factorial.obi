@@ -1,0 +1,47 @@
+play(){
+
+#-
+    # Factorial
+
+    Int n = 8;
+    Int acum = 1;
+    while(n >= 1){
+        acum = acum * n;
+        n = n - 1;
+    }
+
+    print(acum);
+
+
+
+
+    Int i = 0;
+    Int j = 1;
+    Int n = 20;
+    Int k = 1;
+
+    Int temp = 0;
+    while ( k < n ) {
+
+        temp = i + j;
+        i = j;
+        j = temp;
+        k = k + 1;
+    }
+
+    print(j);
+
+-#
+
+    Int x = -1;
+    if ( x > 0 ) {
+        print("Entra al if");
+    }
+    eif (x == 0) {
+        print("Entra al eif");
+    }
+    else {
+        print("Entra al else");
+    }
+
+}

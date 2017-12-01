@@ -67,7 +67,7 @@ class MemorySegment:
             # Strings Range
             return self.dictstrStrings[intAddress]
         else:
-            sys.exit("Exit with error: Trying to access a nonexistent address while getting a value.")
+            sys.exit("Exit with error: Trying to access a nonexistent address while getting a value. Address: " + str(intAddress))
 
     # Add value depending of the type
 

@@ -74,7 +74,8 @@ class LocalMemoryBlock:
             #Temporal local memory range
             return self.msTemporalLocal.getValue(intAddress)
         else:
-            sys.exit("Exit with error: Trying to accessing an address out of context while getting value at Local Memory Block")
+            sys.exit("Exit with error: Trying to accessing an address out of context while getting value at Local Memory Block" +
+                     ". Address: " + str(intAddress))
 
     # Sets a value to a memory address
     def setValue(self, intAddress, obiValue):

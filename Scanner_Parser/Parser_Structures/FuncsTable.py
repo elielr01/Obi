@@ -106,7 +106,8 @@ class FuncsTable:
             "size": 0,
             "params": [],
             "varsTable": VarsTable(),
-            "numTemps": 0
+            "numTemps": 0,
+            "quad" : 0
         }
 
     # Increments the number of temporals needed at a function. It doesn't save the temporals, because it's not needed
@@ -117,6 +118,56 @@ class FuncsTable:
         else:
             sys.exit("Exit with error: Trying to sum a temporal var to a nonexistent function")
 
+    # Adds the type of a param to the "params" column
+    def addParam(self, strFuncName, strParamName, strParamType, intParamAddress ):
+        if strFuncName in self.table:
+            # The function exists so...
+
+            # First we save the param type
+            self.table[strFuncName]["params"].append(strParamType)
+
+            # Then, we save the param at it's VarsTable
+            self.addVar(strFuncName, strParamName, strParamType, intParamAddress)
+
+        else:
+            sys.exit("Exit with error: Trying to save a param whithin a nonexistent function")
+
+    # Validate existance of a var
+    def boolExistsParam(self, strFuncName, strParamName):
+        if strFuncName in self.table:
+            return self.table[strFuncName]["varsTable"].boolExistsVar(strParamName)
+        else:
+            sys.exit("Exit with error: Validating existance of a new param within a nonexistent function")
+
+    # Save initial quad index of a function
+    def saveInitialQuad(self, strFuncName, intInitialQuad):
+        if strFuncName in self.table:
+            self.table[strFuncName]["quad"] = intInitialQuad
+        else:
+            sys.exit("Exit with error: Saving initial quad within a nonexistent function")
+
+    def intGetInitialQuad(self, strFuncName):
+        if self.boolExistFunc(strFuncName):
+            return self.table[strFuncName]["quad"]
+        else:
+            sys.exit("Exit with error: Getting initial quad from a nonexistent function")
+
+    # Returns true if the function exists
+    def boolExistFunc(self, strFuncName):
+        return strFuncName in self.table
+
+    def boolValidParam(self, strFuncName, strParamType ,intParamIndex):
+        if self.boolExistFunc(strFuncName) and (len(self.table[strFuncName]["params"]) > intParamIndex):
+            # We search for the param
+            return strParamType == self.table[strFuncName]["params"][intParamIndex]
+        else:
+            sys.exit("Exit with error: Validating param within a nonexistent function")
+
+    def intNumberOfParams(self, strFuncName):
+        if self.boolExistFunc(strFuncName):
+            return len(self.table[strFuncName]["params"])
+        else:
+            sys.exit("Exit with error: Trying to get number of params of a nonexistent function")
 
     # Prints the whole funcs directory
     def printTable(self):
